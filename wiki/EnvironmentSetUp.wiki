@@ -20,3 +20,9 @@ The most recent download can be found [here http://developer.android.com/sdk/ind
   # Back in the Available Software view, you should now see "Developer Tools" added to the list. Select the checkbox next to Developer Tools, which will automatically select the nested tools Android DDMS and Android Development Tools. Click *Next*.
   # In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click *Finish*.
   # Restart Eclipse.
+  
+Now modify your Eclipse preferences to point to the Android SDK directory:
+  # *Select* Window > Preferences... to open the Preferences panel (Mac OS X: Eclipse > Preferences).
+  # Select Android from the left panel.
+  # For the SDK Location in the main panel, click Browse... and locate your downloaded SDK directory.
+  #Click Apply, then OK.
