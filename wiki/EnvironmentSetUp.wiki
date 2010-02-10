@@ -17,6 +17,6 @@ The most recent download can be found [here http://developer.android.com/sdk/ind
   # In the Available Software dialog, click Add....
   # In the Add Site dialog that appears, enter a name for the remote site (for example, "Android Plugin") in the "Name" field.
   # In the "Location" field, enter this URL: https://dl-ssl.google.com/android/eclipse *Note*: If you have trouble acquiring the plugin, you can try using "http" in the URL, instead of "https" (https is preferred for security reasons). *Click OK*.
-  # Back in the Available Software view, you should now see "Developer Tools" added to the list. Select the checkbox next to Developer Tools, which will automatically select the nested tools Android DDMS and Android Development Tools. Click Next.
-  # In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click Finish.
+  # Back in the Available Software view, you should now see "Developer Tools" added to the list. Select the checkbox next to Developer Tools, which will automatically select the nested tools Android DDMS and Android Development Tools. Click *Next*.
+  # In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click *Finish*.
   # Restart Eclipse.
