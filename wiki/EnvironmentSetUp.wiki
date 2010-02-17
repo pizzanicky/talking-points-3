@@ -4,9 +4,30 @@
 = Introduction =
 
 You need to install three things in order to begin working on talking points:
-1. [http://developer.android.com/sdk/android-2.1.html Android 2.1 SDK]
-2. [http://www.eclipse.org/downloads/ Eclipse Classic 3.5.1]
-3. Subversion plug-in for Eclipse
+  # [http://developer.android.com/sdk/android-2.1.html Android 2.1 SDK]
+  # [http://www.eclipse.org/downloads/ Eclipse Classic 3.5.1]
+  # Subversion plug-in for Eclipse
+
+
+= Java JDK =
+
+Install JDK: The Android SDK requires JDK version 5 or version 6. If you already have one of those installed, skip to the next step. In particular, Mac OS X comes with the JDK version 5 already installed, and many Linux distributions include a JDK. If the JDK is not installed, go to and you’ll see a list of Java products to download. You want JDK 6 Update n for your operating system, where n is 6 at the time of this writing.
+
+*Windows (XP and Vista)*
+  * Select the distribution for “Windows Offline Installation, Multi-language.”
+  * Read, review, and accept Sun’s license for the JDK. (The license has become very permissive, but if you have a problem with it, alternative free JDKs exist.)
+  * Once the download is complete, a dialog box will ask you whether you want to run the downloaded executable. When you select “Run,” the Windows Installer will start up and lead you through a dialog to install the JDK on your PC.
+
+*Linux*
+
+  * Select the distribution for “Linux self-extracting file.”
+  * Read, review, and accept Sun’s license for the JDK. (The license has become very permissive, but if you have a problem with it, alternative free JDKs exist.)
+  * You will need to download the self-extracting binary to the location in which you want to install the JDK on your filesystem. If that is a system-wide directory (such as /usr/local), you will need root access. After the file is downloaded, make it executable (chmod +x jdk-6version-linux-i586.bin), and execute it. It will self-extract to create a tree of directories.
+
+*Mac OS X*
+
+  * Mac OS X comes with JDK version 5 already loaded.
+
 
 = Installing the Android SDK =
 
