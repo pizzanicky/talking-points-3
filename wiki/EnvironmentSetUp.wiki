@@ -33,6 +33,33 @@ Install JDK: The Android SDK requires JDK version 5 or version 6. If you already
 
 The most recent download can be found [here http://developer.android.com/sdk/index.html]
 
+
+= Update your environment variables =
+
+Update the environment variables: To make it easier to launch the Android tools, add the tools directory to your path.
+
+*Windows XP* 
+
+Click on Start, then right-click on My Computer. In the pop-up menu, click on Properties. In the resulting System Properties dialog box, select the Advanced tab. Near the bottom of the Advanced tab is a button, “Environment Variables,” that takes you to an Environment Variables dialog. User environment variables are listed in the top half of the box, and System environment variables in the bottom half. Scroll down the list of System environment variables until you find “Path”; select it, and click the “Edit” button. Now you will be in an Edit System Variable dialog that allows you to change the environment variable “Path.” Add the full path of the tools directory to the end of the existing Path variable and click “OK.” You should now see the new version of the variable in the displayed list. Click “OK” and then “OK” again to exit the dialog boxes.
+
+*Windows Vista* 
+
+Click on the Microsoft “flag” in the lower left of the desktop, then right-click on Computer. At the top of the resulting display, just below the menu bar, click on “System Properties.” In the column on the left of the resulting box, click on “Advanced system settings.” Vista will warn you with a dialog box that says “Windows needs your permission to continue”; click “Continue.” Near the bottom of the System Properties box is a button labeled “Environment Variables” that takes you to an Environment Variables dialog. User environment variables are listed in the top half of the box, and System environment variables in the bottom half. Scroll down the list of System environment variables until you find “Path”; select it, and click the “Edit” button. Now you will be in an Edit System Variable dialog that allows you to change the environment variable “Path.” Add the full path of the tools directory to the end of the existing Path variable, and click “OK.” You should now see the new version of the variable in the displayed list. Click “OK” and then “OK” again to exit the dialog boxes.
+
+*Linux* 
+
+The PATH environment variable can be defined in your ~/.bashrc ~/.bash_profile file. If you have either of those files, use a text editor such as gedit, vi, or Emacs to open the file and look for a line that exports the PATH variable. If you find such a line, edit it to add the full path of the tools directory to the path. If there is no such line, you can add a line like this:
+
+  * export PATH=${PATH}:your_sdk_dir/tools 
+    where you put the full path in place of your_sdk_dir.
+    
+*Mac OS X* 
+
+Look for a file named .bash_profile in your home directory (note the initial dot in the filename). If there is one, use an editor to open the file and look for a line that exports the PATH variable. If you find such a line, edit it to add the full path of the tools directory to the path. If there is no such line, you can add a line like this:
+
+  * export PATH=${PATH}:your_sdk_dir/tools
+    where you put the full path in place of your_sdk_dir.
+
 = Eclipse Plugin Installation =
   # Start Eclipse, then select Help > *Install New Software*.
   # In the Available Software dialog, click *Add*....
