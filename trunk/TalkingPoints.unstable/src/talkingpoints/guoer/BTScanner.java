@@ -6,6 +6,10 @@ package talkingpoints.guoer;
 import java.util.ArrayList;
 import java.util.List;
 
+import talkingpoints.guoer.BTlist.RemoteServiceConnection;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -16,17 +20,18 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-//import android.speech.tts.TextToSpeech;
 import android.util.Log;
-//import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 public class BTScanner extends Service {
-	
-//	private Timer timer = new Timer();
+
+	private NotificationManager mNM;
+	// private Timer timer = new Timer();
 	private long refreshRate = 12000L;
 	private BluetoothAdapter mBtAdapter;
 	private Handler serviceHandler;
+	public static boolean started = false;
+	public static RemoteServiceConnection conn = null;
 	private int counter;
 	private Task myTask = new Task();
 	String[] exsitingPOI = { "sdf", "002608D712B9", "1234567890" };
@@ -36,93 +41,128 @@ public class BTScanner extends Service {
 	private int tempRSSI;
 	private int currentIndex;
 	private List<String> mNewDevicesArrayAdapter;
-	
 
 	@Override
 	public IBinder onBind(Intent arg0) {
+		Log.d(getClass().getSimpleName(), "onBind()");
 		return myRemoteServiceStub;
 	}
-	
+
 	private RemoteService.Stub myRemoteServiceStub = new RemoteService.Stub() {
 		public int getCounter() throws RemoteException {
 			return counter;
 		}
-		
-		public  List<String> getBTList() throws RemoteException{
+
+		public List<String> getBTList() throws RemoteException {
 			return mNewDevicesArrayAdapter;
 		}
 	};
-	
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		// Get the local Bluetooth adapter
 		mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 		mNewDevicesArrayAdapter = new ArrayList<String>();
-		//new ArrayAdapter<String>(this,R.layout.device_name);
+		// new ArrayAdapter<String>(this,R.layout.device_name);
 
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		this.registerReceiver(mReceiver, filter);
 
 		// Register for broadcasts when discovery has finished
 		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		this.registerReceiver(mReceiver, filter);		
-		//timer.scheduleAtFixedRate(new TimerTask(){ public void run() {doWork();}}, 0, refreshRate);
+		this.registerReceiver(mReceiver, filter);
+		// timer.scheduleAtFixedRate(new TimerTask(){ public void run()
+		// {doWork();}}, 0, refreshRate);
+
 	}
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		mNM.cancel(R.string.sensor_service_started);
 		serviceHandler.removeCallbacks(myTask);
 		serviceHandler = null;
-		Log.d(getClass().getSimpleName(),"onDestroy()");
+		Log.d(getClass().getSimpleName(), "onDestroy()");
 		// Unregister broadcast listeners
 		this.unregisterReceiver(mReceiver);
+		Toast.makeText(this, "service stopped", Toast.LENGTH_SHORT).show();
 	}
-	
+
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
 		serviceHandler = new Handler();
 		serviceHandler.postDelayed(myTask, refreshRate);
 		Log.d(getClass().getSimpleName(), "onStart()");
+		Toast.makeText(this, "service started", Toast.LENGTH_SHORT).show();
+		doDiscovery();
+		showNotification();
 	}
-	
+
 	class Task implements Runnable {
 		public void run() {
-			//Scan for bluetooth devices refreshRate times.
+			// Scan for bluetooth devices refreshRate times.
 			++counter;
-			serviceHandler.postDelayed(this,refreshRate);
+			serviceHandler.postDelayed(this, refreshRate);
 			doDiscovery();
+			// doClear();
 			Log.i(getClass().getSimpleName(), "Scanning...");
 		}
 	}
-	
-	private void doClear(){
+
+	private void doClear() {
 		if (mBtAdapter.isDiscovering()) {
 			mBtAdapter.cancelDiscovery();
 		}
 		mNewDevicesArrayAdapter.clear();
 	}
+
 	/**
 	 * Start device discover with the BluetoothAdapter
 	 */
 	private void doDiscovery() {
 
 		// Indicate scanning in the title
-//		setProgressBarIndeterminateVisibility(true);
-//		setTitle(R.string.scanning);
+		// setProgressBarIndeterminateVisibility(true);
+		// setTitle(R.string.scanning);
 
 		// Turn on sub-title for new devices
-//		findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
+		// findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
 
 		// If we're already discovering, stop it
 		if (mBtAdapter.isDiscovering()) {
 			mBtAdapter.cancelDiscovery();
 		}
-
+		mNewDevicesArrayAdapter.clear();
 		// Request discover from BluetoothAdapter
 		mBtAdapter.startDiscovery();
 	}
+
+	private void showNotification() {
+
+		CharSequence text = getText(R.string.sensor_service_started);
+
+		// Set the icon, scrolling text and timestamp
+		Notification notification = new Notification(R.drawable.icon, text,
+				System.currentTimeMillis());
+
+		// The PendingIntent to launch our activity if the user selects this
+		// notification
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				new Intent(this, GateWay.class), 0);
+
+		// Set the info for the views that show in the notification panel.
+		notification.setLatestEventInfo(this,
+				getText(R.string.notification_label), text, contentIntent);
+
+		// Send the notification.
+		// We use a layout id because it is a unique number. We use it later to
+		// cancel.
+		mNM.notify(R.string.sensor_service_started, notification);
+	}
+
 	// The BroadcastReceiver that listens for discovered devices and
 	// changes the title when discovery is finished
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -131,8 +171,10 @@ public class BTScanner extends Service {
 				String action = intent.getAction();
 				currentIndex = 0;
 				// When discovery finds a device
+
 				if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 					// Get the BluetoothDevice object from the Intent
+
 					BluetoothDevice device = intent
 							.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 					MacReader r = new MacReader(device.getAddress());
@@ -140,8 +182,9 @@ public class BTScanner extends Service {
 					POIFilter mFilter = new POIFilter(r.getMacString(),
 							exsitingPOI);
 					// mFilter.isMatch()
-					if (mFilter.isMatch()) {
-
+					if (true) {
+						Log.w("list debug", "list size = "
+								+ mNewDevicesArrayAdapter.size());
 						Short rssi = intent.getShortExtra(
 								BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
 
@@ -155,16 +198,16 @@ public class BTScanner extends Service {
 						} else {
 							// poi list is not empty
 
-							while (currentIndex < mNewDevicesArrayAdapter.size()) {
+							while (currentIndex < mNewDevicesArrayAdapter
+									.size()) {
 								tempRSSI = Integer
-										.parseInt(mNewDevicesArrayAdapter
-												.get(currentIndex)
-												.substring(0, 3));
+										.parseInt(mNewDevicesArrayAdapter.get(
+												currentIndex).substring(0, 3));
 								if (rssi.intValue() >= tempRSSI) {
 
-									mNewDevicesArrayAdapter
-											.add(currentIndex, "" + rssi + "\n"
-													+ device.getName() + "\n"
+									mNewDevicesArrayAdapter.add(currentIndex,
+											"" + rssi + "\n" + device.getName()
+													+ "\n"
 													+ device.getAddress());
 
 									currentIndex = mNewDevicesArrayAdapter
@@ -174,8 +217,7 @@ public class BTScanner extends Service {
 									currentIndex++;
 								}
 							}
-							if (currentIndex == mNewDevicesArrayAdapter
-									.size()) {
+							if (currentIndex == mNewDevicesArrayAdapter.size()) {
 								mNewDevicesArrayAdapter.add(rssi + "\n"
 										+ device.getName() + "\n"
 										+ device.getAddress());
@@ -191,9 +233,10 @@ public class BTScanner extends Service {
 					 */
 
 					// When discovery is finished, change the Activity title
-				} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-//					setProgressBarIndeterminateVisibility(false);
-//					setTitle(R.string.scan_finish);
+				} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
+						.equals(action)) {
+					// setProgressBarIndeterminateVisibility(false);
+					// setTitle(R.string.scan_finish);
 					/*
 					 * if (mNewDevicesArrayAdapter.getCount() == 0) { String
 					 * noDevices = getResources().getText(
@@ -202,7 +245,7 @@ public class BTScanner extends Service {
 					 */
 				}
 			} catch (Exception e) {
-//				Log.w(TAG, "ex" + "crash");
+				// Log.w(TAG, "ex" + "crash");
 			}
 		}
 	};

@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: C:\\Users\\HariBharathMolabanti\\Documents\\Android\\work\\TalkingPoints\\src\\talkingpoints\\guoer\\RemoteService.aidl
+ * Original file: C:\\Users\\guoer\\workspace\\TalkingPoints_Project\\TalkingPoints.unstable\\src\\talkingpoints\\guoer\\RemoteService.aidl
  */
 package talkingpoints.guoer;
 //import com.android.widget.ArrayAdapter;
