@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary talking-points project set-up instructions.
 #labels Featured,Phase-Implementation,Environment,SetUp
 
 = Introduction =
