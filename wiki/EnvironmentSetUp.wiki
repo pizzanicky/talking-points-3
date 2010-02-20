@@ -31,8 +31,11 @@ Install JDK: The Android SDK requires JDK version 5 or version 6. If you already
 
 = Installing the Android SDK =
 
-The most recent download can be found [here http://developer.android.com/sdk/index.html]
+The most recent download can be found here [http://developer.android.com/sdk/index.html]
 
+To initiate the installation of the Android SDK, please read the SDK Readme.txt contained in the package. You may invoke the SDK Manager and AVD Manager within Eclipse (see below) or via command-line program "tools/android" within the Android SDK package folder.
+
+Note: We recommend using http://dl-ssl.google.com/android/repository/repository.xml (without the https) tool to manage/update your Android SDK client installation. Select which version of the Android SDK you'd like to install (e.g. Google APIs by Google Inc., Android API 7) and accept the EULA.
 
 = Update your environment variables =
 
