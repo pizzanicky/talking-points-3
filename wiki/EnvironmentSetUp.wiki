@@ -63,7 +63,18 @@ Look for a file named .bash_profile in your home directory (note the initial dot
   * export PATH=${PATH}:your_sdk_dir/tools
     where you put the full path in place of your_sdk_dir.
 
-= Eclipse Plugin Installation =
+= Eclipse IDE Installation =
+
+The Android SDK requires a development environment. 
+
+While both Eclipse 3.4 (Ganymede) or 3.5 (Galileo) are supported, it is recommended that you use one of the following versions: Eclipse IDE for Java EE Developers, Eclipse IDE for Java Developers, Eclipse for RCP/Plug-in Developers or Eclipse Classic (3.5.1+). The Eclipse JDT plugin is also required, which is included in most Eclipse IDE packages.
+
+As of this writing, our instructions were tested under Eclipse IDE for Java EE Developers 3.5.1 (Galileo):
+
+Once you've installed Eclipse, you need to install the ADT Plugin for Eclipse for Android application development.
+
+= Eclipse ADT Plugin Installation =
+
   # Start Eclipse, then select Help > *Install New Software*.
   # In the Available Software dialog, click *Add*....
   # In the Add Site dialog that appears, enter a name for the remote site (for example, "Android Plugin") in the "Name" field.
@@ -72,8 +83,22 @@ Look for a file named .bash_profile in your home directory (note the initial dot
   # In the resulting Install Details dialog, the Android DDMS and Android Development Tools features are listed. Click Next to read and accept the license agreement and install any dependencies, then click *Finish*.
   # *Restart* Eclipse.
   
+= Configuring Eclipse to use the Android SDK =
+
 Now modify your Eclipse preferences to point to the Android SDK directory:
   # *Select* Window > Preferences... to open the Preferences panel (Mac OS X: Eclipse > Preferences).
   # *Select* Android from the left panel.
-  # For the SDK Location in the main panel, click *Browse*... and locate your downloaded SDK directory.
+  # For the SDK Location in the main panel, click *Browse*... and locate your downloaded SDK directory. The Android SDK version is determined by the manifest.ini file in your SDK directory
   #Click *Apply*, then OK.
+
+= Troubleshooting Eclipse WST Server Adapter =
+
+Installing the Android requires WST Server Adapters. If these have not been installed and/or you receive an error message when trying to install the ADT Plugin:
+
+1) Launch Eclipse
+2) Help -> Install New Software
+3) Click Add
+4) Enter http://download.eclipse.org/releases/galileo under Location
+5) Under Web, XML, and Java EE Development, select WST Server Adapaters
+
+= Configuring SVN under Eclipse to connect to the Talking Points code repository = 
