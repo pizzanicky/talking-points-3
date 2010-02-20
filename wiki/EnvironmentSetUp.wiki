@@ -95,10 +95,8 @@ Now modify your Eclipse preferences to point to the Android SDK directory:
 
 Installing the Android requires WST Server Adapters. If these have not been installed and/or you receive an error message when trying to install the ADT Plugin:
 
-1) Launch Eclipse
-2) Help -> Install New Software
-3) Click Add
-4) Enter http://download.eclipse.org/releases/galileo under Location
-5) Under Web, XML, and Java EE Development, select WST Server Adapaters
-
-= Configuring SVN under Eclipse to connect to the Talking Points code repository = 
+ # Launch Eclipse
+ # Help -> Install New Software
+ # Click Add
+ # Enter http://download.eclipse.org/releases/galileo under Location
+ # Under Web, XML, and Java EE Development, select WST Server Adapaters
