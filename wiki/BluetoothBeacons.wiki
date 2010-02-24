@@ -1,8 +1,8 @@
 #summary One-sentence summary of this page.
 
-= Introduction =
+= Bluetooth Mate Documentation =
 
-Add your content here.
+[http://www.sparkfun.com/datasheets/Wireless/Bluetooth/rn-bluetooth-um.pdf Download it here]
 
 
 = Details =
