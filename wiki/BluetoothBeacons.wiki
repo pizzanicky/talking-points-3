@@ -17,9 +17,12 @@ The pass key is a string of alpha or numeric chars, 1 to 16 chars in length. Dur
   # Restart both Zterm and the Bluesmirf. Make sure you restart Zterm within 60 seconds after Bluesmirf restarted! The green LED should be on.
   #Command+K (keyboard buffer) allows you to enter commands (within 60 seconds after Bluesmirf restart!!!!!!!!). Enter $$$ first. That switches the modem to command mode. The terminal should return CMD?
   # To change the name of the Bluetooth Mate use this command:
-    *SN,<name>* Name of the device, 20 characters maximum.
-    Example: “SN,MyDevice”
-    *S-,<name>* Serialized Friendly Name of the device, 15 characters maximum.
+
+*SN,<name>* Name of the device, 20 characters maximum.
+
+Example: “SN,MyDevice”
+
+*S-,<name>* Serialized Friendly Name of the device, 15 characters maximum.
 This command will automatically append the last 2 bytes of the BT MAC address to
 the name. Useful for generating a custom name with unique numbering.
 Example: S-,MyDevice will set the name to “MyDevice-ABCD”
