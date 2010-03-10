@@ -14,8 +14,8 @@ The pass key is a string of alpha or numeric chars, 1 to 16 chars in length. Dur
   # Connect to the Bluetooth Mate using your Bluetooth assitant. The passkey to pair is 1234.
   # Download and install ZTerm and go to Settings->Modem preferences, choose the modem ("Firefly" or something).
   # Go to Settings->Connection and set the Baud-rate to 9600.
-  # Restart both Zterm and the Bluesmirf. Make sure you restart Zterm within 60 seconds after Bluesmirf restarted! The green LED should be on.
-  #Command+K (keyboard buffer) allows you to enter commands (within 60 seconds after Bluesmirf restart!!!!!!!!). Enter $$$ first. That switches the modem to command mode. The terminal should return CMD?
+  # Restart both Zterm and the Bluetooth Mate. Make sure you restart Zterm within 60 seconds after Bluetooth Mate restarted! The green LED should be on.
+  #Command+K (keyboard buffer) allows you to enter commands (within 60 seconds after Bluetooth Mate restart!). Enter $$$ first. That switches the modem to command mode. The terminal should return CMD?
   # To change the name of the Bluetooth Mate use this command:
 
 *SN,<name>* Name of the device, 20 characters maximum.
