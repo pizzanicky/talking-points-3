@@ -20,9 +20,10 @@ The pass key is a string of alpha or numeric chars, 1 to 16 chars in length. Dur
 
 *SN, name* Name of the device, 20 characters maximum.
 
-Example: “SN,MyDevice”
+_Example: “SN,MyDevice”_
 
 *S-, name* Serialized Friendly Name of the device, 15 characters maximum.
+
 This command will automatically append the last 2 bytes of the BT MAC address to
 the name. Useful for generating a custom name with unique numbering.
 Example: S-,MyDevice will set the name to “MyDevice-ABCD”
