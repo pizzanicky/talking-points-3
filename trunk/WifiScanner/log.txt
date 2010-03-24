@@ -1,0 +1,91 @@
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+7.SSID: K-net, BSSID: 00:02:a8:b8:ec:b5, capabilities: [WEP], level: -77, frequency: 2412
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+7.SSID: K-net, BSSID: 00:02:a8:b8:ec:b5, capabilities: [WEP], level: -77, frequency: 2412
+8.SSID: 2WIRE644, BSSID: 00:1b:5b:74:49:a9, capabilities: [WEP], level: -84, frequency: 2412
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+7.SSID: K-net, BSSID: 00:02:a8:b8:ec:b5, capabilities: [WEP], level: -77, frequency: 2412
+8.SSID: 2WIRE644, BSSID: 00:1b:5b:74:49:a9, capabilities: [WEP], level: -84, frequency: 2412
+9.SSID: wc5, BSSID: 00:14:6c:1a:85:2a, capabilities: [WEP], level: -88, frequency: 2462
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+7.SSID: K-net, BSSID: 00:02:a8:b8:ec:b5, capabilities: [WEP], level: -77, frequency: 2412
+8.SSID: 2WIRE644, BSSID: 00:1b:5b:74:49:a9, capabilities: [WEP], level: -84, frequency: 2412
+9.SSID: wc5, BSSID: 00:14:6c:1a:85:2a, capabilities: [WEP], level: -88, frequency: 2462
+10.SSID: OhLetsDoIt, BSSID: 00:24:b2:5f:cc:27, capabilities: [WPA-PSK-TKIP], level: -89, frequency: 2417
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+7.SSID: K-net, BSSID: 00:02:a8:b8:ec:b5, capabilities: [WEP], level: -77, frequency: 2412
+8.SSID: 2WIRE644, BSSID: 00:1b:5b:74:49:a9, capabilities: [WEP], level: -84, frequency: 2412
+9.SSID: wc5, BSSID: 00:14:6c:1a:85:2a, capabilities: [WEP], level: -88, frequency: 2462
+10.SSID: OhLetsDoIt, BSSID: 00:24:b2:5f:cc:27, capabilities: [WPA-PSK-TKIP], level: -89, frequency: 2417
+11.SSID: sleba, BSSID: 00:24:36:99:34:19, capabilities: [WPA-PSK-TKIP][WPA2-PSK-TKIP+CCMP], level: -91, frequency: 2442
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+7.SSID: K-net, BSSID: 00:02:a8:b8:ec:b5, capabilities: [WEP], level: -77, frequency: 2412
+8.SSID: 2WIRE644, BSSID: 00:1b:5b:74:49:a9, capabilities: [WEP], level: -84, frequency: 2412
+9.SSID: wc5, BSSID: 00:14:6c:1a:85:2a, capabilities: [WEP], level: -88, frequency: 2462
+10.SSID: OhLetsDoIt, BSSID: 00:24:b2:5f:cc:27, capabilities: [WPA-PSK-TKIP], level: -89, frequency: 2417
+11.SSID: sleba, BSSID: 00:24:36:99:34:19, capabilities: [WPA-PSK-TKIP][WPA2-PSK-TKIP+CCMP], level: -91, frequency: 2442
+12.SSID: Peon, BSSID: 00:16:b6:e9:c1:a8, capabilities: [WPA-PSK-TKIP+CCMP][WPA2-PSK-TKIP+CCMP], level: -91, frequency: 2437
+1.SSID: 11c5, BSSID: 00:1c:10:40:3e:b8, capabilities: [WPA-PSK-TKIP], level: -51, frequency: 2437
+2.SSID: 2WIRE812, BSSID: 00:1f:b3:a0:00:b1, capabilities: [WEP], level: -58, frequency: 2427
+3.SSID: da_dawgs, BSSID: 00:1f:33:d7:6d:fc, capabilities: [WPA-PSK-TKIP], level: -60, frequency: 2462
+4.SSID: Dota123, BSSID: 00:23:69:b8:57:30, capabilities: [WPA-PSK-TKIP], level: -67, frequency: 2437
+5.SSID: Lake Lila, BSSID: 00:24:b2:a8:93:44, capabilities: [WEP], level: -73, frequency: 2462
+6.SSID: belkin, BSSID: 00:1c:df:8d:8d:c0, capabilities: [WEP], level: -74, frequency: 2462
+7.SSID: K-net, BSSID: 00:02:a8:b8:ec:b5, capabilities: [WEP], level: -77, frequency: 2412
+8.SSID: 2WIRE644, BSSID: 00:1b:5b:74:49:a9, capabilities: [WEP], level: -84, frequency: 2412
+9.SSID: wc5, BSSID: 00:14:6c:1a:85:2a, capabilities: [WEP], level: -88, frequency: 2462
+10.SSID: OhLetsDoIt, BSSID: 00:24:b2:5f:cc:27, capabilities: [WPA-PSK-TKIP], level: -89, frequency: 2417
+11.SSID: sleba, BSSID: 00:24:36:99:34:19, capabilities: [WPA-PSK-TKIP][WPA2-PSK-TKIP+CCMP], level: -91, frequency: 2442
+12.SSID: Peon, BSSID: 00:16:b6:e9:c1:a8, capabilities: [WPA-PSK-TKIP+CCMP][WPA2-PSK-TKIP+CCMP], level: -91, frequency: 2437
+13.SSID: 1855B6, BSSID: 00:21:91:d1:74:c9, capabilities: [WPA-PSK-TKIP], level: -91, frequency: 2412
