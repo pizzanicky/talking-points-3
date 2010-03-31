@@ -12,9 +12,22 @@ e.g.
 svn add TEMP/
 A         TEMP
 
-  #Committed revision 40.
-Note: You have to use your googlecode password, not your gmail password.  Go
-look at your project's 'source' page for instructions.
+To save these changes to the repository, you need to issue an “svn commit”:
 
-  Note: You will not be able to commit changes to the repository unless you are a project member (either owner or committer)
+svn commit -m “test”, where the “m” arguments specifies your comment.
+
+After you enter an “svn commit” command, you will be prompted to enter your Google Code password:
+
+Authentication realm: <https://talking-points-3.googlecode.com:443> Google Code Subversion Repository
+
+Password for ‘user.name:
+
+Adding         TEMP
+
+#Committed revision 40.
+
+Note: You have to use your googlecode password, not your gmail password.  Go look at your project's 'source' page for instructions.
+
+Note: You will not be able to commit changes to the repository unless you are a project member (either owner or committer)
+
 Subversion cheat sheet: http://www.abbeyworkshop.com/howto/misc/svn01/
