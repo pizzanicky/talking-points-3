@@ -1,0 +1,20 @@
+#summary One-sentence summary of this page.
+
+= Adding a New Directory with the SVN Command Line  =
+  # svn checkout http://talking-points-3.googlecode.com/svn/trunk/  talking-points-3-read-only
+  # svn checkout https://talking-points-3.googlecode.com/svn/trunk/ talking-points-3 --username your.name
+  # Once you make your changes to the code, you need to issue a "svn add" command to add the respective files and/or directories. 
+*Note* : By default, the svn additions are recursive. 
+   At the terminal issue this command: 
+  _svn add TEMP/_
+  # Once you make your changes to the code, you need to issue a "svn add" command to add the respective files and/or directories. Note: By default, the svn additions are recursive.
+e.g.
+svn add TEMP/
+A         TEMP
+
+  #Committed revision 40.
+Note: You have to use your googlecode password, not your gmail password.  Go
+look at your project's 'source' page for instructions.
+
+  Note: You will not be able to commit changes to the repository unless you are a project member (either owner or committer)
+Subversion cheat sheet: http://www.abbeyworkshop.com/howto/misc/svn01/
