@@ -22,6 +22,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle; 
 import android.os.Environment;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -90,18 +91,12 @@ public class WifiScanner extends Activity {
 	               sb.append("\n"); 
 	               
 	             } 
-	             try {
-	  			   	File root = Environment.getExternalStorageDirectory();
-	  			    if (root.canWrite()){
-	  			        logFile = new BufferedWriter(new FileWriter(new File(root, logName)));	            
-	  			    }
-	  			    
-	  			    logFile.append(sb);
-	  			    logFile.close();
-	  			}
-	            catch (IOException e) {
-	  				e.printStackTrace();
-	  			}
+	                try {
+						logFile.append(sb);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	  			 
 			}
 		});
 	    
@@ -140,10 +135,24 @@ public class WifiScanner extends Activity {
 	 protected void onPause() { 
           unregisterReceiver(receiverWifi); 
           sensorManager.unregisterListener(sensorListener);
+          try {
+			logFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
           super.onPause(); 
      } 
 
      protected void onResume() { 
+    	 try {
+			   	File root = Environment.getExternalStorageDirectory();
+			    if (root.canWrite()){
+			        logFile = new BufferedWriter(new FileWriter(new File(root, logName)));	            
+			    }
+			}
+       catch (IOException e) {
+				e.printStackTrace();
+			}
           registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)); 
           List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ORIENTATION);
           sensorManager.registerListener(sensorListener, sensorList.get(0), SensorManager.SENSOR_DELAY_NORMAL);
