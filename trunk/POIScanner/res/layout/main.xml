@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+android:id="@+id/widget28"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:orientation="vertical"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<TableRow
+android:id="@+id/widget41"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+>
+<Spinner
+android:id="@+id/pointList"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+>
+</Spinner>
+</TableRow>
+<TableRow
+android:id="@+id/widget50"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+>
+<Button
+android:id="@+id/refreshButton"
+android:layout_width="110px"
+android:layout_height="wrap_content"
+android:text="Refresh"
+>
+</Button>
+<Button
+android:id="@+id/LogButton"
+android:layout_width="110px"
+android:layout_height="wrap_content"
+android:text="Log"
+>
+</Button>
+</TableRow>
+<TextView
+android:id="@+id/comapassText"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="TextView"
+>
+</TextView>
+<TextView
+android:id="@+id/timeText"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="TextView"
+>
+</TextView>
+<ListView android:id="@+id/new_devices"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+    />
+</LinearLayout>
