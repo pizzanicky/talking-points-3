@@ -62,7 +62,6 @@ public class WifiScanner extends Activity {
 	    //file name of scan log named same as present time
 	    time = new Time();
         time.setToNow();
-        logName = "wifi_scan_"+time.format2445()+".txt";
         timeText = (TextView) findViewById(R.id.timeText);
         timeText.setText("Time: "+time.format2445());
         
@@ -147,7 +146,10 @@ public class WifiScanner extends Activity {
     	 try {
 			   	File root = Environment.getExternalStorageDirectory();
 			    if (root.canWrite()){
-			        logFile = new BufferedWriter(new FileWriter(new File(root, logName)));	            
+			    	time = new Time();
+			        time.setToNow();
+			        logName = "wifi_scan_"+time.format2445()+".txt";
+			    	logFile = new BufferedWriter(new FileWriter(new File(root, logName)));	            
 			    }
 			}
        catch (IOException e) {
