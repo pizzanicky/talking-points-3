@@ -22,13 +22,13 @@ public class GestureUI extends Activity implements OnInitListener,
 	private GestureLibrary mLibrary;
 	private float xPoint, yPoint;
 	protected ArrayList<String> options;
-	private float start_y;
+	private float start_y; // Y position on screen where touch is first detected
 	private float end_y;
 	private float ratio;
 	private TextToSpeech mTts;
 	private boolean read_flag = false;
 	private float cur_y;
-	private int height;
+	private int height; // Screen height
 	private String message;
 	protected GestureDetector gestureScanner;
 	public static int selected;
@@ -84,7 +84,7 @@ public class GestureUI extends Activity implements OnInitListener,
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
-		// TODO Auto-generated method stub
+		
 		try {
 			// if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 			// return false;

@@ -1,3 +1,6 @@
+// GateWay.java
+// Defines the entry point for the TalkingPoints application, as well as 
+// the main menu screen.
 package talkingpoints.guoer;
 
 import java.util.ArrayList;
@@ -7,6 +10,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.GestureDetector.OnDoubleTapListener;
 
+
 public class GateWay extends GestureUI {
 	private ArrayList<String> MenuOptions;
 	public static Panel ui;
@@ -14,6 +18,8 @@ public class GateWay extends GestureUI {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// super.onCreate(savedInstanceState);
+		
+		// Set the menu text
 		MenuOptions = new ArrayList<String>();
 		MenuOptions.add("Tutorial");
 		MenuOptions.add("Start");
@@ -23,6 +29,8 @@ public class GateWay extends GestureUI {
 		// MenuOptions.add("option6");
 		super.onCreate(savedInstanceState, MenuOptions);
 		// this.options = MenuOptions;
+		
+		// Set up listener to launch the BTList activity on double-tap
 		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
 			public boolean onDoubleTap(MotionEvent e) {
 				switch (GestureUI.selected) {
