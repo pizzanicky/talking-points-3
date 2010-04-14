@@ -1,3 +1,5 @@
+// BTlist.java
+// Description: UI class that maintains connection to and queries BTScanner.
 package talkingpoints.guoer;
 
 import java.util.ArrayList;
@@ -31,14 +33,12 @@ public class BTlist extends GestureUI {
 	// String[] exsitingPOI = { "sdf", "002608D712B9", "1234567890" };
 	private Timer m_timerForSensorUpdate = null;
 	// debug rssi
-	private static final String TAG = "MAC = ";
-	public static final int UPDATEIDENTIFIER = 0;
-	public static final int CREATPANEL = 1;
+	
 	private RemoteService remoteService;
 	// private boolean started = false;
 	public static Panel ui;
 	private TextToSpeech mTts;
-	private List<String> cachList = null;
+	private List<String> cacheList = null;
 	// private int tempRSSI;
 	// private int currentIndex;
 	ListComparer NewItemfilter;
@@ -56,6 +56,10 @@ public class BTlist extends GestureUI {
 	private BTScanner btScanner;
 	public static boolean isRunning;
 	public Thread t;
+	// Constants
+	private static final String TAG = "MAC = ";
+	public static final int UPDATEIDENTIFIER = 0;
+	public static final int CREATEPANEL = 1;
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -86,7 +90,7 @@ public class BTlist extends GestureUI {
 		mNewDevicesArrayAdapter = new ArrayAdapter<String>(this,
 				R.layout.device_name);
 
-		cachList = new ArrayList<String>();
+		cacheList = new ArrayList<String>();
 		// Find and set up the ListView for newly discovered devices
 		// ListView newDevicesListView = (ListView)
 		// findViewById(R.id.new_devices);// ??
@@ -95,8 +99,10 @@ public class BTlist extends GestureUI {
 		// newDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
 		// Register for broadcasts when a device is discovered
-
+		
+		// Create TextToSpeech engine interface
 		mTts = new TextToSpeech(this, this);
+		
 		// doDiscovery();
 		// startSensorUpdate();
 		startService();
@@ -124,6 +130,7 @@ public class BTlist extends GestureUI {
 
 	}
 
+	// ServiceConnection-derived class for binding with BT scan service
 	class RemoteServiceConnection implements ServiceConnection {
 		public void onServiceConnected(ComponentName className,
 				IBinder boundService) {
@@ -139,6 +146,8 @@ public class BTlist extends GestureUI {
 		}
 	};
 
+	// startService()
+	// Description: Starts the Bluetooth scanning service.
 	private void startService() {
 		if (BTScanner.started) {
 			Toast.makeText(BTlist.this, "Service already started",
@@ -155,6 +164,8 @@ public class BTlist extends GestureUI {
 
 	}
 
+	// stopService()
+	// Description: Ends the Bluetooth scanning service.
 	private void stopService() {
 		t.stop();
 		try {
@@ -175,13 +186,14 @@ public class BTlist extends GestureUI {
 			Log.e(getClass().getSimpleName(), e.getMessage());
 		}
 	}
-
+	// bindService()
+	// Description: Binds the BT scanning service to the BTList activity.
 	private void bindService() {
 		if (BTScanner.conn == null) {
 			BTScanner.conn = new RemoteServiceConnection();
 			Log.d(getClass().getSimpleName(), "conn = " + BTScanner.conn);
 			Intent i = new Intent(BTlist.this, BTScanner.class);
-			// for some reason bindService doesn't work with child of
+			// for some reason bindService doesn't work with a child of
 			// TabActivity, so we use getApplicationContext().bindService here
 			getApplicationContext().bindService(i, BTScanner.conn,
 					Context.BIND_AUTO_CREATE);
@@ -193,6 +205,8 @@ public class BTlist extends GestureUI {
 		}
 	}
 
+	// releaseService()
+	// Description: Disconnects the BT scanning service from the BTList activity.
 	private void releaseService() {
 		try {
 			if (BTScanner.conn != null) {
@@ -204,8 +218,7 @@ public class BTlist extends GestureUI {
 				// bindService();
 				getApplicationContext().unbindService(BTScanner.conn);
 				BTScanner.conn = null;
-				Toast
-						.makeText(BTlist.this,
+				Toast.makeText(BTlist.this,
 								"Cannot unbind - service not bound",
 								Toast.LENGTH_SHORT).show();
 			}
@@ -214,6 +227,9 @@ public class BTlist extends GestureUI {
 		}
 	}
 
+	// invokeService()
+	// Description: Queries the Bluetooth device searching service for a list of 
+	// recently-discovered devices, then populates the UI with the results.
 	public void invokeService() {
 		if (BTScanner.conn == null) {
 			Toast.makeText(BTlist.this, "Cannot refresh - service not bound",
@@ -222,6 +238,7 @@ public class BTlist extends GestureUI {
 		} else {
 			try {
 				Log.w("timer", "in try");
+				// Query the BT search service for a list of POIs
 				List<String> tempList = remoteService.getBTList();
 				if (tempList.size() == 0)
 					Toast.makeText(BTlist.this,
@@ -231,12 +248,13 @@ public class BTlist extends GestureUI {
 					Toast.makeText(BTlist.this, tempList.size() + " POI found",
 							Toast.LENGTH_SHORT).show();
 					Log.w("timer", tempList.size() + " POI found");
-					if (cachList != null) {
-						NewItemfilter = new ListComparer(tempList, cachList);
+					if (cacheList != null) {
+						// Compare the newly-fetched BT device list with the cached list
+						NewItemfilter = new ListComparer(tempList, cacheList);
 						// the new found devices list
 						NofiticationList = NewItemfilter.getNewItems();
-						Log.w("timer", "cachlist size" + cachList.size());
-						// notify new devices found
+						Log.w("timer", "cachlist size" + cacheList.size());
+						// Notify of new devices found
 						if (NofiticationList != null
 								&& NofiticationList.size() > 0) {
 							for (int i = 0; i < NofiticationList.size(); i++) {
@@ -248,18 +266,18 @@ public class BTlist extends GestureUI {
 							}
 						}
 
-						cachList.clear();
+						cacheList.clear();
 					}
 
 					mNewDevicesArrayAdapter.clear();
-					// Here we get data from RemoteService.
+					// Copy the data retrieved by the service into the device list adapter
 					Log.w("timer", "list clear");
 					for (int i = 0; i < tempList.size(); i++) {
 						mNewDevicesArrayAdapter.add(tempList.get(i));
 						// cachList.add(tempList.get(i));
 
 					}
-					cachList = tempList;
+					cacheList = tempList;
 					Log.d(getClass().getSimpleName(), "invokeService()");
 
 				}
@@ -317,6 +335,7 @@ public class BTlist extends GestureUI {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		// Start scanning service
 		case R.id.menu_start:
 			if (!BTScanner.started) {
 				t = new Thread(new myThread());
@@ -325,12 +344,14 @@ public class BTlist extends GestureUI {
 				bindService();
 			}
 			break;
+		// Stop scanning service
 		case R.id.menu_stop:
 			t.interrupt();
 			releaseService();
 			stopService();
 			// t.destroy();
 			break;
+		// Refresh scan results
 		case R.id.menu_refresh:
 			invokeService();
 			break;
@@ -342,13 +363,14 @@ public class BTlist extends GestureUI {
 		return true;
 	}
 
+	// Handler to receive messages from BT scan auto-refresh thread
 	Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case BTlist.UPDATEIDENTIFIER:
 				invokeService();
 				break;
-			case BTlist.CREATPANEL:
+			case BTlist.CREATEPANEL:
 				if (options.size() == 0)
 					updateList();
 				break;
@@ -357,8 +379,11 @@ public class BTlist extends GestureUI {
 		}
 	};
 
+	// updateList()
+	// Description: Goes through the ArrayAdapter that contains new devices, and adds them
+	// to the options menu
 	public void updateList() {
-		// fetch name into options, fetch MAC address into MacAddress
+		// fetch name into options, fetch MAC address into MacAddr
 		for (int i = 0; i < mNewDevicesArrayAdapter.getCount() && i < 10; i++) {
 			String temp[] = mNewDevicesArrayAdapter.getItem(i).toString()
 					.split("\n");
@@ -395,7 +420,9 @@ public class BTlist extends GestureUI {
 		});
 		// this.setContentView(ui);
 	}
-
+	
+	// Thread class that periodically messages main thread to query the BT scan service, and
+	// to update the list of detected devices.
 	class myThread implements Runnable {
 
 		public void run() {
@@ -403,10 +430,13 @@ public class BTlist extends GestureUI {
 				Message message = new Message();
 				Message msg = new Message();
 				message.what = BTlist.UPDATEIDENTIFIER;
-				msg.what = BTlist.CREATPANEL;
+				msg.what = BTlist.CREATEPANEL;
+				// Message main thread to query the BT service
 				BTlist.this.myHandler.sendMessage(message);
 				try {
 					Thread.sleep(5000);
+					// If there were new devices found, message main thread to 
+					// update UI list
 					if (// !panel_created&&
 					BTlist.mNewDevicesArrayAdapter.getCount() > 0) {
 						BTlist.this.myHandler.sendMessage(msg);
