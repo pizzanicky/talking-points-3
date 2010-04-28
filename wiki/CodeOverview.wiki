@@ -2,10 +2,18 @@
 
 = Introduction =
 
-Add your content here.
-
+GestureUI.java
+We have a template called GestureUI, which is an activity the implements the Text2Speech, Gesture and Sensor Listeners. OnInitListener refers to Text2Speech, OnGestureListener refers to Gesture interaction, and SensorListener implements shaking motion. GestureUI is our customized activity which include gesture functionality. GateWay, which is the TalkingPoints home screen, provides 3 menu options ("detected location", "building directory", and "keyword search"). Currently, "detected location" is implemented and "building directory" and "keyword search" are placeholder entries.
 
 = Details =
+
+When we double-tap "detected location" we invoke scanning of bluetooth devices. The BTScanner.java class is responsible for continuously scanning for BT devices and BTlist is the class, which is a controller that handles the stopping and starting of the BTScanner service. WifiScanning is *not* currently implemented in this version.
+
+The output of "detected locations", whether there are POIs or not, use the same screen (activity) . The list is invisible, but the user can scroll down the list of POIs. Within GestureUI.java, the onScroll method handles the user traversing the list. Any screen will extend GestureUI, which enables a user to scroll through a list, whether POIs, menu items, etc. Double-tapping anywhere on screen will invoke selection of the current menu item list.
+
+
+
+
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
