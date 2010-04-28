@@ -11,6 +11,16 @@ When we double-tap "detected location" we invoke scanning of bluetooth devices. 
 
 The output of "detected locations", whether there are POIs or not, use the same screen (activity) . The list is invisible, but the user can scroll down the list of POIs. Within GestureUI.java, the onScroll method handles the user traversing the list. Any screen will extend GestureUI, which enables a user to scroll through a list, whether POIs, menu items, etc. Double-tapping anywhere on screen will invoke selection of the current menu item list.
 
+When BTlist starts, it invokes the background BT scanning service and returns the POI results. The background service will run constantly and the list update occurs every 5 seconds (Thread.sleep(5000)).
+
+The updateList() method within BTList fetches the POIs from the mNewDeviceArrayAdapter list structure. It should be noted here that when updating the POIs, updateList() will loop through all the POIs found and display only the closest points (x>-60), otherwise treat the point as noise. Master points or "decision" points were fixed points with no lat., long. information and saved/stored in the database. When a user is close in proximity (x>-60), the server will use the location of the master tag and assume this is the location of the user.
+
+
+
+
+
+
+
 
 
 
