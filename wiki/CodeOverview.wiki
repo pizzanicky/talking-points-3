@@ -23,19 +23,7 @@ The POIsAhead class will call AngleCalculator class to get all the angle informa
 
 Once you select a specific POI it will initiate an API call to the server, using either the TP ID or Mac Address. Accordingly, the server will return relevant information associated with this POI. The server call is handled in the POImenu class. The onCreate (class Constructor) will either use ID or Mac address and parse the xml returned by the server using the MsgParser method and save it into a MsgParser object (i.e. p), which makes respective getter methods available and other DOM (document object model) functionality. We use the information available in the MsgParser object (i.e. p) to dynamically construct the menu options, except for Type, Description and "What around" schema.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Once you double click on an option within a POI object, it will display the children objects associated with it (either content or another list, which should start another content activity).
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
