@@ -3,7 +3,7 @@
 = Introduction =
 
 GestureUI.java
-We have a template called GestureUI, which is an activity the implements the Text2Speech, Gesture and Sensor Listeners. OnInitListener refers to Text2Speech, OnGestureListener refers to Gesture interaction, and SensorListener implements shaking motion. GestureUI is our customized activity which include gesture functionality. GateWay, which is the TalkingPoints home screen, provides 3 menu options ("detected location", "building directory", and "keyword search"). Currently, "detected location" is implemented and "building directory" and "keyword search" are placeholder entries.
+We have a template called *GestureUI*, which is an activity the implements the Text2Speech, Gesture and Sensor Listeners. *OnInitListener* refers to Text2Speech, *OnGestureListener* refers to Gesture interaction, and *SensorListener* implements shaking motion. *GestureUI* is our customized activity which include gesture functionality. *GateWay*, which is the Talking Points home screen, provides 3 menu options ("detected location", "building directory", and "keyword search"). Currently, "detected location" is implemented and "building directory" and "keyword search" are placeholder entries.
 
 = Navigation Process =
 
