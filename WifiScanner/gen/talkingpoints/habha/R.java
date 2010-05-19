@@ -15,15 +15,16 @@ public final class R {
     }
     public static final class id {
         public static final int LogButton=0x7f050005;
-        public static final int comapassText=0x7f050006;
-        public static final int mainText=0x7f050009;
+        public static final int ScanStatus=0x7f050006;
+        public static final int comapassText=0x7f050007;
+        public static final int mainText=0x7f05000a;
         public static final int pointList=0x7f050002;
         public static final int refreshButton=0x7f050004;
-        public static final int timeText=0x7f050007;
+        public static final int timeText=0x7f050008;
         public static final int widget28=0x7f050000;
         public static final int widget41=0x7f050001;
         public static final int widget50=0x7f050003;
-        public static final int widget56=0x7f050008;
+        public static final int widget56=0x7f050009;
     }
     public static final class layout {
         public static final int main=0x7f030000;

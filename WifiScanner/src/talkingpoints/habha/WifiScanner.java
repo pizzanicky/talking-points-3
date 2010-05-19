@@ -7,7 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List; 
+
 import android.app.Activity; 
 import android.content.BroadcastReceiver; 
 import android.content.Context; 
@@ -35,6 +37,8 @@ public class WifiScanner extends Activity {
 	 WifiManager mainWifi; 
 	 WifiReceiver receiverWifi; 
 	 List<ScanResult> wifiList; 
+	 List<ScanResult> wifiListCopy;
+	 
 	 StringBuilder sb = new StringBuilder(); 
 	 BufferedWriter logFile;
 	 String logName;
@@ -43,12 +47,20 @@ public class WifiScanner extends Activity {
 	 TextView compassText;
 	 Time time;
 	 TextView timeText;
+	 TextView scanStatusText;
 	 float compassReading;
+	 HashMap<String, String> poiHash;
+	 boolean toScan = false;
+	 
 	 public void onCreate(Bundle savedInstanceState) { 
 	    super.onCreate(savedInstanceState); 
 	    setContentView(R.layout.main); 
 	    //Text showing the wifi scan results
 	    mainText = (TextView) findViewById(R.id.mainText);
+	    //Text showing scan status
+	    scanStatusText = (TextView) findViewById(R.id.ScanStatus);
+    	scanStatusText.setText("Beginning Scanning");  
+    	
 	    //Compass text
 	    compassText = (TextView)findViewById(R.id.comapassText);
 	    compassText.setText("Compass Reading: ");
@@ -65,15 +77,44 @@ public class WifiScanner extends Activity {
         timeText = (TextView) findViewById(R.id.timeText);
         timeText.setText("Time: "+time.format2445());
         
+        //HashMap to store POIs
+        poiHash = new HashMap<String, String>();  
+        poiHash.put("00:0c:e6:01:21:02", "42.27508602790031,-83.7416124343872");
+        poiHash.put("00:0c:e6:01:15:02", "42.27384760664871,-83.73916625976562");
+        poiHash.put("00:0c:e6:01:26:02", "42.27518129006556,-83.74152660369873");
+        poiHash.put("00:0c:e6:01:18:02", "42.274959011456005,-83.74152660369873");
+        poiHash.put("00:0c:e6:01:17:02", "42.27505427381324,-83.74150514602661");
+        poiHash.put("00:0c:e6:01:19:02", "42.27715000924152,-83.74118328094482");
+        poiHash.put("00:0c:e6:01:1b:02", "42.2766102052647,-83.7392520904541");
+        poiHash.put("00:0c:e6:01:1c:02", "42.2752765520868,-83.74139785766602");
+        poiHash.put("00:0c:e6:01:1d:02", "42.2751971670791,-83.74146223068237");
+        poiHash.put("00:0c:e6:01:1e:02", "42.27673721838112,-83.74114036560059");
+        poiHash.put("00:0c:e6:01:1f:02", "42.275292429076345,-83.74133348464966");
+        
         //add refresh button listener to start scan and update text view
 	    Button refreshButton = (Button)this.findViewById(R.id.refreshButton);
 	    refreshButton.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				mainWifi.startScan(); 
+				
+				mainWifi.startScan();
 				time.setToNow();
-				timeText.setText("Time: "+time.format2445());
-		        mainText.setText("Starting Scan");
+				timeText.setText("Time: " + time.format2445());
+				mainText.setText("Starting Scan");
+				
+				//toScan = !toScan;
+			    //if (toScan) {
+			    //  Add threat to enable continuous scanning	
+			    //	Thread thread = new Thread(Scanner);
+			    //	thread.start();
+			    //	scanStatusText.setText("Scanning");
+			    
+			    	
+			    	
+			    //}
+			    //else {
+			    //	scanStatusText.setText("End Scan");
+			    //}
 			}
 		});
 	    
@@ -87,7 +128,7 @@ public class WifiScanner extends Activity {
 	               sb.append(presentLoc+","+time.format2445()+","+compassReading+","); 
 	               ScanResult scan = wifiList.get(i);
 	               sb.append(scan.SSID+","+scan.BSSID+","+scan.level); 
-	               sb.append("\n"); 
+	               sb.append("\n");
 	               
 	             } 
 	                try {
@@ -159,18 +200,28 @@ public class WifiScanner extends Activity {
           List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ORIENTATION);
           sensorManager.registerListener(sensorListener, sensorList.get(0), SensorManager.SENSOR_DELAY_NORMAL);
           super.onResume(); 
+
      } 
       
      class WifiReceiver extends BroadcastReceiver { 
           public void onReceive(Context c, Intent intent) { 
              sb = new StringBuilder(); 
-             wifiList = mainWifi.getScanResults(); 
-             for(int i = 0; i < wifiList.size(); i++){ 
-               sb.append(new Integer(i+1).toString() + " -- "); 
+             wifiList = mainWifi.getScanResults();
+             
+             for(int i = 0; i < wifiList.size(); i++) { 
+            	 
                ScanResult scan = wifiList.get(i);
-               sb.append(scan.SSID+"\t"+scan.BSSID+"\t"+scan.level); 
-               sb.append("\n"); 
                
+           //    if (poiHash.get(scan.BSSID) != null && scan.level > -70) {
+               
+               if (poiHash.get(scan.BSSID) != null) {
+               
+            	   int dist = (int) Utilities.calcDistance(scan.level);
+            	   Log.d("Distance", "" + dist);
+               
+            	   sb.append(scan.SSID+"\t"+scan.BSSID+"\t"+scan.level+"\t"+dist+"\n");
+            	   sb.append(poiHash.get(scan.BSSID) +"\n\n");
+                }   
              } 
              mainText.setText(sb);                           
           } 
@@ -203,8 +254,22 @@ public class WifiScanner extends Activity {
  			// TODO Auto-generated method stub
  			
  		}
+ 		
  	};  
      
-        
+ 	private Runnable Scanner = new Runnable() {
+ 		public void run() {
+ 			while(toScan) {
+ 				
+ 				mainWifi.startScan(); 
+ 				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+ 			}
+ 		}
+ 	};
+       
 
 }
