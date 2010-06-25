@@ -42,7 +42,7 @@ public class POImenu extends GestureUI {
 //		oc.getAngle();
 		
 		pageName = new String();
-		pageName = getIntent().getStringExtra("POIname")+" detail information. Slide for information.";
+		pageName = getIntent().getStringExtra("POIname")+" detail information. Swipe down to hear options.";
 		super.onCreate(savedInstanceState);
 		this.options.add("Type");
 		this.options.add("Description");
@@ -70,28 +70,35 @@ public class POImenu extends GestureUI {
 		}
 		if (p.getCommentId().size() >= 1)
 			options.add("Comments");
-
+		
+		this.count1=0;
+		this.selected=0;
+	
 		
 		// TODO: get poi menu from xml parser
 
 		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
 			public boolean onDoubleTap(MotionEvent e) {
-				switch (GestureUI.selected) {
-				case 0:
-					content = p.getLocationType();
-					intent = new Intent(POImenu.this, Content.class);
-					intent.putExtra("content", content);
-					startActivity(intent);
-					break;
-				case 1:	
-					content = p.getDescription();
-					intent = new Intent(POImenu.this, Content.class);
-					intent.putExtra("content", content);
-					startActivity(intent);
-					break;
+				if(flag)
+				{
+					switch (GestureUI.selected) {
+					case 0:
+						content = p.getLocationType();
+						intent = new Intent(POImenu.this, Content.class);
+						intent.putExtra("content", content);
+						startActivity(intent);
+						break;
+					case 1:	
+						content = p.getDescription();
+						intent = new Intent(POImenu.this, Content.class);
+						intent.putExtra("content", content);
+						startActivity(intent);
+						break;
 			//	case 2:
 					// what's around
 			//		break;
+						}
+					flag=false;
 				}
 				for (int i = 2; i < (options.size()); i++) {
 					if (GestureUI.selected == i) {

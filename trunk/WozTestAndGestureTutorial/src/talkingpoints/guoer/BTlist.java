@@ -91,7 +91,7 @@ public class BTlist extends GestureUI {
 		
 		BTlist.foundMasterTag = false;
 	//	pageName = new String("Talking Points iz seeking Locations scroll down after the ring sound");
-		pageName = new String("List of Detected Locations. Scroll to hear locations.");
+		pageName = new String("List of Detected Locations.");
 		super.onCreate(savedInstanceState);
 		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		// setContentView(R.layout.main);
@@ -303,10 +303,19 @@ public class BTlist extends GestureUI {
 		
 		if(onceflag)
 		{ 
-			super.releaseSoundEffect();
- 			super.playSound(NOTIFICATION);
- 		//	this.mTts.speak("loaction detected  please scroll down to check",
-		//				TextToSpeech.QUEUE_FLUSH, null);       
+		
+ 			try
+ 			{
+ 				super.releaseSoundEffect();
+ 	 			super.playSound(NOTIFICATION);
+ 				Thread.sleep(2000);
+ 			}catch(InterruptedException e11){
+ 				
+				e11.printStackTrace();
+			}
+ 			
+ 			this.mTts.speak("Scroll to hear locations.",
+						TextToSpeech.QUEUE_FLUSH, null);       
  			onceflag=false;
 		}
 		
