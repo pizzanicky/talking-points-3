@@ -207,8 +207,10 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 	//				else if(count==5)
 	//					count=3;
 					else 
+					{	
+						if(count1!=0)
 						count1-=2;
-					
+					}
 					flag3=false;
 				}
 				
@@ -338,7 +340,10 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 				//				else if(count==5)
 				//					count=3;
 								else 
+								{
+									if(count1!=0)
 									count1-=2;
+								}
 								
 								flag3=false;
 							}

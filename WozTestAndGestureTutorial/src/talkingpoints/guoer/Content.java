@@ -98,8 +98,10 @@ public class Content extends GestureUI implements OnInitListener {
 				//				else if(count==5)
 				//					count=3;
 								else 
+								{
+									if(count1!=0)
 									count1-=2;
-								
+								}
 								flag3=false;
 							}
 							
@@ -472,8 +474,10 @@ public class Content extends GestureUI implements OnInitListener {
 	//				else if(count==5)
 	//					count=3;
 					else 
+					{
+						if(count1!=0)
 						count1-=2;
-					
+					}
 					flag3=false;
 				}
 				
