@@ -41,7 +41,7 @@ public class GateWay extends GestureUI {
 //		MenuOptions.add("Building Directory");
 //		MenuOptions.add("Keyword Search");
 //		MenuOptions.add("Flashlight");
-		pageName = new String("Talking Points Home. Slide down for menu options. Double tap to select.");
+		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
 		super.onCreate(savedInstanceState, MenuOptions);
 		 
 		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
@@ -136,8 +136,10 @@ public class GateWay extends GestureUI {
 				//				else if(count==5)
 				//					count=3;
 								else 
+								{
+									if(count1!=0)
 									count1-=2;
-								
+								}
 								flag3=false;
 							}
 							
