@@ -187,8 +187,10 @@ public class GestureUI extends Activity implements OnInitListener,
 			//				else if(count==5)
 			//					count=3;
 							else 
-								count1-=2;
-							
+							{
+								if(count1!=0)
+								  count1-=2;
+							}
 							flag3=false;
 						}
 						
@@ -953,8 +955,10 @@ public class GestureUI extends Activity implements OnInitListener,
 //				else if(count==5)
 //					count=3;
 				else 
-					count1-=2;
-				
+				{	
+					if(count1!=0)
+						count1-=2;
+				}
 				flag3=false;
 			}
 			
