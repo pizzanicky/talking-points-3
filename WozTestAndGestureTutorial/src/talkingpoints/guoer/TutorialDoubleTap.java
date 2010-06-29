@@ -170,7 +170,7 @@ public class TutorialDoubleTap extends GestureUI {
 			}catch(InterruptedException e31){
 				e31.printStackTrace();
 			}
-			Intent intent2 = new Intent(TutorialDoubleTap.this, GateWay.class);
+			Intent intent2 = new Intent(TutorialDoubleTap.this, BTlist.class);
 			startActivity(intent2);
 
  		}else if(e4.getX() - e3.getX() >SWIPE_MIN_DISTANCE

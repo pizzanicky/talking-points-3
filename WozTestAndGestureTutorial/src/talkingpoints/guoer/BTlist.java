@@ -53,7 +53,7 @@ public class BTlist extends GestureUI {
 	public static ArrayList<String[]> MasterTags;
 	// private ArrayAdapter<String> mPairedDevicesArrayAdapter;
 	public static ArrayAdapter<String> mNewDevicesArrayAdapter;
-	// private ArrayList<String> POIOptions;
+	// private ArrayList<String> POIPOINameWithDistance;
 	public static ArrayList<String> MacAddr;
 	public int m_periodUpdate = 3000;
 	// Background service scanner
@@ -69,8 +69,8 @@ public class BTlist extends GestureUI {
 	public static ArrayList<String> nearbyPOIs;
 	public static ArrayList<String> tpids;
 	
-	private String LAC1="haha";
-	private String LNG1="haha";
+	public static String LAC1="haha"; //changed from private to public static 
+	public static String LNG1="haha"; // ''
 	byCoordinateParser p2;
 	private int countPOIs=0;
 	
@@ -82,21 +82,54 @@ public class BTlist extends GestureUI {
 	
 	private boolean onceflag=false;
 	private ArrayList<String> newPOIs;
-	private ArrayList<String> onlyPOInames;
+	public static ArrayList<String> onlyPOInames;
+	public static ArrayList<String> POINameWithDistance;
+	private ArrayList<String> MenuOptions;
+	private String message1;
+	WozParser p; 
+	byCoordinateParser p1;
+	private static String message; 
 	
+	private static String GET_COORDINATE = "http://talkingpoints.dreamhosters.com/maps_test/point.xml";
+	private static String BY_COORDINATE = "http://app.talking-points.org/locations/by_coordinates/";
+
+	
+	   private static int count1=0;
+	   private static int countGesture=0; 
+	     private static boolean flag2=false;
+	    private static boolean flag3=false;
+	    private static boolean flag0=false; 
 	/** Called when the activity is first created. */
+//	public void onResume()
+//	{
+//		if(BTScanner.conn!=null)
+//			BTScanner.conn = null;
+//		
+//		startService();
+//		bindService();
+//	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		BTScanner bt = new BTScanner();
 		
+		
+		MenuOptions = new ArrayList<String>();
+		MenuOptions.add("Detect locations within 20 feet"); //Bert's calf ay
+		MenuOptions.add("Quick Tutorial");
+		MenuOptions.add("Flashlight");
+//		MenuPOINameWithDistance.add("Keyword Search");
+//		MenuPOINameWithDistance.add("Flashlight");
+		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
+		
 		BTlist.foundMasterTag = false;
-	//	pageName = new String("Talking Points iz seeking Locations scroll down after the ring sound");
-		pageName = new String("List of Detected Locations.");
-		super.onCreate(savedInstanceState);
-		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		// setContentView(R.layout.main);
+ 		 
+		
+		super.onCreate(savedInstanceState, MenuOptions);		
+
+		//super.onCreate(savedInstanceState);
+ 		
 		setResult(Activity.RESULT_CANCELED);
-		// POIOptions = new ArrayList<String>();
+		// POIPOINameWithDistance = new ArrayList<String>();
 		MacAddr = new ArrayList<String>();
 		nearbyPOIs = new ArrayList<String>();
 		
@@ -129,6 +162,7 @@ public class BTlist extends GestureUI {
 		
 		scanning_home = this;
 		
+		POINameWithDistance = new ArrayList<String>();
 		recentlyDetectedPOIs = new ArrayList<String>();
 		oldDetectedPOIs = new ArrayList<String>();
 		newlyDetectedPOIS = new ArrayList<String>();
@@ -137,8 +171,111 @@ public class BTlist extends GestureUI {
 
 		newPOIs = new ArrayList<String>();
 		onlyPOInames = new ArrayList<String>();
+		
+
+		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
+			public boolean onDoubleTap(MotionEvent e) {
+				if(flag0)
+				{
+					switch (GestureUI.selected) {
+					case 0:
+						Intent intent = new Intent(BTlist.this, DetectedLocations.class);
+						 
+	//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
+	//					intent.putStringArrayListExtra("POIName",onlyPOInames);
+	//					intent.putStringArrayListExtra("tpids", tpids);
+	//					intent.putStringArrayListExtra("MacAddr", MacAddr);
+						
+						startActivity(intent);
+						break;
+					case 1:
+						Intent intent1 = new Intent(BTlist.this, Tutorial.class);
+						startActivity(intent1);
+						break;
+					case 2: //flashlight 
+						{
+	
+						   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+									.getlongitude(),LAC1,
+									LNG1);
+	
+						   		oc.getAngle();
+	
+						   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
+						   		startActivity(intent2); 
+		 
+	
+				 
+						   } 
+						break;
+					}
+				}
+				return true;
+			}
+
+			public boolean onDoubleTapEvent(MotionEvent e) {
+				return false;
+			}
+
+			public boolean onSingleTapConfirmed(MotionEvent e) {
+		
+				 
+				countGesture++;
+				
+				if(countGesture==2)
+				{	
+//					Toast.makeText(getApplicationContext(),"countG: "+countGesture,Toast.LENGTH_SHORT).show();
+					countGesture=0;
+					switch (GestureUI.selected) {
+					case 0:
+						Intent intent = new Intent(BTlist.this, DetectedLocations.class);
+						 
+	//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
+	//					intent.putStringArrayListExtra("POIName",onlyPOInames);
+	//					intent.putStringArrayListExtra("tpids", tpids);
+	//					intent.putStringArrayListExtra("MacAddr", MacAddr);
+						
+						startActivity(intent);
+						break;
+					case 1:
+						Intent intent1 = new Intent(BTlist.this, Tutorial.class);
+						startActivity(intent1);
+						break;
+					case 2: //flashlight 
+						{
+	
+						   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+									.getlongitude(),LAC1,
+									LNG1);
+	
+						   		oc.getAngle();
+	
+						   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
+						   		startActivity(intent2); 
+		 
+	
+				 
+						   } 
+						break;
+					}
+				}
+				return false;
+			}
+
+		});
+
 	}
 
+//	protected void onResume(){
+//		
+//		flag0=false; 
+//		
+//		if(BTScanner.conn!=null)
+//			BTScanner.conn = null;
+//		
+//		startService();
+//		bindService();
+//	}
 	protected void onDestroy() {
 		super.onDestroy();
 		releaseService();
@@ -225,7 +362,8 @@ public class BTlist extends GestureUI {
 		} else {
 			Toast.makeText(BTlist.this, "Cannot bind - service already bound",
 					Toast.LENGTH_SHORT).show();
-		}
+			
+		}	
 	}
 
 	private void releaseService() {
@@ -301,35 +439,35 @@ public class BTlist extends GestureUI {
 	}
 	public void callAngleCalculator2() throws InterruptedException{
 		
-		if(onceflag)
-		{ 
-		
- 			try
- 			{
- 				super.releaseSoundEffect();
- 	 			super.playSound(NOTIFICATION);
- 				Thread.sleep(2000);
- 			}catch(InterruptedException e11){
- 				
-				e11.printStackTrace();
-			}
- 			
- 			this.mTts.speak("Scroll to hear locations.",
-						TextToSpeech.QUEUE_FLUSH, null);       
- 			onceflag=false;
-		}
-		
+//		if(onceflag)
+//		{ 
+//		
+// 			try
+// 			{
+// 				super.releaseSoundEffect();
+// 	 			super.playSound(NOTIFICATION);
+// 				Thread.sleep(2000);
+// 			}catch(InterruptedException e11){
+// 				
+//				e11.printStackTrace();
+//			}
+// 			
+// 			this.mTts.speak("Scroll to hear locations.",
+//						TextToSpeech.QUEUE_FLUSH, null);       
+// 			onceflag=false;
+//		}
+//		
  		NumberFormat formatter = new DecimalFormat("#0");
 	 
- 		this.options.clear();
+ 		this.POINameWithDistance.clear();
  		this.tpids.clear();
  		this.MacAddr.clear();
  		this.onlyPOInames.clear(); //only returns POInames not including distance 
  		
- 		this.options.add(0,"Finding locations in a chosen direction");
- 		this.tpids.add(0,"Finding locations in a chosen direction");
- 		this.MacAddr.add(0,"Finding locations in a chosen direction");
- 		this.onlyPOInames.add(0,"Finding locations in a chosen direction");
+// 		this.POINameWithDistance.add(0,"Finding locations in a chosen direction");
+// 		this.tpids.add(0,"Finding locations in a chosen direction");
+// 		this.MacAddr.add(0,"Finding locations in a chosen direction");
+// 		this.onlyPOInames.add(0,"Finding locations in a chosen direction");
  		                                                                 
  		for(int a=0;a<byCoordinateParser.getDistance().size();a++)
  		{	
@@ -339,17 +477,19 @@ public class BTlist extends GestureUI {
  			if((byCoordinateParser.floor.get(a)==-1)&&((byCoordinateParser.distance.get(a)*5280)<20.00))
  			{
 		 
-					this.options.add(byCoordinateParser.name.get(a)+" within "+formatter.format(byCoordinateParser.distance.get(a)*5280)+"feet");
+					this.POINameWithDistance.add(byCoordinateParser.name.get(a)+" within "+formatter.format(byCoordinateParser.distance.get(a)*5280)+"feet");
 					this.MacAddr.add(byCoordinateParser.mac.get(a));
 					this.tpids.add(byCoordinateParser.tpid.get(a));
-					nearbyPOIs = this.options;
+					nearbyPOIs = this.POINameWithDistance;
 					this.onlyPOInames.add(byCoordinateParser.name.get(a));
 
  			}
  		
  		}
+ 		
+ 	
    
-// 		this.options.add("location search using the compass");
+// 		this.POINameWithDistance.add("location search using the compass");
 // 		this.tpids.add("location search using the compass");
 // 		this.MacAddr.add("location search using the compass");
 // 		this.onlyPOInames.add("location search using the compass");
@@ -401,123 +541,97 @@ public class BTlist extends GestureUI {
  		//	this.recentlyDetectedPOIs = this.onlyPOInames;
 	 
 		//Enalbe them when the user click the double .. 
-		
- 		 super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
- 			 	@Override
-				public boolean onDoubleTap(MotionEvent e) {
-				
-				 
- 			 	 	if(options.size()!=0){
-					//compass function 
-					   if (GestureUI.selected == 0) {
-
-					   		AngleCalculator oc = new AngleCalculator(p2.getLatitude(), p2
-								.getlongitude(),LAC1,
-								LNG1);
-
-					   		oc.getAngle();
-
-					   		Intent intent = new Intent(BTlist.this, POIsAhead.class);
-					   		startActivity(intent); 
-	 
-
-			 
-					   } 
-					   else { 
-//						   if(options.size()==1)
-//						   {
-//							   mTts
-//								.speak(
-//										"Nothing interesting detected yet",
-//										TextToSpeech.QUEUE_FLUSH, null);
-//						   }
-//						   else if(options.size()>1){
- 						   	if(options.size()>1){
-								
-							   Intent intent = new Intent(BTlist.this, POImenu.class);
-						   //Insert the parser function 
-							   MacReader r = new MacReader(BTlist.MacAddr
-								.get(GestureUI.selected)); 
-							   intent.putExtra("MAC", r.getMacString());
-							   intent.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
-							   intent.putExtra("POIname", onlyPOInames
-								.get(GestureUI.selected)); 
-				 
-							   startActivity(intent);
-							   
-						   	}else 
-						   	{
-						   		sayPageName("There are no POIs around you");
-						   	}
-//						   }
-					    }
- 			 	 	}
-				 
-					return true;
-				}
-				
-				
-
-				@Override
-				public boolean onDoubleTapEvent(MotionEvent e) {
-					// TODO Auto-generated method stub
-					return false;
-				}
-
-				@Override
-				public boolean onSingleTapConfirmed(MotionEvent e) {
-					// TODO Auto-generated method stub
-					return false;
-				}
-			});
- /*	 	if (this.options.size() == 0)
+//		
+// 		 super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
+// 			 	@Override
+//				public boolean onDoubleTap(MotionEvent e) {
+//				
+//				 
+// 			 	 	if(POINameWithDistance.size()!=0){
+//					//compass function 
+//					   if (GestureUI.selected == 0) {
+//
+//					   		AngleCalculator oc = new AngleCalculator(p2.getLatitude(), p2
+//								.getlongitude(),LAC1,
+//								LNG1);
+//
+//					   		oc.getAngle();
+//
+//					   		Intent intent = new Intent(BTlist.this, POIsAhead.class);
+//					   		startActivity(intent); 
+//	 
+//
+//			 
+//					   } 
+//					   else { 
+////						   if(POINameWithDistance.size()==1)
+////						   {
+////							   mTts
+////								.speak(
+////										"Nothing interesting detected yet",
+////										TextToSpeech.QUEUE_FLUSH, null);
+////						   }
+////						   else if(POINameWithDistance.size()>1){
+// 						   	if(POINameWithDistance.size()>1){
+//								
+//							   Intent intent = new Intent(BTlist.this, POImenu.class);
+//						   //Insert the parser function 
+//							   MacReader r = new MacReader(BTlist.MacAddr
+//								.get(GestureUI.selected)); 
+//							   intent.putExtra("MAC", r.getMacString());
+//							   intent.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
+//							   intent.putExtra("POIname", onlyPOInames
+//								.get(GestureUI.selected)); 
+//				 
+//							   startActivity(intent);
+//							   
+//						   	}else 
+//						   	{
+//						   		sayPageName("There are no POIs around you");
+//						   	}
+////						   }
+//					    }
+// 			 	 	}
+//				 
+//					return true;
+//				}
+//				
+//				
+//
+//				@Override
+//				public boolean onDoubleTapEvent(MotionEvent e) {
+//					// TODO Auto-generated method stub
+//					return false;
+//				}
+//
+//				@Override
+//				public boolean onSingleTapConfirmed(MotionEvent e) {
+//					// TODO Auto-generated method stub
+//					return false;
+//				}
+//			});
+ /*	 	if (this.POINameWithDistance.size() == 0)
 			this.mTts
 					.speak(
 							"Nothing interesting detected yet",
 							TextToSpeech.QUEUE_FLUSH, null);  */
  		 
-	/*	else if (this.options.size() == 1)
-			this.mTts.speak("There is" + this.options.size()
+	/*	else if (this.POINameWithDistance.size() == 1)
+			this.mTts.speak("There is" + this.POINameWithDistance.size()
 					+ "location ahead of you, scroll to check it out",
 					TextToSpeech.QUEUE_FLUSH, null);
 		else
-			this.mTts.speak("There are" + this.options.size()
+			this.mTts.speak("There are" + this.POINameWithDistance.size()
 					+ "locations ahead of you, scroll to check them out",
 					TextToSpeech.QUEUE_FLUSH, null); */
 	}
 	
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreatePOINameWithDistanceMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.layout.menu, menu);
 		return true;
 	}
 
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_start:
-			if (!BTScanner.started) {
-				t = new Thread(new myThread());
-				t.start();
-				startService();
-				bindService();
-			}
-			break;
-		case R.id.menu_stop:
-			t.interrupt();
-			releaseService();
-			stopService();
-			// t.destroy();
-			break;
-		case R.id.menu_refresh:
-			invokeService();
-			break;
-		case R.id.menu_clear:
-		//	doClear();
-			break;
-
-		}
-		return true;
-	}
 
 	Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -526,18 +640,22 @@ public class BTlist extends GestureUI {
 				invokeService();
 				break;
 			case BTlist.CREATPANEL:
-				if (options.size() == 0)
+				if (POINameWithDistance.size() == 0)
 					// updateList();
+					break; 
+				else if(POINameWithDistance.size()!=0)
+				{	
+					flag0=false;
 					break;
+				}
 			}
 			// super.handleMessage(msg);
 		}
 	};
 
-	public void updateList() {
-
- 	 
-
+	public void updateList()
+	{
+		
 	}
 
 	
@@ -567,11 +685,280 @@ public class BTlist extends GestureUI {
 		}
 	 
 	} 
-
+	
+	public static ArrayList<String> getPOInames()
+	{
+		return onlyPOInames;
+	 
+	}
+	public static ArrayList<String> getPOInamesWithDistance()
+	{
+		return POINameWithDistance;
+	}
+	public static ArrayList<String> getTpids()
+	{
+		return tpids;
+	}
+	public static ArrayList<String> getMacAddr()
+	{
+		return MacAddr;
+	}
 	// @Override
 	// protected void onRestart() {
 	// super.onRestart();
 	// pageInfo.setText(pageName);
 	// sayPageName(pageName);
 	// }
+	
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		
+//flag = true;
+		
+		// TODO Auto-generated method stub
+		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+
+ 		}else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+			this.sayPageName();
+			
+		}else if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+		//	this.sayPageName("up");
+			 if(flag)
+			 {
+				 flag2=true;
+					
+				 if(options.size()!=0){
+						if(flag3)
+						{
+							if(count1==1)
+								count1=options.size()-1;
+			//				else if(count==5)
+			//					count=3;
+							else 
+							{
+								if(count1!=0)
+								  count1-=2;
+							}
+							flag3=false;
+						}
+						
+						if(count1!=0)
+						{
+							if(count1==options.size()){
+						
+							
+								count1=options.size()-2;
+							}	
+						}
+			
+						
+						if(count1==0){
+						//	this.sayPageName("0");
+							
+							message = options.get(count1);
+							
+			
+							selected = count1;
+							text.setText(message);
+			
+							this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+								null);
+						    
+							
+							releaseSoundEffect();
+							playSound(ITEM_BY_ITEM);
+						
+					    //	 viewA.setText("UP"+count1);
+							count1=options.size()-1;
+							
+						}
+						else if(count1<options.size())
+							{
+							
+							
+							message = options.get(count1);
+						
+			
+							selected = count1;
+							text.setText(message);
+			
+							this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+								null);
+						
+							releaseSoundEffect();
+							playSound(ITEM_BY_ITEM);
+						
+			
+							if(count1==(options.size()-1)) 
+							{
+								
+								if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+								{
+									try {
+										
+										Thread.sleep(1400);
+										releaseSoundEffect();
+										playSound(EDGE);
+										
+									}catch(InterruptedException e11){
+										e11.printStackTrace();
+									}
+						 
+								}
+								else if(options.get(count1).length()>16)
+								{
+									try {
+										
+										Thread.sleep(2100);
+										releaseSoundEffect();
+										playSound(EDGE);
+										
+									}catch(InterruptedException e12){
+										e12.printStackTrace();
+									}
+						 
+								}else 
+								{
+									try {
+										
+										Thread.sleep(700);
+										releaseSoundEffect();
+										playSound(EDGE);
+										
+									}catch(InterruptedException e13){
+										e13.printStackTrace();
+									}
+								}
+ 
+							} 
+						//	 viewA.setText("Up"+count1);
+					   
+							count1--;
+			
+						}
+					} 
+					
+				 
+ 
+				 flag = false;
+			 }
+			
+	    //  viewA.setText("-" + "Fling up?" + "-");
+
+		}else if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+			 if(flag)
+			 {
+				 
+				 
+				 flag3=true; 
+				 if(options.size()!=0){
+					 
+						if(flag2)
+						{
+							if(count1==options.size()-1)
+								count1=1;
+							else 
+								count1+=2;
+							
+							flag2=false; 
+						}
+						
+						if(count1==options.size()){
+							
+							count1=0;
+							
+						}
+						
+						if(count1<options.size()) //count<.size() 
+						{
+							
+							// viewA.setText("Down"+count1);
+			     			message = options.get(count1);
+			 			
+			 
+			 				selected = count1;
+			  				text.setText(message);
+			 
+			 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+			 					null);
+			 			
+			 				releaseSoundEffect();
+			 				playSound(ITEM_BY_ITEM);
+			 			
+ 			 
+							if(count1==(options.size()-1)) 
+							{
+								
+								if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+								{
+									try {
+										
+										Thread.sleep(1400);
+										releaseSoundEffect();
+										playSound(EDGE);
+										
+									}catch(InterruptedException e21){
+										e21.printStackTrace();
+									}
+						 
+								}
+								else if(options.get(count1).length()>16)
+								{
+									try {
+										
+										Thread.sleep(2100);
+										releaseSoundEffect();
+										playSound(EDGE);
+										
+									}catch(InterruptedException e22){
+										e22.printStackTrace();
+									}
+						 
+								}else 
+								{
+									try {
+										
+										Thread.sleep(700);
+										releaseSoundEffect();
+										playSound(EDGE);
+										
+									}catch(InterruptedException e23){
+										e23.printStackTrace();
+									}
+								}
+ 
+							} 
+					    
+							count1++;
+	
+						}
+				 }  
+ 
+				 flag = false;
+			 }
+			 
+ 
+ 
+			
+			}
+
+		
+		return false;
+	}
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		flag = true; 
+		flag0 = true; 
+		
+		return true;
+
+	}
+	
+   
 }

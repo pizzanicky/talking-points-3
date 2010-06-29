@@ -87,7 +87,7 @@ public class TutorialSwipeRight extends GestureUI {
 			}catch(InterruptedException e31){
 				e31.printStackTrace();
 			}
-			Intent intent2 = new Intent(TutorialSwipeRight.this, GateWay.class);
+			Intent intent2 = new Intent(TutorialSwipeRight.this, BTlist.class);
 			startActivity(intent2);
 
 			//finish();

@@ -28,11 +28,12 @@ public class POImenu extends GestureUI {
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	
 	
-    private static boolean flag = false; 
-    private static boolean flag2 = false; 
-    private static boolean flag3 = false; 
+    private static boolean flag = false;  //scroll with fling 
+    private static boolean flag2 = false;  //keydown and keyup 
+    private static boolean flag3 = false;  //keydown and keyup 
 
     private static int count1=0;
+	private static int countGesture=0; 
 	
 	public void onCreate(Bundle savedInstanceState) {
 	 	
@@ -79,8 +80,8 @@ public class POImenu extends GestureUI {
 
 		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
 			public boolean onDoubleTap(MotionEvent e) {
-				if(flag)
-				{
+//				if(flag)
+//				{
 					switch (GestureUI.selected) {
 					case 0:
 						content = p.getLocationType();
@@ -98,8 +99,8 @@ public class POImenu extends GestureUI {
 					// what's around
 			//		break;
 						}
-					flag=false;
-				}
+//					flag=false;
+//				}
 				for (int i = 2; i < (options.size()); i++) {
 					if (GestureUI.selected == i) {
 						intent = new Intent(POImenu.this, Content.class);
@@ -135,6 +136,55 @@ public class POImenu extends GestureUI {
 			}
 
 			public boolean onSingleTapConfirmed(MotionEvent e) {
+				countGesture++;
+				
+				if(countGesture==2)
+				{	countGesture=0;
+					
+					switch (GestureUI.selected) {
+					case 0:
+						content = p.getLocationType();
+						intent = new Intent(POImenu.this, Content.class);
+						intent.putExtra("content", content);
+						startActivity(intent);
+						break;
+					case 1:	
+						content = p.getDescription();
+						intent = new Intent(POImenu.this, Content.class);
+						intent.putExtra("content", content);
+						startActivity(intent);
+						break;
+			//	case 2:
+					// what's around
+			//		break;
+						}
+	//				flag=false;
+	//			}
+				for (int i = 2; i < (options.size()); i++) {
+					if (GestureUI.selected == i) {
+						intent = new Intent(POImenu.this, Content.class);
+						intent.putExtra("content", p.getSectionTextValue().get(
+								i - 2)); //it was i-2
+						// intent.putExtra("MAC", MAC);
+						startActivity(intent);
+					}
+				}
+				if (p.getCommentId().size() >= 1
+						&& GestureUI.selected == (options.size() - 1)) {
+					// get comments
+					ArrayList<String> CommentsTitles = new ArrayList<String>();
+					for (int i = 0; i < p.getCommentId().size(); i++) {
+						CommentsTitles.add(p.getCommentTitle().get(i));
+					}
+					Intent intent = new Intent(POImenu.this, Comments.class);
+					intent.putStringArrayListExtra("CommentsTitles",
+							CommentsTitles);
+					intent.putStringArrayListExtra("Comments", p
+							.getCommentText());
+					startActivity(intent);
+					}
+					
+				}
 				return false;
 			}
 
@@ -285,8 +335,7 @@ public class POImenu extends GestureUI {
 								count1--;
 				
 							}
-						}
-						
+						} 
 					 
 	 
 					 flag = false;
@@ -296,7 +345,7 @@ public class POImenu extends GestureUI {
 
 			}else if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
 					&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-				 if(flag)
+				 if(flag) 
 				 {
 					 
 					 flag3=true; 
@@ -380,7 +429,7 @@ public class POImenu extends GestureUI {
 								count1++;
 		
 							}
-					 }
+					 } 
 	 
 					 flag = false;
 				 }
@@ -404,47 +453,23 @@ public class POImenu extends GestureUI {
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public boolean onKeyDown(int keyCode_1, KeyEvent event) {
 		// if we get any key, clear the Splash Screen
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		if (keyCode_1 == KeyEvent.KEYCODE_DPAD_CENTER) {
+			AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+					.getlongitude(),BTlist.LAC1,
+					BTlist.LNG1);
 
-			this.mTts.speak("Talking Points Home", TextToSpeech.QUEUE_FLUSH,
-					null);
+		   		oc.getAngle();
+		   	
+ 			Intent intent0 = new Intent(POImenu.this,POIsAhead.class);
+// 			intent0.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-			Intent intent = new Intent(POImenu.this, GateWay.class);
-			startActivity(intent);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_HOME) {
-			super.onPause();
-			try {
-				wait();
-			} catch (InterruptedException e31) {
-				// TODO Auto-generated catch block
-				e31.printStackTrace();
-			}
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e32) {
-				e32.printStackTrace();
-			}
-
-			Toast
-					.makeText(getApplicationContext(), "home!",
-							Toast.LENGTH_SHORT).show();
-
-			this.mTts.speak("home", TextToSpeech.QUEUE_FLUSH, null);
-
-			onDestroy();
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-
-			this.mTts.speak("Keyword Search", TextToSpeech.QUEUE_FLUSH, null);
-
-			// Intent intent = new Intent(GestureUI.this, Search.class);
-			// startActivity(intent);
-
-			return true;
-		}else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+			POImenu.this.startActivity(intent0);
+//			POImenu.this.finish();
+			
+		}else if(keyCode_1 == KeyEvent.KEYCODE_VOLUME_DOWN){
  
 			flag3=true; 
 			
@@ -528,9 +553,9 @@ public class POImenu extends GestureUI {
 					count1++;
 	
 				}
-			}
+			} 
  
-		}else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+		}else if(keyCode_1 == KeyEvent.KEYCODE_VOLUME_UP){
 		
 			flag2=true;
 			
@@ -644,7 +669,7 @@ public class POImenu extends GestureUI {
 					count1--;
 	
 				}
-			}
+			} 
 		}
 
 		return true;// return super.onKeyDown(keyCode, event);

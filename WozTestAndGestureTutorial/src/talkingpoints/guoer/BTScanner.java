@@ -27,7 +27,7 @@ public class BTScanner extends Service {
 
 	private NotificationManager mNM;
 	// private Timer timer = new Timer();
-	private long refreshRate = 5000L; //12000L
+	private long refreshRate = 12000L; //12000L
 	//private BluetoothAdapter mBtAdapter;
 	private Handler serviceHandler;
 	public static boolean started = false;
@@ -139,7 +139,7 @@ public class BTScanner extends Service {
 
 	          
 	    }
- 
+	  
 
 	/**
 	 * Start device discover with the BluetoothAdapter

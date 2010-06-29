@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.view.GestureDetector.OnGestureListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 public class GestureUI extends Activity implements OnInitListener,
@@ -73,6 +74,8 @@ public class GestureUI extends Activity implements OnInitListener,
     private static int count1=0;
     private static boolean flag2 = false; 
     private static boolean flag3 = false; 
+    public Context context;
+  
 
 	public void onCreate(Bundle savedInstanceState, ArrayList<String> o) {
 		super.onCreate(savedInstanceState);
@@ -101,7 +104,15 @@ public class GestureUI extends Activity implements OnInitListener,
 					SensorManager.SENSOR_ACCELEROMETER);
 		}
 	
-        
+//		  AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+//
+////		    am.isSpeakerphoneOn(); 
+////		    am.isWiredHeadsetOn();
+//		   if(am.isWiredHeadsetOn())
+//		   {
+//			  am.setSpeakerphoneOn(true);
+//		   }
+
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -129,8 +140,15 @@ public class GestureUI extends Activity implements OnInitListener,
 			sensorMgr.unregisterListener(this,
 					SensorManager.SENSOR_ACCELEROMETER);
 		}
-      
-		
+//		  AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+//
+////		    am.isSpeakerphoneOn(); 
+////		    am.isWiredHeadsetOn();
+//		   if(am.isWiredHeadsetOn())
+//		   {
+//			  am.setSpeakerphoneOn(true);
+//		   }
+//		
 	}
 
 	public void sayPageName() {
@@ -288,7 +306,7 @@ public class GestureUI extends Activity implements OnInitListener,
 							count1--;
 			
 						}
-					}
+					} 
 					
 				 
  
@@ -301,6 +319,7 @@ public class GestureUI extends Activity implements OnInitListener,
 				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 			 if(flag)
 			 {
+				 
 				 
 				 flag3=true; 
 				 if(options.size()!=0){
@@ -385,7 +404,7 @@ public class GestureUI extends Activity implements OnInitListener,
 							count1++;
 	
 						}
-				 }
+				 }  
  
 				 flag = false;
 			 }
@@ -410,7 +429,7 @@ public class GestureUI extends Activity implements OnInitListener,
 //			else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE
 //					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 //				this.sayPageName();
-//			}
+//			}s
 //		} catch (Exception e) {
 //			// nothing
 //			Toast.makeText(this,"fling error!!",Toast.LENGTH_SHORT).show();
@@ -704,7 +723,7 @@ public class GestureUI extends Activity implements OnInitListener,
 						count += 1;
 					} else if (count == 3) {
 						count = 0;
-						Intent intent = new Intent(GestureUI.this, BTlist.class);
+						Intent intent = new Intent(GestureUI.this, DetectedLocations.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 					}
@@ -758,91 +777,122 @@ public class GestureUI extends Activity implements OnInitListener,
 //			// startActivity(intent);
 //
 //			return true;
-//		}else 
-		if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+//		}else
+//		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK)
+//		{
+//			Toast.makeText(this,"headset hook!!!", Toast.LENGTH_SHORT).show();
+//			
+//		}
+//		if(keyCode == KeyEvent.KEYCODE_HOME)
+//		{
+//			Toast.makeText(this,"HOME!", Toast.LENGTH_SHORT).show();
+//		}
+//		if(keyCode == KeyEvent.KEYCODE_H)
+//		{
+//			Toast.makeText(this,"HOME!", Toast.LENGTH_SHORT).show();
+//		}
+		
+		if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+			AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+					.getlongitude(),BTlist.LAC1,
+					BTlist.LNG1);
+
+		   		oc.getAngle();
  
-			flag3=true; 
+			Intent intent0 = new Intent(GestureUI.this,POIsAhead.class);
+			intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+			startActivity(intent0);
+		}
+		else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+		
 			
-			if(flag2)
-			{
-				if(count1==options.size()-1)
-					count1=1;
-				else 
-					count1+=2;
-				
-				flag2=false; 
-			}
+				flag3=true; 
 			
-			if(count1==options.size()){
-				
-				count1=0;
-				
-			}
 			
-			if(count1<options.size()) //count<.size() 
-			{
+			if(options.size()!=0){
 				
-				// viewA.setText("Down"+count1);
-     			message = options.get(count1);
- 			
- 
- 				selected = count1;
-  				text.setText(message);
- 
- 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
- 					null);
- 			
- 				releaseSoundEffect();
- 				playSound(ITEM_BY_ITEM);
- 			
- 				read_flag = true;
- 
- 				if(count1==(options.size()-1)) 
+				if(flag2)
+				{
+					if(count1==options.size()-1)
+						count1=1;
+					else 
+						count1+=2;
+					
+					flag2=false; 
+				}
+				
+				if(count1==options.size()){
+					
+					count1=0;
+					
+				}
+				
+				if(count1<options.size()) //count<.size() 
 				{
 					
-					if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+					// viewA.setText("Down"+count1);
+	     			message = options.get(count1);
+	 			
+	 
+	 				selected = count1;
+	  				text.setText(message);
+	 
+	 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+	 					null);
+	 			
+	 				releaseSoundEffect();
+	 				playSound(ITEM_BY_ITEM);
+	 			
+	 				read_flag = true;
+	 
+	 				if(count1==(options.size()-1)) 
 					{
-						try {
-							
-							Thread.sleep(1400);
-							releaseSoundEffect();
-							playSound(EDGE);
-							
-						}catch(InterruptedException e51){
-							e51.printStackTrace();
+						
+						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+						{
+							try {
+								
+								Thread.sleep(1400);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e51){
+								e51.printStackTrace();
+							}
+				 
 						}
-			 
-					}
-					else if(options.get(count1).length()>16)
-					{
-						try {
-							
-							Thread.sleep(2100);
-							releaseSoundEffect();
-							playSound(EDGE);
-							
-						}catch(InterruptedException e52){
-							e52.printStackTrace();
+						else if(options.get(count1).length()>16)
+						{
+							try {
+								
+								Thread.sleep(2100);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e52){
+								e52.printStackTrace();
+							}
+				 
+						}else 
+						{
+							try {
+								
+								Thread.sleep(700);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e53){
+								e53.printStackTrace();
+							}
 						}
-			 
-					}else 
-					{
-						try {
-							
-							Thread.sleep(700);
-							releaseSoundEffect();
-							playSound(EDGE);
-							
-						}catch(InterruptedException e53){
-							e53.printStackTrace();
-						}
-					}
-
-				} 
-		    
-				count1++;
-
-			}
+	
+					} 
+			    
+					count1++;
+	
+				}
+			} 
 			//second version
 //			if(options.size()!=0)
 //			{
@@ -948,115 +998,117 @@ public class GestureUI extends Activity implements OnInitListener,
 		
 			flag2=true;
 			
-			if(flag3)
+			if(options.size()!=0)
 			{
-				if(count1==1)
-					count1=options.size()-1;
-//				else if(count==5)
-//					count=3;
-				else 
-				{	
-					if(count1!=0)
-						count1-=2;
+				if(flag3)
+				{
+					if(count1==1)
+						count1=options.size()-1;
+	//				else if(count==5)
+	//					count=3;
+					else 
+					{	
+						if(count1!=0)
+							count1-=2;
+					}
+					flag3=false;
 				}
-				flag3=false;
-			}
-			
-			if(count1!=0)
-			{
-				if(count1==options.size()){
-			
 				
-					count1=options.size()-2;
-				}	
-			}
-
-			
-			if(count1==0){
-			//	this.sayPageName("0");
-				
-				message = options.get(count1);
-				
-
-				selected = count1;
-				text.setText(message);
-
-				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-					null);
-			    
-				
-				releaseSoundEffect();
-				playSound(ITEM_BY_ITEM);
-			
-		    //	 viewA.setText("UP"+count1);
-				count1=options.size()-1;
-				
-			}
-			else if(count1<options.size())
+				if(count1!=0)
 				{
+					if(count1==options.size()){
 				
-				 
-				message = options.get(count1);
-			
-
-				selected = count1;
-				text.setText(message);
-
-				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-					null);
-			
-				releaseSoundEffect();
-				playSound(ITEM_BY_ITEM);
-			
-
-				if(count1==(options.size()-1)) 
-				{
 					
-					if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+						count1=options.size()-2;
+					}	
+				}
+	
+				
+				if(count1==0){
+				//	this.sayPageName("0");
+					
+					message = options.get(count1);
+					
+	
+					selected = count1;
+					text.setText(message);
+	
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+						null);
+				    
+					
+					releaseSoundEffect();
+					playSound(ITEM_BY_ITEM);
+				
+			    //	 viewA.setText("UP"+count1);
+					count1=options.size()-1;
+					
+				}
+				else if(count1<options.size())
 					{
-						try {
-							
-							Thread.sleep(1400);
-							releaseSoundEffect();
-							playSound(EDGE);
-							
-						}catch(InterruptedException e61){
-							e61.printStackTrace();
-						}
-			 
-					}
-					else if(options.get(count1).length()>16)
+					
+					 
+					message = options.get(count1);
+				
+	
+					selected = count1;
+					text.setText(message);
+	
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+						null);
+				
+					releaseSoundEffect();
+					playSound(ITEM_BY_ITEM);
+				
+	
+					if(count1==(options.size()-1)) 
 					{
-						try {
-							
-							Thread.sleep(2100);
-							releaseSoundEffect();
-							playSound(EDGE);
-							
-						}catch(InterruptedException e62){
-							e62.printStackTrace();
+						
+						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+						{
+							try {
+								
+								Thread.sleep(1400);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e61){
+								e61.printStackTrace();
+							}
+				 
 						}
-			 
-					}else 
-					{
-						try {
-							
-							Thread.sleep(700);
-							releaseSoundEffect();
-							playSound(EDGE);
-							
-						}catch(InterruptedException e63){
-							e63.printStackTrace();
+						else if(options.get(count1).length()>16)
+						{
+							try {
+								
+								Thread.sleep(2100);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e62){
+								e62.printStackTrace();
+							}
+				 
+						}else 
+						{
+							try {
+								
+								Thread.sleep(700);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e63){
+								e63.printStackTrace();
+							}
 						}
-					}
-
-				} 
-			//	 viewA.setText("Up"+count1);
-		   
-				count1--;
-
-			}
-			
+	
+					} 
+				//	 viewA.setText("Up"+count1);
+			   
+					count1--;
+	
+				}
+			} 
 			////Second version
 //			flag3=true; 
 //			
@@ -1171,6 +1223,8 @@ public class GestureUI extends Activity implements OnInitListener,
 
 		return true;// return super.onKeyDown(keyCode, event);
 	}
+	
+ 
 	public void releaseSoundEffect(){
 		 
 		
