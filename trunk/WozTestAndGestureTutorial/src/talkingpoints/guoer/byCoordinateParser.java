@@ -32,6 +32,7 @@ public class byCoordinateParser {
 	public static ArrayList<String> mac; 
 	public static ArrayList<Float> distance;
 	public static ArrayList<Integer> floor;
+      
 	// constructor
 	public byCoordinateParser(String url) {
 		try {
@@ -46,13 +47,12 @@ public class byCoordinateParser {
 		mac = new ArrayList<String>();
 		distance = new ArrayList<Float>();
 		floor = new ArrayList<Integer>();
-		
 		connect();
 	}
-
+	
 	private void connect() {
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory
+		try {  
+ 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = null;
@@ -148,11 +148,11 @@ public class byCoordinateParser {
 
 	// /getter methods///
 
-	public ArrayList<String> getLatitude() {
+	public static ArrayList<String> getLatitude() {
 		return lat;
 	}
 
-	public ArrayList<String> getlongitude() {
+	public static ArrayList<String> getlongitude() {
 		return lng;
 	}
 
@@ -168,5 +168,6 @@ public class byCoordinateParser {
 	public ArrayList<String> getMac(){
 		return mac;
 	}
+	
 }
 

@@ -189,7 +189,7 @@ public class TutorialShake extends Activity implements OnInitListener,
 			}catch(InterruptedException e11){
 				e11.printStackTrace();
 			}
-			Intent intent2 = new Intent(TutorialShake.this, GateWay.class);
+			Intent intent2 = new Intent(TutorialShake.this, BTlist.class);
 			startActivity(intent2);
 
  		}else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE

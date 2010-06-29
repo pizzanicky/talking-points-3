@@ -155,7 +155,7 @@ public class TutorialTrackball extends GestureUI implements SensorEventListener 
 			}catch(InterruptedException e14){
 				e14.printStackTrace();
 			}
-			Intent intent2 = new Intent(TutorialTrackball.this, GateWay.class);
+			Intent intent2 = new Intent(TutorialTrackball.this, BTlist.class);
 			startActivity(intent2);
 
  		}else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE

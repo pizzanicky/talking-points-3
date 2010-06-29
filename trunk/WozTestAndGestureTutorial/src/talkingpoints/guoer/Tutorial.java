@@ -73,7 +73,7 @@ public class Tutorial extends GestureUI {
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
-			Intent intent2 = new Intent(Tutorial.this, GateWay.class);
+			Intent intent2 = new Intent(Tutorial.this, BTlist.class);
 			startActivity(intent2);
  		
 		}else if(e4.getX() - e3.getX() >SWIPE_MIN_DISTANCE

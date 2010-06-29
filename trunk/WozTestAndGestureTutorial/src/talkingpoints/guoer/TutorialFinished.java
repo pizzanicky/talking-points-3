@@ -76,7 +76,7 @@ public class TutorialFinished extends GestureUI {
 			}catch(InterruptedException e11){
 				e11.printStackTrace();
 			}
-			Intent intent2 = new Intent(TutorialFinished.this, GateWay.class);
+			Intent intent2 = new Intent(TutorialFinished.this, BTlist.class);
 			startActivity(intent2);
 
 			//finish();

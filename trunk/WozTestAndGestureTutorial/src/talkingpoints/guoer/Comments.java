@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.GestureDetector.OnDoubleTapListener;
 
@@ -27,6 +29,8 @@ public class Comments extends GestureUI {
 						Intent intent = new Intent(Comments.this, Content.class);
 						intent.putExtra("content", Comments.get(i));
 						// intent.putExtra("MAC", MAC);
+						
+						
 						startActivity(intent);
 					}
 				}
@@ -51,4 +55,6 @@ public class Comments extends GestureUI {
 		pageInfo.setText(pageName);
 		sayPageName(pageName);
 	}
+	
+	
 }

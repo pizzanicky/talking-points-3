@@ -37,6 +37,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
     private static boolean flag3 = false;
 
     private static int count1=0;
+    private static int countGesture=0;
 
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,13 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
 			public boolean onDoubleTap(MotionEvent e) {
 				
-				if(options.size()>0){
+				if(options.size()!=0){
 					
-				
+					finish();
+					
 					Intent intent = new Intent(POIsAhead.this, POImenu.class);
 				
-					Toast.makeText(getApplicationContext(), "DoubleTap", Toast.LENGTH_SHORT).show();
+				//	Toast.makeText(getApplicationContext(), "DoubleTap", Toast.LENGTH_SHORT).show();
 					intent.putExtra("tpid", POIsAhead.TPIDAhead
 						.get(GestureUI.selected));
 //					intent.putExtra("POIname", POIsAhead.NamesAhead
@@ -67,6 +69,9 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 					intent.putExtra("POIname", options
 							.get(GestureUI.selected));
 					startActivity(intent);  
+				}else if(options.size()==0)
+				{
+					sayPageName("Please press the trackball to hear locations");
 				}
 				
 				return true;
@@ -77,6 +82,31 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 			}
 
 			public boolean onSingleTapConfirmed(MotionEvent e) {
+				countGesture++;
+				
+				if(countGesture==2)
+				{	
+					
+ 					countGesture=0;
+ 					if(options.size()!=0){
+ 						
+ 						finish();
+ 						
+ 						Intent intent = new Intent(POIsAhead.this, POImenu.class);
+ 					
+ 					//	Toast.makeText(getApplicationContext(), "DoubleTap", Toast.LENGTH_SHORT).show();
+ 						intent.putExtra("tpid", POIsAhead.TPIDAhead
+ 							.get(GestureUI.selected));
+// 						intent.putExtra("POIname", POIsAhead.NamesAhead
+// 							.get(GestureUI.selected));
+ 						intent.putExtra("POIname", options
+ 								.get(GestureUI.selected));
+ 						startActivity(intent);  
+ 					}else if(options.size()==0)
+ 					{
+ 						sayPageName("Please press the trackball to hear locations");
+ 					}
+				}
 				return false;
 			}
 
@@ -84,20 +114,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 
 	}
 
-	// @Override
-	// protected void onStart() {
-	// super.onStart();
-	// pageInfo.setText(pageName);
-	// sayPageName(pageName);
-	// }
-	//
-	// @Override
-	// protected void onRestart() {
-	// super.onRestart();
-	// pageInfo.setText(pageName);
-	// sayPageName(pageName);
-	// }
-
+	 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent msg) {
 		// TODO Auto-generated method stub
@@ -193,10 +210,14 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 					count1++;
 	
 				}
+			}else if(options.size()==0)
+			{
+				   sayPageName("Please press the trackball to hear locations");
+
 			}
  
 		}else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
-		
+		 
 			flag2=true;
 			
 			if(options.size()!=0){
@@ -272,6 +293,10 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 					count1--;
 	
 				}
+			}else if(options.size()==0)
+			{
+				   sayPageName("Please press the trackball to hear locations");
+
 			}
 		}
 		return true;
@@ -288,6 +313,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		// TODO Auto-generated method stub
 		values = event.values;
 		angle = values[0];
+		
 	}
 	@Override
 	public boolean onFling(MotionEvent e3, MotionEvent e4, float velocityX,
@@ -406,6 +432,10 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 								count1--;
 				
 							}
+						}else if(options.size()==0)
+						{
+							   sayPageName("Please press the trackball to hear locations");
+
 						}
 						
 					 
@@ -466,7 +496,11 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 								count1++;
 		
 							}
-					 }
+					 }else if(options.size()==0)
+					{
+						   sayPageName("Please press the trackball to hear locations");
+
+					}
 	 
 					 flag = false;
 				 }

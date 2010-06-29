@@ -88,7 +88,7 @@ public class TutorialButtons extends GestureUI {
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
-			Intent intent2 = new Intent(TutorialButtons.this, GateWay.class);
+			Intent intent2 = new Intent(TutorialButtons.this, BTlist.class);
 			startActivity(intent2);;
 			}else if(e4.getX() - e3.getX() >SWIPE_MIN_DISTANCE
 					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {

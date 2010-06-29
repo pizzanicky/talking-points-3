@@ -110,7 +110,7 @@ public class TutorialSwipeLeft extends GestureUI {
 			}catch(InterruptedException e31){
 				e31.printStackTrace();
 			}
-			Intent intent2 = new Intent(TutorialSwipeLeft.this, GateWay.class);
+			Intent intent2 = new Intent(TutorialSwipeLeft.this, BTlist.class);
 			startActivity(intent2);
 
 		}else if(e3.getY() - e4.getY() > SWIPE_MIN_DISTANCE
