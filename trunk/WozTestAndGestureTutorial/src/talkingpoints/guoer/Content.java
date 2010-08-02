@@ -24,10 +24,16 @@ public class Content extends GestureUI implements OnInitListener {
 	private static final String TAG = "MAC = ";
 	private TextToSpeech mTts;
 	private GestureDetector gestureScanner;
-	private static final int SWIPE_MIN_DISTANCE = 120;
+//	private static final int SWIPE_MIN_DISTANCE = 120;
+//	private static final int SWIPE_MAX_OFF_PATH = 250;
+//	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+	
+	private static final int SWIPE_MIN_DISTANCE = 10; //120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
+	private static final int CHECK_DISTANCE =100; 
+	
 	private static boolean flag=false; 
 	private static boolean flag2=false; 
 	private static boolean flag3=false; 
@@ -73,22 +79,24 @@ public class Content extends GestureUI implements OnInitListener {
 			float velocityY) {
 		
 //flag = true;
-		
+		final float xDistance = Math.abs(e1.getX() - e2.getX());
+		final float yDistance = Math.abs(e1.getY() - e2.getY());
 		// TODO Auto-generated method stub
 		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-			
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY&&yDistance< CHECK_DISTANCE) {
+			releaseSoundEffect();
+			playSound(NEXT_PAGE);
 
 			finish();
 		}else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY&&yDistance< CHECK_DISTANCE) {
 			mTts.speak(content, TextToSpeech.QUEUE_FLUSH, null);
 			
 		}else if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY&&xDistance< CHECK_DISTANCE) {
 		 
 			}else if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+					&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY&&xDistance< CHECK_DISTANCE) {
 			}
 		return false;
 	}

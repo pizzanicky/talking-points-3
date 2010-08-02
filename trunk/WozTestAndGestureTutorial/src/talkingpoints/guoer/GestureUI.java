@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.gesture.GestureLibrary;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -19,9 +20,6 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.view.GestureDetector.OnGestureListener;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 
 public class GestureUI extends Activity implements OnInitListener,
 		OnGestureListener, SensorListener {
@@ -33,7 +31,7 @@ public class GestureUI extends Activity implements OnInitListener,
 	private float last_x, last_y, last_z;
 	private static final int SHAKE_THRESHOLD = 800;
 	private int count = 0;
-	//	
+	// s
 	private GestureLibrary mLibrary;
 	private float xPoint, yPoint;
 	protected ArrayList<String> options;
@@ -52,30 +50,45 @@ public class GestureUI extends Activity implements OnInitListener,
 	public TextView text;
 	public TextView pageInfo;
 	protected String pageName;
-	private static final int SWIPE_MIN_DISTANCE = 120;
+	// private static final int SWIPE_MIN_DISTANCE = 120;
+	// private static final int SWIPE_MAX_OFF_PATH = 250;
+	// private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private static final int SWIPE_MIN_DISTANCE = 120; // 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-	
-	//sound variable 
-	public static final int NOTIFICATION=0;
-	public static final int ITEM_BY_ITEM=1;
-	public static final int EDGE=2;
-	public static final int TUTORIAL=3; 
-	public static final int TUTORIAL_SUCCEEDED=4; 
-    private String path;
-    
-    private MediaPlayer mMediaPlayer;
-    private MediaPlayer mMediaPlayer2;
-    private MediaPlayer mMediaPlayer3;
-    private MediaPlayer mMediaPlayer4; 
-    private MediaPlayer mMediaPlayer5; 
-    
-    private static boolean flag = false; 
-    private static int count1=0;
-    private static boolean flag2 = false; 
-    private static boolean flag3 = false; 
-    public Context context;
-  
+	private static final int CHECK_DISTANCE = 100;
+
+	// sound variable
+	public static final int NOTIFICATION = 0;
+	public static final int ITEM_BY_ITEM = 1;
+	public static final int EDGE = 2;
+	public static final int TUTORIAL = 3;
+	public static final int TUTORIAL_SUCCEEDED = 4;
+	public static final int NEXT_PAGE = 5;
+	public static final int MISSED_IT = 6;
+	public static boolean isFlashlight = false;
+	private String path;
+
+	private MediaPlayer mMediaPlayer;
+	private MediaPlayer mMediaPlayer2;
+	private MediaPlayer mMediaPlayer3;
+	private MediaPlayer mMediaPlayer4;
+	private MediaPlayer mMediaPlayer5;
+	private MediaPlayer mMediaPlayer6;
+	private MediaPlayer mMediaPlayer7;
+
+	private static boolean flag = false;
+	private static int count1 = 0;
+	private static boolean flag2 = false;
+	private static boolean flag3 = false;
+	private static boolean flagForScrolling = false;
+
+	private float FirstX;
+	private float FirstY;
+	private float LastX;
+	private float LastY;
+
+	public Context context;
 
 	public void onCreate(Bundle savedInstanceState, ArrayList<String> o) {
 		super.onCreate(savedInstanceState);
@@ -103,15 +116,16 @@ public class GestureUI extends Activity implements OnInitListener,
 			sensorMgr.unregisterListener(this,
 					SensorManager.SENSOR_ACCELEROMETER);
 		}
-	
-//		  AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-//
-////		    am.isSpeakerphoneOn(); 
-////		    am.isWiredHeadsetOn();
-//		   if(am.isWiredHeadsetOn())
-//		   {
-//			  am.setSpeakerphoneOn(true);
-//		   }
+
+		// AudioManager am =
+		// (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		//
+		// // am.isSpeakerphoneOn();
+		// // am.isWiredHeadsetOn();
+		// if(am.isWiredHeadsetOn())
+		// {
+		// am.setSpeakerphoneOn(true);
+		// }
 
 	}
 
@@ -140,15 +154,16 @@ public class GestureUI extends Activity implements OnInitListener,
 			sensorMgr.unregisterListener(this,
 					SensorManager.SENSOR_ACCELEROMETER);
 		}
-//		  AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-//
-////		    am.isSpeakerphoneOn(); 
-////		    am.isWiredHeadsetOn();
-//		   if(am.isWiredHeadsetOn())
-//		   {
-//			  am.setSpeakerphoneOn(true);
-//		   }
-//		
+		// AudioManager am =
+		// (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		//
+		// // am.isSpeakerphoneOn();
+		// // am.isWiredHeadsetOn();
+		// if(am.isWiredHeadsetOn())
+		// {
+		// am.setSpeakerphoneOn(true);
+		// }
+		//		
 	}
 
 	public void sayPageName() {
@@ -161,6 +176,73 @@ public class GestureUI extends Activity implements OnInitListener,
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
+
+		int action = event.getAction();
+		// down
+		if (action == MotionEvent.ACTION_DOWN
+				|| action == MotionEvent.ACTION_MOVE)
+			flagForScrolling = true;
+
+		if (action == MotionEvent.ACTION_DOWN) {
+			FirstX = event.getX();
+			FirstY = event.getY();
+		} else if (action == MotionEvent.ACTION_UP) {
+			LastX = event.getX();
+			LastY = event.getY();
+
+			if (FirstX > 0 || FirstY > 0) {
+				final float xD = Math.abs(FirstX - LastX);
+				final float yD = Math.abs(FirstY - LastY);
+
+				try {
+
+					if (FirstX - LastX > SWIPE_MIN_DISTANCE
+							&& yD < CHECK_DISTANCE) { // this.mTts.speak("LEFT MOTION",
+						// TextToSpeech.QUEUE_FLUSH,null);
+						releaseSoundEffect();
+						playSound(NEXT_PAGE);
+						finish();
+
+					} else if (LastX - FirstX > SWIPE_MIN_DISTANCE
+							&& yD < CHECK_DISTANCE)
+						this.sayPageName();
+
+					// this.mTts.speak("Right motion",
+					// TextToSpeech.QUEUE_FLUSH,null);
+					else if (FirstY - LastY > SWIPE_MIN_DISTANCE
+							&& xD < CHECK_DISTANCE) {
+						// this.mTts.speak("UP Motion",
+						// TextToSpeech.QUEUE_FLUSH,null);
+						if (flag || flagForScrolling) {
+							upMotion();
+							flagForScrolling = false;
+						}
+
+					} else if (LastY - FirstY > SWIPE_MIN_DISTANCE
+							&& xD < CHECK_DISTANCE) {
+						// this.mTts.speak("down motion",
+						// TextToSpeech.QUEUE_FLUSH,null);
+
+						if (flag || flagForScrolling) {
+
+							downMotion();
+							flagForScrolling = false;
+						}
+					}// missed
+					else {
+						releaseSoundEffect();
+						playSound(MISSED_IT);
+						this.mTts.speak(
+								"Please move your thumb in right direction",
+								TextToSpeech.QUEUE_FLUSH, null);
+					}
+
+				} catch (Exception e0) {
+					// nothing
+				}
+
+			}
+		}
 
 		gestureScanner.onTouchEvent(event);
 		return true;
@@ -177,266 +259,65 @@ public class GestureUI extends Activity implements OnInitListener,
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
-		
-//flag = true;
-		
+
+		final float xDistance = Math.abs(e1.getX() - e2.getX());
+		final float yDistance = Math.abs(e1.getY() - e2.getY());
+		// flag = true;
+
 		// TODO Auto-generated method stub
 		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-			
-
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
+				&& yDistance < CHECK_DISTANCE) {
+			releaseSoundEffect();
+			playSound(NEXT_PAGE);
+			// left
 			finish();
-		}else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+		} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY
+				&& yDistance < CHECK_DISTANCE) {
+			// right
 			this.sayPageName();
-			
-		}else if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-		//	this.sayPageName("up");
-			 if(flag)
-			 {
-				 flag2=true;
-					
-				 if(options.size()!=0){
-						if(flag3)
-						{
-							if(count1==1)
-								count1=options.size()-1;
-			//				else if(count==5)
-			//					count=3;
-							else 
-							{
-								if(count1!=0)
-								  count1-=2;
-							}
-							flag3=false;
-						}
-						
-						if(count1!=0)
-						{
-							if(count1==options.size()){
-						
-							
-								count1=options.size()-2;
-							}	
-						}
-			
-						
-						if(count1==0){
-						//	this.sayPageName("0");
-							
-							message = options.get(count1);
-							
-			
-							selected = count1;
-							text.setText(message);
-			
-							this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-								null);
-						    
-							
-							releaseSoundEffect();
-							playSound(ITEM_BY_ITEM);
-						
-					    //	 viewA.setText("UP"+count1);
-							count1=options.size()-1;
-							
-						}
-						else if(count1<options.size())
-							{
-							
-							
-							message = options.get(count1);
-						
-			
-							selected = count1;
-							text.setText(message);
-			
-							this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-								null);
-						
-							releaseSoundEffect();
-							playSound(ITEM_BY_ITEM);
-						
-			
-							if(count1==(options.size()-1)) 
-							{
-								
-								if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-								{
-									try {
-										
-										Thread.sleep(1400);
-										releaseSoundEffect();
-										playSound(EDGE);
-										
-									}catch(InterruptedException e11){
-										e11.printStackTrace();
-									}
-						 
-								}
-								else if(options.get(count1).length()>16)
-								{
-									try {
-										
-										Thread.sleep(2100);
-										releaseSoundEffect();
-										playSound(EDGE);
-										
-									}catch(InterruptedException e12){
-										e12.printStackTrace();
-									}
-						 
-								}else 
-								{
-									try {
-										
-										Thread.sleep(700);
-										releaseSoundEffect();
-										playSound(EDGE);
-										
-									}catch(InterruptedException e13){
-										e13.printStackTrace();
-									}
-								}
- 
-							} 
-						//	 viewA.setText("Up"+count1);
-					   
-							count1--;
-			
-						}
-					} 
-					
-				 
- 
-				 flag = false;
-			 }
-			
-	    //  viewA.setText("-" + "Fling up?" + "-");
 
-		}else if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-			 if(flag)
-			 {
-				 
-				 
-				 flag3=true; 
-				 if(options.size()!=0){
-					 
-						if(flag2)
-						{
-							if(count1==options.size()-1)
-								count1=1;
-							else 
-								count1+=2;
-							
-							flag2=false; 
-						}
-						
-						if(count1==options.size()){
-							
-							count1=0;
-							
-						}
-						
-						if(count1<options.size()) //count<.size() 
-						{
-							
-							// viewA.setText("Down"+count1);
-			     			message = options.get(count1);
-			 			
-			 
-			 				selected = count1;
-			  				text.setText(message);
-			 
-			 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-			 					null);
-			 			
-			 				releaseSoundEffect();
-			 				playSound(ITEM_BY_ITEM);
-			 			
-			 				read_flag = true;
-			 
-							if(count1==(options.size()-1)) 
-							{
-								
-								if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-								{
-									try {
-										
-										Thread.sleep(1400);
-										releaseSoundEffect();
-										playSound(EDGE);
-										
-									}catch(InterruptedException e21){
-										e21.printStackTrace();
-									}
-						 
-								}
-								else if(options.get(count1).length()>16)
-								{
-									try {
-										
-										Thread.sleep(2100);
-										releaseSoundEffect();
-										playSound(EDGE);
-										
-									}catch(InterruptedException e22){
-										e22.printStackTrace();
-									}
-						 
-								}else 
-								{
-									try {
-										
-										Thread.sleep(700);
-										releaseSoundEffect();
-										playSound(EDGE);
-										
-									}catch(InterruptedException e23){
-										e23.printStackTrace();
-									}
-								}
- 
-							} 
-					    
-							count1++;
-	
-						}
-				 }  
- 
-				 flag = false;
-			 }
-			 
- 
- 
-			
+		} else if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY
+				&& xDistance < CHECK_DISTANCE) {
+			// this.sayPageName("up");
+			if (flag) {
+				upMotion();
 			}
-//		flag=true;
-//		// TODO Auto-generated method stub
-//		try {
-//			// if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-//			// return false;
-//			// right to left swipe
-//			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-//					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-//				
-//			 
-//				finish();
-//
-//			}
-//			else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE
-//					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-//				this.sayPageName();
-//			}s
-//		} catch (Exception e) {
-//			// nothing
-//			Toast.makeText(this,"fling error!!",Toast.LENGTH_SHORT).show();
-//		}
-		
-	 
-		
+
+			// viewA.setText("-" + "Fling up?" + "-");
+
+		} else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY
+				&& xDistance < CHECK_DISTANCE) {
+			if (flag) {
+				downMotion();
+			}
+
+		}
+		// flag=true;
+		// // TODO Auto-generated method stub
+		// try {
+		// // if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+		// // return false;
+		// // right to left swipe
+		// if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+		// && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+		//				
+		//			 
+		// finish();
+		//
+		// }
+		// else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE
+		// && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+		// this.sayPageName();
+		// }s
+		// } catch (Exception e) {
+		// // nothing
+		// Toast.makeText(this,"fling error!!",Toast.LENGTH_SHORT).show();
+		// }
+
 		return false;
 	}
 
@@ -449,146 +330,146 @@ public class GestureUI extends Activity implements OnInitListener,
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		flag = true; 
+		flag = true;
 
-//		 if(flag)
-//		 {
-//				if (options.size() != 0){
-//					if(count1==options.size()){
-//						
-//						count1=0;
-//						
-//					}
-//					
-//					if(count1<options.size()) //count<.size() 
-//					{
-// 				 //put get(count1)
-//						message = options.get(count1);
-//					
-//
-//						selected = count1;
-//						text.setText(message)  ;
-//
-//						this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//							null);
-//					
-//						releaseSoundEffect();
-//						playSound(ITEM_BY_ITEM);
-//					
-//						read_flag = true;
-//
-//						if(count1==(options.size()-1)) 
-//						{
-//							releaseSoundEffect();
-//							playSound(EDGE);
-// 	
-//						} 
-//				   
-//						count1++;
-//
-//					}
-//			
-//				}
-//			 flag = false;
-//		 }
-		
-		
-//		if (options.size() != 0) {
-//			
-//			
-//			if (options.size() <= 5)// when there are less than 5 options, give
-//				// each option the 1/5 space of the screen
-//				ratio = (height - start_y) / (60 * 5); //it was 60 * 5 
-//			else if (options.size() > 5)// if there are more than 5 menu
-//				// options, compress the list so that
-//				// all the options fit into one screen
-//				ratio = (height - start_y) / (60 * options.size());
-//
-//			synchronized (this) {
-//
-//				if (Math.abs(e2.getY() - cur_y) > 60 * ratio) {
-// 					read_flag = false;
-//
-//				}
-//
-//				if (!read_flag) {
-//					int i=0;
-//					
-//					for (i = 0; i < options.size(); i++) {
-//
-//				
-//						if (((e2.getY() > (start_y + 60 * ratio * i)))
-//								&& ((e2.getY() < (start_y + 60 + 60 * ratio * i)))) {
-//
-//							cur_y = e2.getY();
-//							message = options.get(i);
-//							
-//
-//							selected = i;
-//							text.setText(message);
-//
-//							this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//									null);
-//							
-//							releaseSoundEffect();
-//							playSound(ITEM_BY_ITEM);
-//							
-//							read_flag = true;
-//
-//							//if(i==(options.size()-1)) 
-//							if(i==options.size()-1)
-//							{
-//								/////////////Some
-//							//	flag=true; 
-//								
-//								try {
-//									
-////									if((options.get(i).length()>8)&&(options.get(i).length()<16))
-////									Thread.sleep(1400);
-////									else if(options.get(i).length()>16)
-////									Thread.sleep(2100);
-////									else
-//									Thread.sleep(700);
-//									releaseSoundEffect();
-//									playSound(EDGE);
-//									
-//								}catch(InterruptedException e){
-//									e.printStackTrace();
-//								}
-////								releaseSoundEffect();
-////								playSound(EDGE);
-//								break;
-//			
-//							} 
-//						   
-//						//	break;
-//						}
-//
-//					}
-// 					
-//				}
-//
-//			}
-//			// }
-//		} else if (!read_flag2) {
-//			message = "Nothing interesting detected yet";
-//			text.setText(message);
-//			this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
-//			
-// 			read_flag2 = true;
-//		}
+		// if(flag)
+		// {
+		// if (options.size() != 0){
+		// if(count1==options.size()){
+		//						
+		// count1=0;
+		//						
+		// }
+		//					
+		// if(count1<options.size()) //count<.size()
+		// {
+		// //put get(count1)
+		// message = options.get(count1);
+		//					
+		//
+		// selected = count1;
+		// text.setText(message) ;
+		//
+		// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+		// null);
+		//					
+		// releaseSoundEffect();
+		// playSound(ITEM_BY_ITEM);
+		//					
+		// read_flag = true;
+		//
+		// if(count1==(options.size()-1))
+		// {
+		// releaseSoundEffect();
+		// playSound(EDGE);
+		// 	
+		// }
+		//				   
+		// count1++;
+		//
+		// }
+		//			
+		// }
+		// flag = false;
+		// }
+
+		// if (options.size() != 0) {
+		//			
+		//			
+		// if (options.size() <= 5)// when there are less than 5 options, give
+		// // each option the 1/5 space of the screen
+		// ratio = (height - start_y) / (60 * 5); //it was 60 * 5
+		// else if (options.size() > 5)// if there are more than 5 menu
+		// // options, compress the list so that
+		// // all the options fit into one screen
+		// ratio = (height - start_y) / (60 * options.size());
+		//
+		// synchronized (this) {
+		//
+		// if (Math.abs(e2.getY() - cur_y) > 60 * ratio) {
+		// read_flag = false;
+		//
+		// }
+		//
+		// if (!read_flag) {
+		// int i=0;
+		//					
+		// for (i = 0; i < options.size(); i++) {
+		//
+		//				
+		// if (((e2.getY() > (start_y + 60 * ratio * i)))
+		// && ((e2.getY() < (start_y + 60 + 60 * ratio * i)))) {
+		//
+		// cur_y = e2.getY();
+		// message = options.get(i);
+		//							
+		//
+		// selected = i;
+		// text.setText(message);
+		//
+		// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+		// null);
+		//							
+		// releaseSoundEffect();
+		// playSound(ITEM_BY_ITEM);
+		//							
+		// read_flag = true;
+		//
+		// //if(i==(options.size()-1))
+		// if(i==options.size()-1)
+		// {
+		// /////////////Some
+		// // flag=true;
+		//								
+		// try {
+		//									
+		// // if((options.get(i).length()>8)&&(options.get(i).length()<16))
+		// // Thread.sleep(1400);
+		// // else if(options.get(i).length()>16)
+		// // Thread.sleep(2100);
+		// // else
+		// Thread.sleep(700);
+		// releaseSoundEffect();
+		// playSound(EDGE);
+		//									
+		// }catch(InterruptedException e){
+		// e.printStackTrace();
+		// }
+		// // releaseSoundEffect();
+		// // playSound(EDGE);
+		// break;
+		//			
+		// }
+		//						   
+		// // break;
+		// }
+		//
+		// }
+		// 					
+		// }
+		//
+		// }
+		// // }
+		// } else if (!read_flag2) {
+		// message = "Nothing interesting detected yet";
+		// text.setText(message);
+		// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+		//			
+		// read_flag2 = true;
+		// }
 		return true;
 
 	}
-	public void DoinkSoundEffect(){
-	//	if(flag)	
-	//	{	
-			releaseSoundEffect();
-			playSound(EDGE);
-		//	flag = false; 
-		//}
+
+	public void DoinkSoundEffect() {
+		// if(flag)
+		// {
+		releaseSoundEffect();
+		playSound(EDGE);
+		// flag = false;
+		// }
 	}
-	
+
 	@Override
 	public void onShowPress(MotionEvent e) {
 		// TODO Auto-generated method stub
@@ -601,58 +482,71 @@ public class GestureUI extends Activity implements OnInitListener,
 		// message = "UP X = " + event.getX() + " Y = " + event.getY();
 		return true;
 	}
-	
-	public void playSound(int mode)
-	{
-        try {
-            switch (mode) {
-                case NOTIFICATION:
-                    /**
-                     * TODO: Set the path variable to a local audio file path.
-                     */
-                    path = "/system/media/audio/notifications/pixiedust.ogg";
-              	    mMediaPlayer = new MediaPlayer();
-                     mMediaPlayer.setDataSource(path);
-                    mMediaPlayer.prepare();
-                    mMediaPlayer.start();
-                    break;
-                case ITEM_BY_ITEM:
-                	  path = "/system/media/audio/ui/Effect_Tick.ogg";
-             	      mMediaPlayer2 = new MediaPlayer();
-                       mMediaPlayer2.setDataSource(path);
-                      mMediaPlayer2.prepare();
-                      mMediaPlayer2.start();
-                   //   mMediaPlayer2.release();
-                	break;
-                case EDGE:
-                	  path = "/system/media/audio/notifications/Doink.ogg";
-            	      mMediaPlayer3 = new MediaPlayer();
-                       mMediaPlayer3.setDataSource(path);
-                      mMediaPlayer3.prepare();
-                      mMediaPlayer3.start();
-                	break;
-                case TUTORIAL:
-	              	  path = "/system/media/audio/notifications/Tinkerbell.ogg";
-	          	      mMediaPlayer4 = new MediaPlayer();
-	          	      mMediaPlayer4.setDataSource(path);
-	          	      mMediaPlayer4.prepare();
-	          	      mMediaPlayer4.start();
-              	break;
-                case TUTORIAL_SUCCEEDED:
-	              	  path = "/system/media/audio/notifications/Heaven.ogg";
-	          	      mMediaPlayer5 = new MediaPlayer();
-	          	      mMediaPlayer5.setDataSource(path);
-	          	      mMediaPlayer5.prepare();
-	          	      mMediaPlayer5.start();
-              	break;
 
-            }
-          //  text.setText("Playing audio...");
+	public void playSound(int mode) {
+		try {
+			switch (mode) {
+			case NOTIFICATION:
+				/**
+				 * TODO: Set the path variable to a local audio file path.
+				 */
+				path = "/system/media/audio/notifications/pixiedust.ogg";
+				mMediaPlayer = new MediaPlayer();
+				mMediaPlayer.setDataSource(path);
+				mMediaPlayer.prepare();
+				mMediaPlayer.start();
+				break;
+			case ITEM_BY_ITEM:
+				path = "/system/media/audio/ui/Effect_Tick.ogg";
+				mMediaPlayer2 = new MediaPlayer();
+				mMediaPlayer2.setDataSource(path);
+				mMediaPlayer2.prepare();
+				mMediaPlayer2.start();
+				// mMediaPlayer2.release();
+				break;
+			case EDGE:
+				path = "/system/media/audio/notifications/Doink.ogg";
+				mMediaPlayer3 = new MediaPlayer();
+				mMediaPlayer3.setDataSource(path);
+				mMediaPlayer3.prepare();
+				mMediaPlayer3.start();
+				break;
+			case TUTORIAL:
+				path = "/system/media/audio/notifications/Tinkerbell.ogg";
+				mMediaPlayer4 = new MediaPlayer();
+				mMediaPlayer4.setDataSource(path);
+				mMediaPlayer4.prepare();
+				mMediaPlayer4.start();
+				break;
+			case TUTORIAL_SUCCEEDED:
+				path = "/system/media/audio/notifications/Heaven.ogg";
+				mMediaPlayer5 = new MediaPlayer();
+				mMediaPlayer5.setDataSource(path);
+				mMediaPlayer5.prepare();
+				mMediaPlayer5.start();
+				break;
+			case NEXT_PAGE:
+				path = "/system/media/audio/notifications/Tinkerbell.ogg";
+				mMediaPlayer6 = new MediaPlayer();
+				mMediaPlayer6.setDataSource(path);
+				mMediaPlayer6.prepare();
+				mMediaPlayer6.start();
+				break;
+			case MISSED_IT:
+				path = "/system/media/audio/notifications/F1_MissedCall.ogg";
+				mMediaPlayer7 = new MediaPlayer();
+				mMediaPlayer7.setDataSource(path);
+				mMediaPlayer7.prepare();
+				mMediaPlayer7.start();
+				break;
 
-        } catch (Exception e) {
-            text.setText("Errors!...");
-        }
-		
+			}
+			// text.setText("Playing audio...");
+
+		} catch (Exception e) {
+			text.setText("Errors!...");
+		}
+
 	}
 
 	@Override
@@ -723,7 +617,11 @@ public class GestureUI extends Activity implements OnInitListener,
 						count += 1;
 					} else if (count == 3) {
 						count = 0;
-						Intent intent = new Intent(GestureUI.this, DetectedLocations.class);
+						releaseSoundEffect();
+						playSound(NEXT_PAGE);
+
+						Intent intent = new Intent(GestureUI.this,
+								DetectedLocations.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 					}
@@ -736,519 +634,681 @@ public class GestureUI extends Activity implements OnInitListener,
 
 		}
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// if we get any key, clear the Splash Screen
-//		if (keyCode == KeyEvent.KEYCODE_BACK) {
-//
-//			this.mTts.speak("Talking Points Home", TextToSpeech.QUEUE_FLUSH,
-//					null);
-//
-//			Intent intent = new Intent(GestureUI.this, GateWay.class);
-//			startActivity(intent);
-//			return true;
-//		} else if (keyCode == KeyEvent.KEYCODE_HOME) {
-//			super.onPause();
-//			try {
-//				wait();
-//			} catch (InterruptedException e41) {
-//				// TODO Auto-generated catch block
-//				e41.printStackTrace();
-//			}
-//			try {
-//				Thread.sleep(2000);
-//			} catch (InterruptedException e42) {
-//				e42.printStackTrace();
-//			}
-//
-//			Toast
-//					.makeText(getApplicationContext(), "home!",
-//							Toast.LENGTH_SHORT).show();
-//
-//			this.mTts.speak("home", TextToSpeech.QUEUE_FLUSH, null);
-//
-//			onDestroy();
-//			return true;
-//		} else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-//
-//			this.mTts.speak("Keyword Search", TextToSpeech.QUEUE_FLUSH, null);
-//
-//			// Intent intent = new Intent(GestureUI.this, Search.class);
-//			// startActivity(intent);
-//
-//			return true;
-//		}else
-//		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK)
-//		{
-//			Toast.makeText(this,"headset hook!!!", Toast.LENGTH_SHORT).show();
-//			
-//		}
-//		if(keyCode == KeyEvent.KEYCODE_HOME)
-//		{
-//			Toast.makeText(this,"HOME!", Toast.LENGTH_SHORT).show();
-//		}
-//		if(keyCode == KeyEvent.KEYCODE_H)
-//		{
-//			Toast.makeText(this,"HOME!", Toast.LENGTH_SHORT).show();
-//		}
-		
+		// if (keyCode == KeyEvent.KEYCODE_BACK) {
+		//
+		// this.mTts.speak("Talking Points Home", TextToSpeech.QUEUE_FLUSH,
+		// null);
+		//
+		// Intent intent = new Intent(GestureUI.this, GateWay.class);
+		// startActivity(intent);
+		// return true;
+		// } else if (keyCode == KeyEvent.KEYCODE_HOME) {
+		// super.onPause();
+		// try {
+		// wait();
+		// } catch (InterruptedException e41) {
+		// // TODO Auto-generated catch block
+		// e41.printStackTrace();
+		// }
+		// try {
+		// Thread.sleep(2000);
+		// } catch (InterruptedException e42) {
+		// e42.printStackTrace();
+		// }
+		//
+		// Toast
+		// .makeText(getApplicationContext(), "home!",
+		// Toast.LENGTH_SHORT).show();
+		//
+		// this.mTts.speak("home", TextToSpeech.QUEUE_FLUSH, null);
+		//
+		// onDestroy();
+		// return true;
+		// } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+		//
+		// this.mTts.speak("Keyword Search", TextToSpeech.QUEUE_FLUSH, null);
+		//
+		// // Intent intent = new Intent(GestureUI.this, Search.class);
+		// // startActivity(intent);
+		//
+		// return true;
+		// }else
+		// if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK)
+		// {
+		// Toast.makeText(this,"headset hook!!!", Toast.LENGTH_SHORT).show();
+		//			
+		// }
+		// if(keyCode == KeyEvent.KEYCODE_HOME)
+		// {
+		// Toast.makeText(this,"HOME!", Toast.LENGTH_SHORT).show();
+		// }
+		// if(keyCode == KeyEvent.KEYCODE_H)
+		// {
+		// Toast.makeText(this,"HOME!", Toast.LENGTH_SHORT).show();
+		// }
+
 		if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-			AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-					.getlongitude(),BTlist.LAC1,
-					BTlist.LNG1);
+			if (isFlashlight) {
+				releaseSoundEffect();
+				playSound(NEXT_PAGE);
 
-		   		oc.getAngle();
- 
-			Intent intent0 = new Intent(GestureUI.this,POIsAhead.class);
-			intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				AngleCalculator oc = new AngleCalculator(byCoordinateParser
+						.getLatitude(), byCoordinateParser.getlongitude(),
+						BTlist.LAC1, BTlist.LNG1);
 
-			startActivity(intent0);
-		}
-		else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
-		
-			
-				flag3=true; 
-			
-			
-			if(options.size()!=0){
-				
-				if(flag2)
-				{
-					if(count1==options.size()-1)
-						count1=1;
-					else 
-						count1+=2;
-					
-					flag2=false; 
+				oc.getAngle();
+
+				Intent intent0 = new Intent(GestureUI.this, POIsAhead.class);
+				intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+				startActivity(intent0);
+			}
+		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+
+			flag3 = true;
+
+			if (options.size() != 0) {
+
+				if (flag2) {
+					if (count1 == options.size() - 1)
+						count1 = 1;
+					else
+						count1 += 2;
+
+					flag2 = false;
 				}
-				
-				if(count1==options.size()){
-					
-					count1=0;
-					
+
+				if (count1 == options.size()) {
+
+					count1 = 0;
+
 				}
-				
-				if(count1<options.size()) //count<.size() 
+
+				if (count1 < options.size()) // count<.size()
 				{
-					
+
 					// viewA.setText("Down"+count1);
-	     			message = options.get(count1);
-	 			
-	 
-	 				selected = count1;
-	  				text.setText(message);
-	 
-	 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-	 					null);
-	 			
-	 				releaseSoundEffect();
-	 				playSound(ITEM_BY_ITEM);
-	 			
-	 				read_flag = true;
-	 
-	 				if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
+					message = options.get(count1);
+
+					selected = count1;
+					text.setText(message);
+
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+
+					releaseSoundEffect();
+					playSound(ITEM_BY_ITEM);
+
+					read_flag = true;
+
+					if (count1 == (options.size() - 1)) {
+
+						if ((options.get(count1).length() > 8)
+								&& (options.get(count1).length() < 16)) {
 							try {
-								
+
 								Thread.sleep(1400);
 								releaseSoundEffect();
 								playSound(EDGE);
-								
-							}catch(InterruptedException e51){
+
+							} catch (InterruptedException e51) {
 								e51.printStackTrace();
 							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
+
+						} else if (options.get(count1).length() > 16) {
 							try {
-								
+
 								Thread.sleep(2100);
 								releaseSoundEffect();
 								playSound(EDGE);
-								
-							}catch(InterruptedException e52){
+
+							} catch (InterruptedException e52) {
 								e52.printStackTrace();
 							}
-				 
-						}else 
-						{
+
+						} else {
 							try {
-								
+
 								Thread.sleep(700);
 								releaseSoundEffect();
 								playSound(EDGE);
-								
-							}catch(InterruptedException e53){
+
+							} catch (InterruptedException e53) {
 								e53.printStackTrace();
 							}
 						}
-	
-					} 
-			    
-					count1++;
-	
-				}
-			} 
-			//second version
-//			if(options.size()!=0)
-//			{
-//				if(count1==options.size())
-//					count1=0;
-//				
-//				if(flag3)
-//				{
-//					if(count1==options.size()-1)
-//					count1=1;
-//					else 
-//					count1+=2;
-//					
-//					flag3=false; 
-//				}
-//				
-//				//view.. 
-//				message = options.get(count1);
-//				
-//
-//				selected = count1;
-//				text.setText(message);
-//
-//				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//					null);
-//			
-//				releaseSoundEffect();
-//				playSound(ITEM_BY_ITEM);
-//				
-//				if(count1==options.size()-1)
-//				{	
-//					releaseSoundEffect();
-//					playSound(EDGE);
-//				}
-//				//
-//				if(count1<options.size())
-//					count++;
-//				
-//				flag2=true; 
-//			}
-			
-////////////First version/////
-			
-//			if (options.size() != 0){
-//				 
-//				if(count1==0)
-//				{
-//					count1++;
-//
-//				}
-//				
-//				if(count1==options.size()){
-//					
-//					count1 = options.size()-1;
-//					
-//				//	count1=0;
-//					message = options.get(count1);
-//					
-//
-//					selected = count1;
-//					text.setText(message);
-//
-//					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//						null);
-//				
-//					releaseSoundEffect();
-//					playSound(ITEM_BY_ITEM);
-//					
-//					releaseSoundEffect();
-//					playSound(EDGE);
-// 					
-//					
-//				}else if(count1<options.size()) //count<.size() 
-//				{
-//				 //put get(count1)
-//					message = options.get(count1);
-//				
-//
-//					selected = count1;
-//					text.setText(message);
-//
-//					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//						null);
-//				
-//					releaseSoundEffect();
-//					playSound(ITEM_BY_ITEM);
-//				
-// 
-//					if(count1==(options.size()-1)) 
-//					{
-//						releaseSoundEffect();
-//						playSound(EDGE);
-//	
-//					} 
-//			   
-//					count1++;
-//
-//				}
-//		
-//			}
-			
-		}else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
-		
-			flag2=true;
-			
-			if(options.size()!=0)
-			{
-				if(flag3)
-				{
-					if(count1==1)
-						count1=options.size()-1;
-	//				else if(count==5)
-	//					count=3;
-					else 
-					{	
-						if(count1!=0)
-							count1-=2;
+
 					}
-					flag3=false;
+
+					count1++;
+
 				}
-				
-				if(count1!=0)
-				{
-					if(count1==options.size()){
-				
-					
-						count1=options.size()-2;
-					}	
+			}
+			// second version
+			// if(options.size()!=0)
+			// {
+			// if(count1==options.size())
+			// count1=0;
+			//				
+			// if(flag3)
+			// {
+			// if(count1==options.size()-1)
+			// count1=1;
+			// else
+			// count1+=2;
+			//					
+			// flag3=false;
+			// }
+			//				
+			// //view..
+			// message = options.get(count1);
+			//				
+			//
+			// selected = count1;
+			// text.setText(message);
+			//
+			// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+			// null);
+			//			
+			// releaseSoundEffect();
+			// playSound(ITEM_BY_ITEM);
+			//				
+			// if(count1==options.size()-1)
+			// {
+			// releaseSoundEffect();
+			// playSound(EDGE);
+			// }
+			// //
+			// if(count1<options.size())
+			// count++;
+			//				
+			// flag2=true;
+			// }
+
+			// //////////First version/////
+
+			// if (options.size() != 0){
+			//				 
+			// if(count1==0)
+			// {
+			// count1++;
+			//
+			// }
+			//				
+			// if(count1==options.size()){
+			//					
+			// count1 = options.size()-1;
+			//					
+			// // count1=0;
+			// message = options.get(count1);
+			//					
+			//
+			// selected = count1;
+			// text.setText(message);
+			//
+			// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+			// null);
+			//				
+			// releaseSoundEffect();
+			// playSound(ITEM_BY_ITEM);
+			//					
+			// releaseSoundEffect();
+			// playSound(EDGE);
+			// 					
+			//					
+			// }else if(count1<options.size()) //count<.size()
+			// {
+			// //put get(count1)
+			// message = options.get(count1);
+			//				
+			//
+			// selected = count1;
+			// text.setText(message);
+			//
+			// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+			// null);
+			//				
+			// releaseSoundEffect();
+			// playSound(ITEM_BY_ITEM);
+			//				
+			// 
+			// if(count1==(options.size()-1))
+			// {
+			// releaseSoundEffect();
+			// playSound(EDGE);
+			//	
+			// }
+			//			   
+			// count1++;
+			//
+			// }
+			//		
+			// }
+
+		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+
+			flag2 = true;
+
+			if (options.size() != 0) {
+				if (flag3) {
+					if (count1 == 1)
+						count1 = options.size() - 1;
+					// else if(count==5)
+					// count=3;
+					else {
+						if (count1 != 0)
+							count1 -= 2;
+					}
+					flag3 = false;
 				}
-	
-				
-				if(count1==0){
-				//	this.sayPageName("0");
-					
+
+				if (count1 != 0) {
+					if (count1 == options.size()) {
+
+						count1 = options.size() - 2;
+					}
+				}
+
+				if (count1 == 0) {
+					// this.sayPageName("0");
+
 					message = options.get(count1);
-					
-	
+
 					selected = count1;
 					text.setText(message);
-	
-					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-						null);
-				    
-					
+
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+
 					releaseSoundEffect();
 					playSound(ITEM_BY_ITEM);
-				
-			    //	 viewA.setText("UP"+count1);
-					count1=options.size()-1;
-					
-				}
-				else if(count1<options.size())
-					{
-					
-					 
+
+					// viewA.setText("UP"+count1);
+					count1 = options.size() - 1;
+
+				} else if (count1 < options.size()) {
+
 					message = options.get(count1);
-				
-	
+
 					selected = count1;
 					text.setText(message);
-	
-					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-						null);
-				
+
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+
 					releaseSoundEffect();
 					playSound(ITEM_BY_ITEM);
-				
-	
-					if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
+
+					if (count1 == (options.size() - 1)) {
+
+						if ((options.get(count1).length() > 8)
+								&& (options.get(count1).length() < 16)) {
 							try {
-								
+
 								Thread.sleep(1400);
 								releaseSoundEffect();
 								playSound(EDGE);
-								
-							}catch(InterruptedException e61){
+
+							} catch (InterruptedException e61) {
 								e61.printStackTrace();
 							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
+
+						} else if (options.get(count1).length() > 16) {
 							try {
-								
+
 								Thread.sleep(2100);
 								releaseSoundEffect();
 								playSound(EDGE);
-								
-							}catch(InterruptedException e62){
+
+							} catch (InterruptedException e62) {
 								e62.printStackTrace();
 							}
-				 
-						}else 
-						{
+
+						} else {
 							try {
-								
+
 								Thread.sleep(700);
 								releaseSoundEffect();
 								playSound(EDGE);
-								
-							}catch(InterruptedException e63){
+
+							} catch (InterruptedException e63) {
 								e63.printStackTrace();
 							}
 						}
-	
-					} 
-				//	 viewA.setText("Up"+count1);
-			   
+
+					}
+					// viewA.setText("Up"+count1);
+
 					count1--;
-	
+
 				}
-			} 
-			////Second version
-//			flag3=true; 
-//			
-//			
-//			if(options.size()!=0){
-//				
-//				if(flag2)
-//				{
-//					if(count1==1)
-//						count1=options.size()-1;
-//					else if(count1==options.size())
-//						count1=options.size()-2;
-//					else 
-//						count1-=2;
-//					
-//					flag2=false; 
-//				}
-//				
-//				//view .. 
-//				message = options.get(count1);
-//				
-//
-//				selected = count1;
-//				text.setText(message);
-//
-//				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//					null);
-//			
-//				releaseSoundEffect();
-//				playSound(ITEM_BY_ITEM);
-//				
-//				if(count1==options.size()-1)
-//				{	
-//					releaseSoundEffect();
-//					playSound(EDGE);
-//				}
-//				//
-//				
-//				if(count1==0)
-//				{
-//					count1=options.size();
-//					count1--;
-//				}
-//				else 
-//				{
-//					if(count<options.size()+1)
-//						count--;
-//				}
-//			
-//				
-//				
-//			}
-			
-//////// First Version 			
-			
-//  			if (options.size() != 0){
-//				
-//				if(count1!=0)
-//				{
-//					if(count1==options.size()){
-//				
-//					
-//						count1=options.size()-2;
-//					}	
-//				}
-//
-//				if(count1==0)
-//				{
-//					message = options.get(count1);
-//					
-//
-//					selected = count1;
-//					text.setText(message);
-//
-//					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//						null);
-//				
-//					releaseSoundEffect();
-//					playSound(ITEM_BY_ITEM);
-//				
-// 
-//				}
-//				else if(count1<options.size())//count<.size() 
-//				{
-//				 //put get(count1)
-//					message = options.get(count1);
-//				
-//
-//					selected = count1;
-//					text.setText(message);
-//
-//					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-//						null);
-//				
-//					releaseSoundEffect();
-//					playSound(ITEM_BY_ITEM);
-//				
-// 
-//					if(count1==(options.size()-1)) 
-//					{
-//						releaseSoundEffect();
-//						playSound(EDGE);
-//	
-//					} 
-//			   
-//					count1--;
-//
-//				}
-//		
-//			}
+			}
+			// //Second version
+			// flag3=true;
+			//			
+			//			
+			// if(options.size()!=0){
+			//				
+			// if(flag2)
+			// {
+			// if(count1==1)
+			// count1=options.size()-1;
+			// else if(count1==options.size())
+			// count1=options.size()-2;
+			// else
+			// count1-=2;
+			//					
+			// flag2=false;
+			// }
+			//				
+			// //view ..
+			// message = options.get(count1);
+			//				
+			//
+			// selected = count1;
+			// text.setText(message);
+			//
+			// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+			// null);
+			//			
+			// releaseSoundEffect();
+			// playSound(ITEM_BY_ITEM);
+			//				
+			// if(count1==options.size()-1)
+			// {
+			// releaseSoundEffect();
+			// playSound(EDGE);
+			// }
+			// //
+			//				
+			// if(count1==0)
+			// {
+			// count1=options.size();
+			// count1--;
+			// }
+			// else
+			// {
+			// if(count<options.size()+1)
+			// count--;
+			// }
+			//			
+			//				
+			//				
+			// }
+
+			// ////// First Version
+
+			// if (options.size() != 0){
+			//				
+			// if(count1!=0)
+			// {
+			// if(count1==options.size()){
+			//				
+			//					
+			// count1=options.size()-2;
+			// }
+			// }
+			//
+			// if(count1==0)
+			// {
+			// message = options.get(count1);
+			//					
+			//
+			// selected = count1;
+			// text.setText(message);
+			//
+			// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+			// null);
+			//				
+			// releaseSoundEffect();
+			// playSound(ITEM_BY_ITEM);
+			//				
+			// 
+			// }
+			// else if(count1<options.size())//count<.size()
+			// {
+			// //put get(count1)
+			// message = options.get(count1);
+			//				
+			//
+			// selected = count1;
+			// text.setText(message);
+			//
+			// this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+			// null);
+			//				
+			// releaseSoundEffect();
+			// playSound(ITEM_BY_ITEM);
+			//				
+			// 
+			// if(count1==(options.size()-1))
+			// {
+			// releaseSoundEffect();
+			// playSound(EDGE);
+			//	
+			// }
+			//			   
+			// count1--;
+			//
+			// }
+			//		
+			// }
 		}
 
 		return true;// return super.onKeyDown(keyCode, event);
 	}
-	
- 
-	public void releaseSoundEffect(){
-		 
-		
-        // TODO Auto-generated method stub
-        if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-        }
-        if (mMediaPlayer2 != null){
-        	mMediaPlayer2.release();
-        	mMediaPlayer = null;
-        }
-        if (mMediaPlayer3 != null){
-        	mMediaPlayer3.release();
-        	mMediaPlayer3 = null;
-        }
-        if (mMediaPlayer4 != null){
-        	mMediaPlayer4.release();
-        	mMediaPlayer4 = null;
-        }
-        if (mMediaPlayer5 != null){
-        	mMediaPlayer5.release();
-        	mMediaPlayer5 = null;
-        }
+
+	private void upMotion() {
+		flag2 = true;
+
+		if (options.size() != 0) {
+			if (flag3) {
+				if (count1 == 1)
+					count1 = options.size() - 1;
+				// else if(count==5)
+				// count=3;
+				else {
+					if (count1 != 0)
+						count1 -= 2;
+				}
+				flag3 = false;
+			}
+
+			if (count1 != 0) {
+				if (count1 == options.size()) {
+
+					count1 = options.size() - 2;
+				}
+			}
+
+			if (count1 == 0) {
+				// this.sayPageName("0");
+
+				message = options.get(count1);
+
+				selected = count1;
+				text.setText(message);
+
+				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+
+				releaseSoundEffect();
+				playSound(ITEM_BY_ITEM);
+
+				// viewA.setText("UP"+count1);
+				count1 = options.size() - 1;
+
+			} else if (count1 < options.size()) {
+
+				message = options.get(count1);
+
+				selected = count1;
+				text.setText(message);
+
+				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+
+				releaseSoundEffect();
+				playSound(ITEM_BY_ITEM);
+
+				if (count1 == (options.size() - 1)) {
+
+					if ((options.get(count1).length() > 8)
+							&& (options.get(count1).length() < 16)) {
+						try {
+
+							Thread.sleep(1400);
+							releaseSoundEffect();
+							playSound(EDGE);
+
+						} catch (InterruptedException e11) {
+							e11.printStackTrace();
+						}
+
+					} else if (options.get(count1).length() > 16) {
+						try {
+
+							Thread.sleep(2100);
+							releaseSoundEffect();
+							playSound(EDGE);
+
+						} catch (InterruptedException e12) {
+							e12.printStackTrace();
+						}
+
+					} else {
+						try {
+
+							Thread.sleep(700);
+							releaseSoundEffect();
+							playSound(EDGE);
+
+						} catch (InterruptedException e13) {
+							e13.printStackTrace();
+						}
+					}
+
+				}
+				// viewA.setText("Up"+count1);
+
+				count1--;
+
+			}
+		}
+
+		flag = false;
+	}
+
+	private void downMotion() {
+		flag3 = true;
+		if (options.size() != 0) {
+
+			if (flag2) {
+				if (count1 == options.size() - 1)
+					count1 = 1;
+				else
+					count1 += 2;
+
+				flag2 = false;
+			}
+
+			if (count1 == options.size()) {
+
+				count1 = 0;
+
+			}
+
+			if (count1 < options.size()) // count<.size()
+			{
+
+				// viewA.setText("Down"+count1);
+				message = options.get(count1);
+
+				selected = count1;
+				text.setText(message);
+
+				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+
+				releaseSoundEffect();
+				playSound(ITEM_BY_ITEM);
+
+				if (count1 == (options.size() - 1)) {
+
+					if ((options.get(count1).length() > 8)
+							&& (options.get(count1).length() < 16)) {
+						try {
+
+							Thread.sleep(1400);
+							releaseSoundEffect();
+							playSound(EDGE);
+
+						} catch (InterruptedException e21) {
+							e21.printStackTrace();
+						}
+
+					} else if (options.get(count1).length() > 16) {
+						try {
+
+							Thread.sleep(2100);
+							releaseSoundEffect();
+							playSound(EDGE);
+
+						} catch (InterruptedException e22) {
+							e22.printStackTrace();
+						}
+
+					} else {
+						try {
+
+							Thread.sleep(700);
+							releaseSoundEffect();
+							playSound(EDGE);
+
+						} catch (InterruptedException e23) {
+							e23.printStackTrace();
+						}
+					}
+
+				}
+
+				count1++;
+
+			}
+		}
+
+		flag = false;
+	}
+
+	public void releaseSoundEffect() {
+
+		// TODO Auto-generated method stub
+		if (mMediaPlayer != null) {
+			mMediaPlayer.release();
+			mMediaPlayer = null;
+		}
+		if (mMediaPlayer2 != null) {
+			mMediaPlayer2.release();
+			mMediaPlayer = null;
+		}
+		if (mMediaPlayer3 != null) {
+			mMediaPlayer3.release();
+			mMediaPlayer3 = null;
+		}
+		if (mMediaPlayer4 != null) {
+			mMediaPlayer4.release();
+			mMediaPlayer4 = null;
+		}
+		if (mMediaPlayer5 != null) {
+			mMediaPlayer5.release();
+			mMediaPlayer5 = null;
+		}
+		if (mMediaPlayer6 != null) {
+			mMediaPlayer6.release();
+			mMediaPlayer6 = null;
+		}
+		if (mMediaPlayer7 != null) {
+			mMediaPlayer7.release();
+			mMediaPlayer7 = null;
+		}
 	}
 
 }
