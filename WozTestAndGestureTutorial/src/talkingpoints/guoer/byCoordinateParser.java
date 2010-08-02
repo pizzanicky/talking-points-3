@@ -1,7 +1,4 @@
- 
 package talkingpoints.guoer;
-
-
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -17,6 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.content.Context;
 import android.util.Log;
 
 public class byCoordinateParser {
@@ -28,13 +26,13 @@ public class byCoordinateParser {
 	public static ArrayList<String> lat;
 	public static ArrayList<String> lng;
 	public static ArrayList<String> name;
-	public static ArrayList<String> tpid; 
-	public static ArrayList<String> mac; 
+	public static ArrayList<String> tpid;
+	public static ArrayList<String> mac;
 	public static ArrayList<Float> distance;
 	public static ArrayList<Integer> floor;
-      
+
 	// constructor
-	public byCoordinateParser(String url) {
+	public byCoordinateParser(String url, Context con) {
 		try {
 			this.feedUrl = new URL(url);
 		} catch (MalformedURLException e) {
@@ -47,16 +45,26 @@ public class byCoordinateParser {
 		mac = new ArrayList<String>();
 		distance = new ArrayList<Float>();
 		floor = new ArrayList<Integer>();
-		connect();
+		connect(con);
 	}
-	
-	private void connect() {
-		try {  
- 			DocumentBuilderFactory factory = DocumentBuilderFactory
+
+	private void connect(Context con) {
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = null;
 
+			// ConnectivityManager conMan = (ConnectivityManager) con
+			// .getSystemService(Context.CONNECTIVITY_SERVICE);
+			//			  
+			// State mobile = conMan.getNetworkInfo(0).getState();
+			//
+			//			 
+			// State wifi = conMan.getNetworkInfo(1).getState();
+			// Log.d("wifi", wifi.toString());
+			// if (wifi == NetworkInfo.State.CONNECTED
+			// || mobile == NetworkInfo.State.CONNECTED) {
 			try {
 				doc = builder.parse(feedUrl.openConnection().getInputStream());
 				Element root = doc.getDocumentElement();
@@ -78,16 +86,16 @@ public class byCoordinateParser {
 										String la = property.getFirstChild()
 												.getNodeValue();
 										lat.add(la);
-									}else
-										lat.add(""); 
+									} else
+										lat.add("");
 								} else if (property_name
 										.equalsIgnoreCase("lng")) {
 									if (property.hasChildNodes()) {
 										String ln = property.getFirstChild()
 												.getNodeValue();
 										lng.add(ln);
-									}else
-										lng.add(""); 
+									} else
+										lng.add("");
 								} else if (property_name
 										.equalsIgnoreCase("name")) {
 									if (property.hasChildNodes()) {
@@ -95,7 +103,7 @@ public class byCoordinateParser {
 												.getNodeValue();
 										name.add(na);
 									} else
-										name.add("");  
+										name.add("");
 
 								} else if (property_name
 										.equalsIgnoreCase("tpid")) {
@@ -103,7 +111,7 @@ public class byCoordinateParser {
 										String id = property.getFirstChild()
 												.getNodeValue();
 										tpid.add(id);
-									}  
+									}
 								} else if (property_name
 										.equalsIgnoreCase("bluetooth-mac")) {
 									if (property.hasChildNodes()) {
@@ -111,36 +119,36 @@ public class byCoordinateParser {
 												.getNodeValue();
 										mac.add(ma);
 									} else
-									mac.add(""); 
-								}
-								else if (property_name
+										mac.add("");
+								} else if (property_name
 										.equalsIgnoreCase("distance")) {
 									if (property.hasChildNodes()) {
 										String dis = property.getFirstChild()
 												.getNodeValue();
 										distance.add(Float.parseFloat(dis));
 									} else
-									distance.add(Float.parseFloat("0")); 
-								}else if (property_name
+										distance.add(Float.parseFloat("0"));
+								} else if (property_name
 										.equalsIgnoreCase("floor-number")) {
 									if (property.hasChildNodes()) {
 										String fl = property.getFirstChild()
 												.getNodeValue();
 										floor.add(Integer.parseInt(fl));
 									} else
-									floor.add(0); 
+										floor.add(0);
 								}
 							}
 						}
 					}
 				}
-				
+
 				// }
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			// }
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -159,15 +167,17 @@ public class byCoordinateParser {
 	public ArrayList<String> getName() {
 		return name;
 	}
-	public ArrayList<String> getTpid(){
+
+	public ArrayList<String> getTpid() {
 		return tpid;
 	}
-	public static ArrayList<Float> getDistance(){
+
+	public static ArrayList<Float> getDistance() {
 		return distance;
 	}
-	public ArrayList<String> getMac(){
+
+	public ArrayList<String> getMac() {
 		return mac;
 	}
-	
-}
 
+}

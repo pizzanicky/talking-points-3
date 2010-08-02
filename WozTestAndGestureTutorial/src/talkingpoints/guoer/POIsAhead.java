@@ -28,14 +28,26 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 	private float[] values;
 	private static float angle;
 	
-	private static final int SWIPE_MIN_DISTANCE = 120;
+//	private static final int SWIPE_MIN_DISTANCE = 120;
+//	private static final int SWIPE_MAX_OFF_PATH = 250;
+//	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+	
+	private static final int SWIPE_MIN_DISTANCE = 10; //120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
+	private static final int CHECK_DISTANCE =100; 
+	
     private static boolean flag = false;
     private static boolean flag2 = false;
     private static boolean flag3 = false;
+    private static boolean flagForScrolling=false; 
 
+    private float FirstX;
+    private float FirstY;
+    private float LastX;
+    private float LastY;
+    
     private static int count1=0;
     private static int countGesture=0;
 
@@ -58,6 +70,9 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 				if(options.size()!=0){
 					
 					finish();
+					
+					releaseSoundEffect();
+					playSound(NEXT_PAGE);
 					
 					Intent intent = new Intent(POIsAhead.this, POImenu.class);
 				
@@ -91,6 +106,10 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
  					if(options.size()!=0){
  						
  						finish();
+ 						
+ 						releaseSoundEffect();
+						playSound(NEXT_PAGE);
+						
  						
  						Intent intent = new Intent(POIsAhead.this, POImenu.class);
  					
@@ -316,6 +335,87 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		
 	}
 	@Override
+	public boolean onTouchEvent(MotionEvent e) {
+
+		int action = e.getAction();
+    	//down 
+		if(action == MotionEvent.ACTION_DOWN||action==MotionEvent.ACTION_MOVE)
+			flagForScrolling=true;
+		
+        if(action == MotionEvent.ACTION_DOWN)
+        {
+         	FirstX=e.getX();
+        	FirstY=e.getY();
+        }
+    	else if(action == MotionEvent.ACTION_UP)
+    	{
+    		LastX=e.getX();
+    		LastY=e.getY();
+    		
+     		
+    		if(FirstX>0||FirstY>0)
+    		{
+    			final float xD=Math.abs(FirstX-LastX);
+    			final float yD=Math.abs(FirstY-LastY);
+    			
+    			try{
+    				if(FirstX-LastX>SWIPE_MIN_DISTANCE&&yD< CHECK_DISTANCE)
+    				{
+    	    			//	      this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
+
+    					releaseSoundEffect();
+    					playSound(NEXT_PAGE);
+    						finish();
+
+    				}
+    				else if(LastX - FirstX >SWIPE_MIN_DISTANCE&& yD< CHECK_DISTANCE) 
+    					this.sayPageName();
+
+     				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
+     				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
+     				{
+     					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
+     					 if(flag||flagForScrolling)
+     					 {
+     						 upMotion();
+     						flagForScrolling=false;
+     					 }
+     					
+     				}
+     				else if(LastY - FirstY > SWIPE_MIN_DISTANCE && xD< CHECK_DISTANCE)  
+     				{	
+     					//this.mTts.speak("down motion", TextToSpeech.QUEUE_FLUSH,null);
+     					
+     					 if(flag||flagForScrolling)
+     					 {
+     						 
+     						 
+     						downMotion();
+     						flagForScrolling = false; 
+     					 }
+     				}//missed
+     				else 
+     				{
+     					releaseSoundEffect();
+						playSound(MISSED_IT);
+     					this.mTts.speak("Please move your thumb in right direction", TextToSpeech.QUEUE_FLUSH,null);
+     				}
+
+    		 
+
+    			}
+    			catch (Exception e0) {
+    				// nothing
+    			}
+    			
+    		}
+    	}
+		
+		gestureScanner.onTouchEvent(e);
+		return true;
+
+	}
+	@Override
 	public boolean onFling(MotionEvent e3, MotionEvent e4, float velocityX,
 			float velocityY) {
 //		flag=true;
@@ -340,169 +440,35 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 //			// nothing
 //		}
 		
+		final float xDistance = Math.abs(e3.getX() - e4.getX());
+		final float yDistance = Math.abs(e3.getY() - e4.getY());
 		// TODO Auto-generated method stub
 		if (e3.getX() - e4.getX() > SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY &&yDistance< CHECK_DISTANCE) {
+			releaseSoundEffect();
+			playSound(NEXT_PAGE);
 				finish();
 
 		}else if(e4.getX() - e3.getX() >SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY &&yDistance< CHECK_DISTANCE) {
 		   //   viewA.setText("-" + "Fling Right" + "-");
 				this.sayPageName();
 
 		}else if(e3.getY() - e4.getY() > SWIPE_MIN_DISTANCE
-				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY &&xDistance< CHECK_DISTANCE) {
 			//	this.sayPageName("up");
 				 if(flag)
 				 {
-					 flag2=true;
-						
-					 if(options.size()!=0){
-							if(flag3)
-							{
-								if(count1==1)
-									count1=options.size()-1;
-				//				else if(count==5)
-				//					count=3;
-								else 
-								{
-									if(count1!=0)
-									count1-=2;
-								}
-								
-								flag3=false;
-							}
-							
-							if(count1!=0)
-							{
-								if(count1==options.size()){
-							
-								
-									count1=options.size()-2;
-								}	
-							}
-				
-							
-							if(count1==0){
-							//	this.sayPageName("0");
-								
-								message = options.get(count1);
-								
-				
-								selected = count1;
-								text.setText(message);
-				
-								this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-									null);
-							    
-								
-								releaseSoundEffect();
-								playSound(ITEM_BY_ITEM);
-							
-						    //	 viewA.setText("UP"+count1);
-								count1=options.size()-1;
-								
-							}
-							else if(count1<options.size())
-								{
-								
-								
-								message = options.get(count1);
-							
-				
-								selected = count1;
-								text.setText(message);
-				
-								this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-									null);
-							
-								releaseSoundEffect();
-								playSound(ITEM_BY_ITEM);
-							
-				
-								if(count1==(options.size()-1)) 
-								{
-									releaseSoundEffect();
-									playSound(EDGE);
-				
-								} 
-							//	 viewA.setText("Up"+count1);
-						   
-								count1--;
-				
-							}
-						}else if(options.size()==0)
-						{
-							   sayPageName("Please press the trackball to hear locations");
-
-						}
-						
-					 
-	 
-					 flag = false;
+					 upMotion();
 				 }
 				
 		    //  viewA.setText("-" + "Fling up?" + "-");
 
 			}else if(e4.getY() - e3.getY() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+					&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY &&xDistance< CHECK_DISTANCE) {
 				 if(flag)
 				 {
-					 
-					 flag3=true; 
-					 if(options.size()!=0){
-						 
-							if(flag2)
-							{
-								if(count1==options.size()-1)
-									count1=1;
-								else 
-									count1+=2;
-								
-								flag2=false; 
-							}
-							
-							if(count1==options.size()){
-								
-								count1=0;
-								
-							}
-							
-							if(count1<options.size()) //count<.size() 
-							{
-								
-								// viewA.setText("Down"+count1);
-				     			message = options.get(count1);
-				 			
-				 
-				 				selected = count1;
-				  				text.setText(message);
-				 
-				 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
-				 					null);
-				 			
-				 				releaseSoundEffect();
-				 				playSound(ITEM_BY_ITEM);
-				 			
- 				 
-								if(count1==(options.size()-1)) 
-								{
-									releaseSoundEffect();
-									playSound(EDGE);
-		
-								} 
-						    
-								count1++;
-		
-							}
-					 }else if(options.size()==0)
-					{
-						   sayPageName("Please press the trackball to hear locations");
-
-					}
-	 
-					 flag = false;
+					 downMotion();
 				 }
 				 
 	 
@@ -512,6 +478,213 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		
 		
 		return false;
+	}
+	private void upMotion()
+	{
+		flag2=true;
+		
+		 if(options.size()!=0){
+				if(flag3)
+				{
+					if(count1==1)
+						count1=options.size()-1;
+	//				else if(count==5)
+	//					count=3;
+					else 
+					{
+						if(count1!=0)
+						  count1-=2;
+					}
+					flag3=false;
+				}
+				
+				if(count1!=0)
+				{
+					if(count1==options.size()){
+				
+					
+						count1=options.size()-2;
+					}	
+				}
+	
+				
+				if(count1==0){
+				//	this.sayPageName("0");
+					
+					message = options.get(count1);
+					
+	
+					selected = count1;
+					text.setText(message);
+	
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+						null);
+				    
+					
+					releaseSoundEffect();
+					playSound(ITEM_BY_ITEM);
+				
+			    //	 viewA.setText("UP"+count1);
+					count1=options.size()-1;
+					
+				}
+				else if(count1<options.size())
+					{
+					
+					
+					message = options.get(count1);
+				
+	
+					selected = count1;
+					text.setText(message);
+	
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+						null);
+				
+					releaseSoundEffect();
+					playSound(ITEM_BY_ITEM);
+				
+	
+					if(count1==(options.size()-1)) 
+					{
+						
+						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+						{
+							try {
+								
+								Thread.sleep(1400);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e11){
+								e11.printStackTrace();
+							}
+				 
+						}
+						else if(options.get(count1).length()>16)
+						{
+							try {
+								
+								Thread.sleep(2100);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e12){
+								e12.printStackTrace();
+							}
+				 
+						}else 
+						{
+							try {
+								
+								Thread.sleep(700);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e13){
+								e13.printStackTrace();
+							}
+						}
+
+					} 
+				//	 viewA.setText("Up"+count1);
+			   
+					count1--;
+	
+				}
+			} 
+			
+		 
+
+		 flag = false;
+	}
+	private void downMotion()
+	{
+		flag3=true; 
+		 if(options.size()!=0){
+			 
+				if(flag2)
+				{
+					if(count1==options.size()-1)
+						count1=1;
+					else 
+						count1+=2;
+					
+					flag2=false; 
+				}
+				
+				if(count1==options.size()){
+					
+					count1=0;
+					
+				}
+				
+				if(count1<options.size()) //count<.size() 
+				{
+					
+					// viewA.setText("Down"+count1);
+	     			message = options.get(count1);
+	 			
+	 
+	 				selected = count1;
+	  				text.setText(message);
+	 
+	 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+	 					null);
+	 			
+	 				releaseSoundEffect();
+	 				playSound(ITEM_BY_ITEM);
+	 			
+	 
+					if(count1==(options.size()-1)) 
+					{
+						
+						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+						{
+							try {
+								
+								Thread.sleep(1400);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e21){
+								e21.printStackTrace();
+							}
+				 
+						}
+						else if(options.get(count1).length()>16)
+						{
+							try {
+								
+								Thread.sleep(2100);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e22){
+								e22.printStackTrace();
+							}
+				 
+						}else 
+						{
+							try {
+								
+								Thread.sleep(700);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e23){
+								e23.printStackTrace();
+							}
+						}
+
+					} 
+			    
+					count1++;
+
+				}
+		 }  
+
+		 flag = false;
 	}
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,

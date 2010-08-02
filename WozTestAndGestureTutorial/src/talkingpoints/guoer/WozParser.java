@@ -14,6 +14,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
+import android.util.Log;
 import android.widget.Toast;
 
 public class WozParser {
@@ -28,17 +33,17 @@ public class WozParser {
  
 
 	// constructor
-	public WozParser(String url) {
+	public WozParser(String url, Context con) {
 		try {
 			this.feedUrl = new URL(url);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
   
-		connect();
+		connect(con);
 	}
 
-	private void connect() {
+	private void connect(Context con) {
 		try {
 		 
 			DocumentBuilderFactory factory = DocumentBuilderFactory
@@ -46,6 +51,19 @@ public class WozParser {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = null;
 
+//			ConnectivityManager conMan = (ConnectivityManager)con.getSystemService(Context.CONNECTIVITY_SERVICE);
+//			// WifiManager conMan=(WifiManager)
+//			// Context.getSystemService(Context.WIFI_SERVICE);
+//			// mobile
+//			State mobile = conMan.getNetworkInfo(0).getState();
+//		
+//			// wifi
+//			State wifi = conMan.getNetworkInfo(1).getState();
+//			Log.d("wifi", wifi.toString());
+//			if (wifi == NetworkInfo.State.CONNECTED
+//					|| mobile == NetworkInfo.State.CONNECTED) {
+//			
+			
 			try {
 				doc = builder.parse(feedUrl.openConnection().getInputStream());
 				Element root = doc.getDocumentElement();
@@ -73,7 +91,9 @@ public class WozParser {
 			catch (IOException e) {
 			e.printStackTrace();
 			}
-		} catch (Exception e) {
+//		}
+		}
+			catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

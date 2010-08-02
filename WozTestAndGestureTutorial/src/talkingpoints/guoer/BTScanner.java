@@ -126,7 +126,7 @@ public class BTScanner extends Service {
 	  private void getCoordinates(){
 	      	Toast.makeText(this,"Get coordinate!", Toast.LENGTH_SHORT).show();
 
-	   	p1 = new WozParser(GET_COORDINATE);
+	   	p1 = new WozParser(GET_COORDINATE,getApplicationContext());
 	    	
 	    	  StringLac = WozParser.getLatitude();
 	          StringLng = WozParser.getLongitude();
