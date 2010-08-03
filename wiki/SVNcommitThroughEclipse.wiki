@@ -11,7 +11,7 @@
   # Click https://talking-points-3.googlecode.com/svn/trunk 
   # Finish 
 
-Than, you will see an empty folder on the Source page in talking-points-3. 
+Than, you will see an empty folder of your project on the Source page in talking-points-3. 
 You need to do the following steps to complete commit steps. 
 
   # On the Project Explorer, right click your project folder
