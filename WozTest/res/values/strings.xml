@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, BTlist!</string>
+    <string name="app_name">TalkingPoints</string>
+<string name="button_scan">Scan for devices</string>
+<string name="title_other_devices">Available Devices</string>
+<string name="title_paired_devices">Paired Devices</string>
+<string name="scanning">scanning for devices...</string>
+
+<string name="none_found">No devices found</string>
+<string name="none_paired">No devices have been paired</string>
+<string name="scan_finish">Scan done</string>
+<string name="button_clear">Clear</string>
+<string name="poi_info">Info</string>
+<string name="serviceStatus">Service Status</string>
+<string name="sensor_service_started">BT scanning service started</string>
+<string name="notification_label">BT service</string>
+<string name="MACAddr">0017e8ac53b8</string>
+<string name="x">32.3321321</string>
+<string name="y">12.3432422</string>
+
+</resources>
