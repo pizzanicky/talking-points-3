@@ -1,9 +1,9 @@
-#summary One-sentence summary of this page.
 #labels svn,eclipse
+ 
 
-*Committing your project through Eclipse doesn't require you to use tortoisesvn or terminal which is very convenient and quick*
+#Committing your project through Eclipse doesn't require you to use tortoisesvn or terminal which is very convenient and quick*
 
-= Steps =
+*Steps*
 1. On the Project Explorer, right click your project folder
 2. Select Team -> Share Project
 3. Select SVN than click Next
