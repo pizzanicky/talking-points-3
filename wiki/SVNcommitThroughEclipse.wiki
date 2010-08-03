@@ -1,0 +1,20 @@
+#summary One-sentence summary of this page.
+#labels svn,eclipse
+
+*Committing your project through Eclipse doesn't require you to use tortoisesvn or terminal which is very convenient and quick*
+
+= Steps =
+1. On the Project Explorer, right click your project folder
+2. Select Team -> Share Project
+3. Select SVN than click Next
+4. Select Use existing repository location 
+5. Click https://talking-points-3.googlecode.com/svn/trunk 
+6. Finish 
+
+Than, you will see an empty folder on the Source page in talking-points-3. 
+You need to do the following steps to complete commit steps. 
+
+7. On the Project Explorer, right click your project folder
+8. Select Team -> Commit 
+9. Write message for Commit 
+10. Finish 
