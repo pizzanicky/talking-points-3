@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, WifiPosition!</string>
+    <string name="app_name">WifiPosition</string>
+	<string name="spn_feet">select feet</string>
+</resources>

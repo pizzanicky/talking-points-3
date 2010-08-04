@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string-array name="spnFeet">
+		<item>0</item>
+		<item>3</item>
+		<item>6</item>
+		<item>9</item>
+		<item>12</item>
+		<item>15</item>
+		<item>18</item>
+		<item>21</item>
+		<item>24</item>
+		<item>27</item>
+		<item>30</item>
+		<item>33</item>
+		<item>36</item>
+		<item>39</item>
+		<item>42</item>
+		<item>45</item>
+		<item>48</item>
+		<item>51</item>
+		<item>54</item>
+		<item>57</item>
+		<item>60</item>
+	</string-array>
+</resources>

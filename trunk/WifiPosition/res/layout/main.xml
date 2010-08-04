@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<!--    <com.google.android.maps.MapView  -->
+<!--	xmlns:android="http://schemas.android.com/apk/res/android"    -->
+<!--	android:id="@+id/mapview"    -->
+<!--	android:layout_width="fill_parent"    -->
+<!--	android:layout_height="fill_parent"    -->
+<!--	android:clickable="true"    -->
+<!--	android:apiKey="0GZ3M4pVW4GIAqTpMGXaDDia-KU6rvP-A7Y87ZQ"-->
+<!--	/>-->
+    
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" android:text="Wifi Positioning v2.0"/>
+
+<TableRow android:id="@+id/TableRow01" 
+		android:layout_height="wrap_content" android:layout_width="520px">
+		
+<Spinner android:layout_height="wrap_content" 
+		android:layout_width="wrap_content"
+		android:id="@+id/spnSetting"  
+		android:prompt="@string/spn_feet">
+</Spinner>
+<Button android:layout_height="wrap_content" 
+		android:text="Log" 
+		android:id="@+id/btnLog" android:layout_width="120px">
+</Button>
+<Button android:layout_height="wrap_content" 
+		android:text="Refresh" 
+		android:id="@+id/btnRefresh" android:layout_width="120px">
+</Button>
+<Button android:layout_height="wrap_content" 
+		android:layout_width="120px" 
+		android:text="G Map" 
+		android:id="@+id/btnMap">
+</Button>
+</TableRow>
+
+<TableRow android:id="@+id/TableRow02" 
+		android:layout_height="wrap_content" android:layout_width="520px">
+<Button android:id="@+id/btnSampling" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" android:text="Start sampling"></Button>
+</TableRow>
+		 
+
+
+<TableLayout android:id="@+id/TableLayout01" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content">
+<TextView android:id="@+id/TextView01" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="Location (Coordinate)"></TextView>
+
+<TextView android:id="@+id/txtmyLocation" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" android:text="Scanning myLocation..."></TextView>		
+<TextView android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:id="@+id/txtCompass" android:text="Compass:" android:layout_marginTop="7px"></TextView>
+<TextView android:id="@+id/TextView03" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="WifiScanning" android:layout_marginTop="7px"></TextView>
+</TableLayout>
+<TextView android:text="Scanning" 
+		android:id="@+id/mainText" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"></TextView>
+</LinearLayout>
