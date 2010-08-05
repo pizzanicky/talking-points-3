@@ -6,7 +6,7 @@ package talkingpoints.guoer;
 import java.util.ArrayList;
 import java.util.List;
 
-import talkingpoints.guoer.BTlist.RemoteServiceConnection;
+import talkingpoints.guoer.WozList.RemoteServiceConnection;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,7 +23,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-public class BTScanner extends Service {
+public class WozScanner extends Service {
 
 	private NotificationManager mNM;
 	// private Timer timer = new Timer();
