@@ -86,7 +86,7 @@ public class DetectedLocations extends GestureUI {
  	private static int count1=0;
 	private static int count2=0; 
 	private static int countGesture=0; 
-	private BTlist btList; 
+	private WozList btList; 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -119,10 +119,10 @@ public class DetectedLocations extends GestureUI {
 //		tpids = getIntent().getStringArrayListExtra("tpids");
 //		MacAddr = getIntent().getStringArrayListExtra("MacAddr");
 		
-		if(BTlist.getPOInamesWithDistance().size()!=0)
+		if(WozList.getPOInamesWithDistance().size()!=0)
 		{
-			for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
-				this.options.add(BTlist.getPOInamesWithDistance().get(i));
+			for(int i=0;i<WozList.getPOInamesWithDistance().size();i++)
+				this.options.add(WozList.getPOInamesWithDistance().get(i));
 			
 		}
 //		else if(BTlist.getPOInamesWithDistance().size()==0)
@@ -263,11 +263,11 @@ public class DetectedLocations extends GestureUI {
  								
 							   Intent intent = new Intent(DetectedLocations.this, POImenu.class);
 						   //Insert the parser function 
- 							   MacReader r = new MacReader(BTlist.getMacAddr()
+ 							   MacReader r = new MacReader(WozList.getMacAddr()
  								.get(GestureUI.selected));  
 							   intent.putExtra("MAC", r.getMacString());
-							   intent.putExtra("tpid",BTlist.getTpids().get(GestureUI.selected));
-							   intent.putExtra("POIname", BTlist.getPOInames()
+							   intent.putExtra("tpid",WozList.getTpids().get(GestureUI.selected));
+							   intent.putExtra("POIname", WozList.getPOInames()
 								.get(GestureUI.selected)); 
 							   
 							   startActivity(intent);
@@ -307,11 +307,11 @@ public class DetectedLocations extends GestureUI {
  							
 							   Intent intent = new Intent(DetectedLocations.this, POImenu.class);
 						   //Insert the parser function 
-							   MacReader r = new MacReader(BTlist.getMacAddr()
+							   MacReader r = new MacReader(WozList.getMacAddr()
 								.get(GestureUI.selected));  
 							   intent.putExtra("MAC", r.getMacString());
-							   intent.putExtra("tpid",BTlist.getTpids().get(GestureUI.selected));
-							   intent.putExtra("POIname", BTlist.getPOInames()
+							   intent.putExtra("tpid",WozList.getTpids().get(GestureUI.selected));
+							   intent.putExtra("POIname", WozList.getPOInames()
 								.get(GestureUI.selected)); 
 							   
 							   startActivity(intent);
@@ -456,8 +456,8 @@ public class DetectedLocations extends GestureUI {
 //						this.options.add(POINameWithDistance.get(i));
 				
 				 this.options.clear();
-				 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
- 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+				 for(int i=0;i<WozList.getPOInamesWithDistance().size();i++)
+ 						this.options.add(WozList.getPOInamesWithDistance().get(i));
 				 
 				 downMotion();
 			 }
@@ -714,8 +714,8 @@ public class DetectedLocations extends GestureUI {
 			
 			
 			AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-					.getlongitude(),BTlist.LAC1,
-					BTlist.LNG1);
+					.getlongitude(),WozList.LAC1,
+					WozList.LNG1);
 
 		   		oc.getAngle();
  		 
@@ -735,8 +735,8 @@ public class DetectedLocations extends GestureUI {
 			
 				
 				 this.options.clear();
-				 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
-						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+				 for(int i=0;i<WozList.getPOInamesWithDistance().size();i++)
+						this.options.add(WozList.getPOInamesWithDistance().get(i));
 				 
 				 
 			if(options.size()!=0){

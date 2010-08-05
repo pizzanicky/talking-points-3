@@ -382,8 +382,8 @@ public class POImenu extends GestureUI {
 		// if we get any key, clear the Splash Screen
 		if (keyCode_1 == KeyEvent.KEYCODE_DPAD_CENTER) {
 			AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-					.getlongitude(),BTlist.LAC1,
-					BTlist.LNG1);
+					.getlongitude(),WozList.LAC1,
+					WozList.LNG1);
 
 		   		oc.getAngle();
 		   	

@@ -708,16 +708,27 @@ public class GestureUI extends Activity implements OnInitListener,
 			playSound(NEXT_PAGE);
 			
 			
-			AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-					.getlongitude(),BTlist.LAC1,
-					BTlist.LNG1);
+			if(byCoordinateParser.getLatitude().size()>0)
+			{
+				AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+						.getlongitude(),WozList.LAC1,
+						WozList.LNG1);
 
-		   		oc.getAngle();
- 
-			Intent intent0 = new Intent(GestureUI.this,POIsAhead.class);
-			intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			   		oc.getAngle();
+	 
+				Intent intent0 = new Intent(GestureUI.this,POIsAhead.class);
+				intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-			startActivity(intent0);
+				startActivity(intent0); 
+
+			}
+			else 
+			{
+				
+				this.mTts.speak("There is no internet connection. Please check", TextToSpeech.QUEUE_FLUSH, null);
+			}
+
+		
 		}
 		else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
 		
