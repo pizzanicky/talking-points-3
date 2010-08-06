@@ -1,6 +1,7 @@
 package talkingpoints.guoer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 
@@ -42,20 +43,24 @@ public class WifiList extends GestureUI {
 	
 	private static String BY_COORDINATE1 = "http://app.talking-points.org/locations/by_coordinates/";
 	private static String BY_COORDINATE2 = ".xml?within=2";
-
+	
 	// private int tempRSSI;
 	// private int currentIndex;
 	ListComparer NewItemfilter;
 	private List<String> NofiticationList;
+	
 	// Return Intent extra
 	public static String EXTRA_DEVICE_ADDRESS = "device_address";
 	public static String EXTA_DEVICE_RSSI = "device_rssi";
 	public static ArrayList<String[]> MasterTags;
+	
 	// private ArrayAdapter<String> mPairedDevicesArrayAdapter;
 	public static ArrayAdapter<String> mNewDevicesArrayAdapter;
+	
 	// private ArrayList<String> POIOptions;
 	public static ArrayList<String> MacAddr;
 	public int m_periodUpdate = 3000;
+	
 	// Background service scanner
 	private WifiScanner mWifiScanner;
 	public static boolean isRunning;
@@ -81,22 +86,22 @@ public class WifiList extends GestureUI {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		WifiList.foundMasterTag = false;
-		pageName = new String("Scanning Wifi Locations");
-	 
+		pageName = new String("Scanning Wifi Locations");	
 			
+		MenuOptions = new ArrayList<String>();
+		MenuOptions.add("Detect locations within 20 feet"); //Bert's calf ay
+	//	MenuOptions.add("Quick Tutorial");
+		MenuOptions.add("Flashlight");
+//		MenuPOINameWithDistance.add("Keyword Search");
+//		MenuPOINameWithDistance.add("Flashlight");
+		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
+		
+		WozList.foundMasterTag = false;	 
+		
+		super.onCreate(savedInstanceState, MenuOptions);
+		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		
 			
-			MenuOptions = new ArrayList<String>();
-			MenuOptions.add("Detect locations within 20 feet"); //Bert's calf ay
-		//	MenuOptions.add("Quick Tutorial");
-			MenuOptions.add("Flashlight");
-//			MenuPOINameWithDistance.add("Keyword Search");
-//			MenuPOINameWithDistance.add("Flashlight");
-			pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
-			
-			WozList.foundMasterTag = false;
-	 		 
-			
-			super.onCreate(savedInstanceState, MenuOptions);			// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		// setContentView(R.layout.main);
 		setResult(Activity.RESULT_CANCELED);
 		// POIOptions = new ArrayList<String>();
@@ -105,14 +110,12 @@ public class WifiList extends GestureUI {
 		foundMasterTag = false;
 		MasterTags = new ArrayList<String[]>();
 		
-		String[] mt1 = new String[] { "00:1e:8d:19:83:24",
-				"42.274863748954786", "-83.74122619628906" };
+		String[] mt1 = new String[] { "00:1e:8d:19:83:24", "42.274863748954786", "-83.74122619628906" };
 		MasterTags.add(mt1);
 
 		mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
 
 		cachList = new ArrayList<String>();
-
 		startService();
 		bindService();
 
@@ -132,44 +135,35 @@ public class WifiList extends GestureUI {
 					releaseSoundEffect();
 					playSound(NEXT_PAGE);
 					
-					Intent intent = new Intent(WifiList.this, DetectedLocations.class);
-					 
+					Intent intent = new Intent(WifiList.this, DetectedLocations.class);					 
 //					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
 //					intent.putStringArrayListExtra("POIName",onlyPOInames);
 //					intent.putStringArrayListExtra("tpids", tpids);
-//					intent.putStringArrayListExtra("MacAddr", MacAddr);
-					
+//					intent.putStringArrayListExtra("MacAddr", MacAddr);					
 					startActivity(intent);
 					break;
 				}
 				case 1: //flashlight 
-					{
+				{
+					if(byCoordinateParser.getLatitude().size()>0) {
+				   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), 
+				   				byCoordinateParser.getlongitude(),LAC1, LNG1);
 
-						if(byCoordinateParser.getLatitude().size()>0)
-						{
-					   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-								.getlongitude(),LAC1,
-								LNG1);
+				   		oc.getAngle();
 
-					   		oc.getAngle();
-
-					   		releaseSoundEffect();
-							playSound(NEXT_PAGE);
-							
-					   		Intent intent2 = new Intent(WifiList.this, POIsAhead.class);
-					   		startActivity(intent2); 
-	 
-						}
-						else 
-						{
-							mTts.speak("There is no internet connection. Please check", TextToSpeech.QUEUE_FLUSH, null);
-						}
-
-			 
-					   } 
+				   		releaseSoundEffect();
+						playSound(NEXT_PAGE);
+						
+				   		Intent intent2 = new Intent(WifiList.this, POIsAhead.class);
+				   		startActivity(intent2);  
+					}
+					else
+						mTts.speak("There is no internet connection. Please check", 
+								TextToSpeech.QUEUE_FLUSH, null);
+				}
 					break;
 				}
-				flag0=false; 
+				flag0 = false; 
 			}
 			return true;
 		}
@@ -178,13 +172,9 @@ public class WifiList extends GestureUI {
 			return false;
 		}
 
-		public boolean onSingleTapConfirmed(MotionEvent e) {
-	
-			 
-			countGesture++;
-			
-			if(countGesture==2)
-			{	
+		public boolean onSingleTapConfirmed(MotionEvent e) {		 
+			countGesture++;			
+			if(countGesture==2)	{	
 //				Toast.makeText(getApplicationContext(),"countG: "+countGesture,Toast.LENGTH_SHORT).show();
 				countGesture=0;
 				switch (GestureUI.selected) {
@@ -192,8 +182,7 @@ public class WifiList extends GestureUI {
 					releaseSoundEffect();
 					playSound(NEXT_PAGE);
 					
-					Intent intent = new Intent(WifiList.this, DetectedLocations.class);
-					 
+					Intent intent = new Intent(WifiList.this, DetectedLocations.class);					 
 //					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
 //					intent.putStringArrayListExtra("POIName",onlyPOInames);
 //					intent.putStringArrayListExtra("tpids", tpids);
@@ -209,39 +198,33 @@ public class WifiList extends GestureUI {
 //					startActivity(intent1);
 //					break;
 				case 1: //flashlight 
+					if(byCoordinateParser.getLatitude().size()>0)
 					{
+				   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), 
+				   				byCoordinateParser.getlongitude(),LAC1, LNG1);
 
-						if(byCoordinateParser.getLatitude().size()>0)
-						{
-					   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-								.getlongitude(),LAC1,
-								LNG1);
+				   		oc.getAngle();
 
-					   		oc.getAngle();
-
-					   		releaseSoundEffect();
-							playSound(NEXT_PAGE);
-							
-					   		Intent intent2 = new Intent(WifiList.this, POIsAhead.class);
-					   		startActivity(intent2); 
-	 
-						}
-						else 
-						{
-							mTts.speak("There is no internet connection. Please check", TextToSpeech.QUEUE_FLUSH, null);
-						}
-
-			 
-					   } 
+				   		releaseSoundEffect();
+						playSound(NEXT_PAGE);
+						
+				   		Intent intent2 = new Intent(WifiList.this, POIsAhead.class);
+				   		startActivity(intent2); 
+ 
+					}
+					else {
+						mTts.speak("There is no internet connection. Please check", TextToSpeech.QUEUE_FLUSH, null);
+					}
 					break;
 				}
-			}
+			} // end if
+			
 			return false;
 		}
-
 	});
-
-}
+} // end of OnCreate
+	
+	
 @Override
 public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 		float distanceY) {
