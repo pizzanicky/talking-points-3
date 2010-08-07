@@ -406,8 +406,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
      				{
      					releaseSoundEffect();
 						playSound(MISSED_IT);
-     					this.mTts.speak("Please move your thumb in right direction", TextToSpeech.QUEUE_FLUSH,null);
-     				}
+      				}
 
     		 
 

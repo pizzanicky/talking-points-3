@@ -193,25 +193,28 @@ public class WozList extends GestureUI {
 				{
 					switch (GestureUI.selected) {
 					case 0:
-						releaseSoundEffect();
-						playSound(NEXT_PAGE);
-						
-						Intent intent = new Intent(WozList.this, DetectedLocations.class);
-						 
-	//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
-	//					intent.putStringArrayListExtra("POIName",onlyPOInames);
-	//					intent.putStringArrayListExtra("tpids", tpids);
-	//					intent.putStringArrayListExtra("MacAddr", MacAddr);
-						
-						startActivity(intent);
-						break;
-//					case 1:
-//						releaseSoundEffect();
-//						playSound(NEXT_PAGE);
-//						
-//						Intent intent1 = new Intent(BTlist.this, Tutorial.class);
-//						startActivity(intent1);
-//						break;
+						if(LAC1.length()!=4)
+						{
+							releaseSoundEffect();
+							playSound(NEXT_PAGE);
+							
+							Intent intent = new Intent(WozList.this, DetectedLocations.class);
+							 
+		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
+		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
+		//					intent.putStringArrayListExtra("tpids", tpids);
+		//					intent.putStringArrayListExtra("MacAddr", MacAddr);
+							
+							startActivity(intent);
+						}
+						else 
+						{
+//							Toast.makeText(WozList.this, "There is no internet connection. Please check",
+//									Toast.LENGTH_SHORT).show();
+
+ 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+						}
+						break; 
 					case 1: //flashlight 
 						if(LAC1.length()!=4)
 						{ //LAC1.length()>4
@@ -257,25 +260,20 @@ public class WozList extends GestureUI {
 					countGesture=0;
 					switch (GestureUI.selected) {
 					case 0:
-						releaseSoundEffect();
-						playSound(NEXT_PAGE);
-						
-						Intent intent = new Intent(WozList.this, DetectedLocations.class);
-						 
-	//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
-	//					intent.putStringArrayListExtra("POIName",onlyPOInames);
-	//					intent.putStringArrayListExtra("tpids", tpids);
-	//					intent.putStringArrayListExtra("MacAddr", MacAddr);
-						
-						startActivity(intent);
-						break;
-//					case 1:
-//						releaseSoundEffect();
-//						playSound(NEXT_PAGE);
-//						
-//						Intent intent1 = new Intent(BTlist.this, Tutorial.class);
-//						startActivity(intent1);
-//						break;
+						if(LAC1.length()!=4)
+						{
+							releaseSoundEffect();
+							playSound(NEXT_PAGE);
+							
+							Intent intent = new Intent(WozList.this, DetectedLocations.class);
+							 
+		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
+		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
+		//					intent.putStringArrayListExtra("tpids", tpids);
+		//					intent.putStringArrayListExtra("MacAddr", MacAddr);
+							
+							startActivity(intent);
+						}
 					case 1: //flashlight 
 						if(LAC1.length()!=4)
 						{
@@ -783,16 +781,16 @@ public class WozList extends GestureUI {
     				if(FirstX-LastX>SWIPE_MIN_DISTANCE_RIGHT_LEFT&&yD< CHECK_DISTANCE)
     				{    // this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
 
-						try {
-							
-							Thread.sleep(1400);
-							this.mTts.speak("Good bye", TextToSpeech.QUEUE_FLUSH,null);
-;
-							
-						}catch(InterruptedException e11){
-							e11.printStackTrace();
-						}
-							finish();
+//						try {
+//							
+//							Thread.sleep(1400);
+//							this.mTts.speak("Good bye", TextToSpeech.QUEUE_FLUSH,null);
+//;
+//							
+//						}catch(InterruptedException e11){
+//							e11.printStackTrace();
+//						}
+//							finish();
 
     				}	
     				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
@@ -825,7 +823,6 @@ public class WozList extends GestureUI {
      				{
      					releaseSoundEffect();
 						playSound(MISSED_IT);
-     					this.mTts.speak("Please move your thumb in right direction", TextToSpeech.QUEUE_FLUSH,null);
      				}
 
     		 

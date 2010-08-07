@@ -241,8 +241,7 @@ public class GestureUI extends Activity implements OnInitListener,
 	     				{
 	     					releaseSoundEffect();
 							playSound(MISSED_IT);
-	     					this.mTts.speak("Please move your thumb in right direction", TextToSpeech.QUEUE_FLUSH,null);
-	     				}
+ 	     				}
 
 	    		 
 
@@ -547,7 +546,7 @@ public class GestureUI extends Activity implements OnInitListener,
 	          	      mMediaPlayer6.start();
             	break;	
                 case MISSED_IT:
-                	path = "/system/media/audio/notifications/F1_MissedCall.ogg";
+                	path = "/system/media/audio/notifications/Plastic_Pipe.ogg";
 	          	      mMediaPlayer7 = new MediaPlayer();
 	          	      mMediaPlayer7.setDataSource(path);
 	          	      mMediaPlayer7.prepare();
