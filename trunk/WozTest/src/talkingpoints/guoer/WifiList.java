@@ -1,5 +1,7 @@
 package talkingpoints.guoer;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +84,32 @@ public class WifiList extends GestureUI {
 	byCoordinateParser p2;
 	private static int countGesture=0; 
 
+	
+ 	private ArrayList<String> recentlyDetectedPOIs;
+	private ArrayList<String> oldDetectedPOIs;
+ 	private ArrayList<String> newlyDetectedPOIS;
+	
+ 	public static ArrayList<String> tpids;
+	
+	private boolean onceflag=false;
+	private ArrayList<String> newPOIs;
+	public static ArrayList<String> onlyPOInames;
+	public static ArrayList<String> POINameWithDistance;
+	
+	  private static int count1=0;
+ 	     private static boolean flag2=false;
+	    private static boolean flag3=false;
+ 	    private static boolean flagForScrolling=false; 
+    
+    private float FirstX;
+    private float FirstY;
+    private float LastX;
+    private float LastY;
+    
+ 
+	private static final int CHECK_DISTANCE =100; 
+	private static final int CHECK_DISTANCE_2 = 10; 
+	private static final int SWIPE_MIN_DISTANCE_RIGHT_LEFT=100; 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -352,64 +380,200 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 	}
 
 	public void invokeService() {
-		if (WifiScanner.conn == null) {
+//		if (WifiScanner.conn == null) {
+//			Toast.makeText(WifiList.this, "Cannot refresh - service not bound",
+//					Toast.LENGTH_SHORT).show();
+//		} else {
+//			try {
+//				ArrayList<String> tempList = (ArrayList<String>) remoteService.getWifiList();
+//				// this.mTts.speak("Scanning", TextToSpeech.QUEUE_FLUSH, null);
+//				if (tempList.size() == 0) {
+//					Toast.makeText(WifiList.this,
+//							mNewDevicesArrayAdapter.getCount() + " POI found!",
+//							Toast.LENGTH_SHORT).show();
+//				} else {
+//					Toast.makeText(WifiList.this, tempList.size() + " POI found",
+//							Toast.LENGTH_SHORT).show();
+//					// if (tempList.size() == 1)
+//					// sayPageName("One location detected");
+//					// else
+//					// sayPageName(tempList.size() + " locations detected");
+//					if (cachList != null) {
+//						NewItemfilter = new ListComparer(tempList, cachList);
+//						// the new found devices list
+//						NofiticationList = NewItemfilter.getNewItems();
+//
+//						// notify new devices found
+//						if (NofiticationList != null
+//								&& NofiticationList.size() > 0) {
+//							for (int i = 0; i < NofiticationList.size(); i++) {
+//
+//								Toast.makeText(WifiList.this, NofiticationList.get(i),
+//										Toast.LENGTH_SHORT).show();
+//							}
+//						}
+//						cachList.clear();
+//					}
+//
+//					mNewDevicesArrayAdapter.clear();
+//					// Here we get data from RemoteService.
+//
+//					for (int i = 0; i < tempList.size(); i++) {
+//						mNewDevicesArrayAdapter.add(tempList.get(i));
+//						// cachList.add(tempList.get(i));
+//
+//					}
+//
+//					cachList = tempList;
+//					updateList();
+//					Log.d(getClass().getSimpleName(), "invokeService()");
+//
+//				}
+//			} catch (RemoteException re) {
+//				Log.e(getClass().getSimpleName(), "RemoteException");
+//			} catch (Exception e) {
+//				Log.e(getClass().getSimpleName(), "??Exception:"
+//								+ e.toString());
+//			}
+//		}
+		
+		if (WozScanner.conn == null) {
 			Toast.makeText(WifiList.this, "Cannot refresh - service not bound",
 					Toast.LENGTH_SHORT).show();
+
 		} else {
 			try {
-				ArrayList<String> tempList = (ArrayList<String>) remoteService.getWifiList();
-				// this.mTts.speak("Scanning", TextToSpeech.QUEUE_FLUSH, null);
-				if (tempList.size() == 0) {
-					Toast.makeText(WifiList.this,
-							mNewDevicesArrayAdapter.getCount() + " POI found!",
-							Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(WifiList.this, tempList.size() + " POI found",
-							Toast.LENGTH_SHORT).show();
-					// if (tempList.size() == 1)
-					// sayPageName("One location detected");
-					// else
-					// sayPageName(tempList.size() + " locations detected");
-					if (cachList != null) {
-						NewItemfilter = new ListComparer(tempList, cachList);
-						// the new found devices list
-						NofiticationList = NewItemfilter.getNewItems();
 
-						// notify new devices found
-						if (NofiticationList != null
-								&& NofiticationList.size() > 0) {
-							for (int i = 0; i < NofiticationList.size(); i++) {
-
-								Toast.makeText(WifiList.this, NofiticationList.get(i),
-										Toast.LENGTH_SHORT).show();
-							}
-						}
-						cachList.clear();
-					}
-
-					mNewDevicesArrayAdapter.clear();
-					// Here we get data from RemoteService.
-
-					for (int i = 0; i < tempList.size(); i++) {
-						mNewDevicesArrayAdapter.add(tempList.get(i));
-						// cachList.add(tempList.get(i));
-
-					}
-
-					cachList = tempList;
-					updateList();
-					Log.d(getClass().getSimpleName(), "invokeService()");
-
-				}
+ 	          
+				   LAC1 = Double.toString(remoteService.getWifiLac());
+				
+		           LNG1 = Double.toString(remoteService.getWifiLng());
+		            
+		  
+		            if(LAC1.length()>4)
+		            {    
+		            	
+		            	
+		            	Toast.makeText(WifiList.this,"User's current location is detected",Toast.LENGTH_SHORT).show();
+		            	callAngleCalculator();
+		            }
+		            
 			} catch (RemoteException re) {
 				Log.e(getClass().getSimpleName(), "RemoteException");
 			} catch (Exception e) {
-				Log.e(getClass().getSimpleName(), "??Exception:"
+				Log
+						.e(getClass().getSimpleName(), "??Exception:"
 								+ e.toString());
 			}
 		}
 	}
 
+	public void callAngleCalculator(){
+		 
+		String lac2[]= LAC1.split("\\.");
+		String lng2[]= LNG1.split("\\.");
+	 
+
+	 p2 = new byCoordinateParser("http://app.talking-points.org/locations/by_coordinates/"+lac2[0]+","+lac2[1]+";"+lng2[0]+","+lng2[1]+".xml"
+			 ,getApplicationContext());
+		        
+ 
+ 
+	 try {
+		 callAngleCalculator2();
+	 	} catch (InterruptedException e13) {
+	// TODO Auto-generated catch block
+	 		e13.printStackTrace();
+	 	}
+		
+	}
+	public void callAngleCalculator2() throws InterruptedException{
+		
+ 		NumberFormat formatter = new DecimalFormat("#0");
+	 
+ 		this.POINameWithDistance.clear();
+ 		this.tpids.clear();
+ 		this.MacAddr.clear();
+ 		this.onlyPOInames.clear(); //only returns POInames not including distance 
+ 		
+// 		this.POINameWithDistance.add(0,"Finding locations in a chosen direction");
+// 		this.tpids.add(0,"Finding locations in a chosen direction");
+// 		this.MacAddr.add(0,"Finding locations in a chosen direction");
+// 		this.onlyPOInames.add(0,"Finding locations in a chosen direction");
+ 		                                                                 
+ 		for(int a=0;a<byCoordinateParser.getDistance().size();a++)
+ 		{	
+// 			if(byCoordinateParser.floor.get(a)==1)
+// 				Toast.makeText(this,"First floor!"+a,Toast.LENGTH_SHORT);
+ 	 
+ 			if((byCoordinateParser.floor.get(a)==-1)&&((byCoordinateParser.distance.get(a)*5280)<20.00))
+ 			{
+		 
+					this.POINameWithDistance.add(byCoordinateParser.name.get(a)+" within "+formatter.format(byCoordinateParser.distance.get(a)*5280)+"feet");
+					this.MacAddr.add(byCoordinateParser.mac.get(a));
+					this.tpids.add(byCoordinateParser.tpid.get(a));
+					nearbyPOIs = this.POINameWithDistance;
+					this.onlyPOInames.add(byCoordinateParser.name.get(a));
+					
+
+ 			}
+ 		
+ 		}
+ 		
+ 	
+   
+// 		this.POINameWithDistance.add("location search using the compass");
+// 		this.tpids.add("location search using the compass");
+// 		this.MacAddr.add("location search using the compass");
+// 		this.onlyPOInames.add("location search using the compass");
+ 		
+ 		if(this.recentlyDetectedPOIs.size()!=0)
+ 		{
+ 			NewItemfilter = new ListComparer(this.onlyPOInames,this.recentlyDetectedPOIs);
+ 			
+ 			NofiticationList = NewItemfilter.getNewItems();
+ 			
+ 			if(NofiticationList!=null 
+ 				&& NofiticationList.size()>0){
+ 			  	if(mTts.isSpeaking())
+ 			  	{
+ 			  	//	mTts.stop();
+ 			  		mTts.shutdown();
+ 			  	}
+ 				super.releaseSoundEffect();
+	 			super.playSound(NOTIFICATION);
+	 		 
+ 		 		for(int i=0;i<NofiticationList.size();i++){
+ 						
+ 			 
+ 						
+ 						//need to slow down a little bit to call all the POI names 
+ 						try {
+ 							Thread.sleep(1000);
+ 						 	this.mTts.speak(NofiticationList.get(i),
+ 	 								TextToSpeech.QUEUE_FLUSH, null);
+   
+ 						 	
+ 						} catch (InterruptedException e11) {
+ 							e11.printStackTrace();
+ 						}
+ 					}
+ 				 
+
+ 			}
+ 			
+ 			this.recentlyDetectedPOIs.clear();
+ 			//flag = true;		
+ 		}
+ 		
+ 		for(int i=0;i<this.onlyPOInames.size();i++)
+ 		{
+ 			this.recentlyDetectedPOIs.add(this.onlyPOInames.get(i));
+ 		}
+ 	  
+ 		 
+	}
+	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.layout.menu, menu);
@@ -450,8 +614,14 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 				invokeService();
 				break;
 			case WifiList.CREATPANEL:
-				if (options.size() == 0)
+				if (POINameWithDistance.size() == 0)
 					// updateList();
+					break; 
+				else if(POINameWithDistance.size()!=0)
+				{	
+					flag0=false;
+					break;
+				}
 					break;
 			}
 			// super.handleMessage(msg);
@@ -582,7 +752,346 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			}
 		}
 	}
+	@Override
+	public boolean onTouchEvent(MotionEvent e) {
 
+		int action = e.getAction();
+    	//down 
+		if(action == MotionEvent.ACTION_DOWN||action==MotionEvent.ACTION_MOVE)
+			flagForScrolling=true;
+		
+        if(action == MotionEvent.ACTION_DOWN)
+        {
+         	FirstX=e.getX();
+        	FirstY=e.getY();
+        }
+    	else if(action == MotionEvent.ACTION_UP)
+    	{
+    		LastX=e.getX();
+    		LastY=e.getY();
+    		
+     		
+    		if(FirstX>0||FirstY>0)
+    		{
+    			final float xD=Math.abs(FirstX-LastX);
+    			final float yD=Math.abs(FirstY-LastY);
+    			
+    			try{
+    				
+    				if(FirstX-LastX>SWIPE_MIN_DISTANCE_RIGHT_LEFT&&yD< CHECK_DISTANCE)
+    				{    // this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
+
+//						try {
+//							
+//							Thread.sleep(1400);
+//							this.mTts.speak("Good bye", TextToSpeech.QUEUE_FLUSH,null);
+//;
+//							
+//						}catch(InterruptedException e11){
+//							e11.printStackTrace();
+//						}
+//							finish();
+
+    				}	
+    				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
+    					this.sayPageName();
+
+     				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
+     				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
+     				{
+     					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
+     					 if(flag||flagForScrolling)
+     					 {
+     						 upMotion();
+     						flagForScrolling=false;
+     					 }
+     					
+     				}
+     				else if(LastY - FirstY > SWIPE_MIN_DISTANCE && xD< CHECK_DISTANCE)  
+     				{	
+     				//	this.mTts.speak("down motion", TextToSpeech.QUEUE_FLUSH,null);
+     					
+     					 if(flag||flagForScrolling)
+     					 {
+     						 
+     						 
+     						downMotion();
+     						flagForScrolling = false; 
+     					 }
+     				}//missed
+     				else if(xD>CHECK_DISTANCE_2&&yD>CHECK_DISTANCE_2)
+     				{
+     					releaseSoundEffect();
+						playSound(MISSED_IT);
+     				}
+
+    		 
+
+    			}
+    			catch (Exception e0) {
+    				// nothing
+    			}
+    			
+    		}
+    	}
+		
+		gestureScanner.onTouchEvent(e);
+		return true;
+
+	}
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		
+//flag = true;
+		
+		final float xDistance = Math.abs(e1.getX() - e2.getX());
+		final float yDistance = Math.abs(e1.getY() - e2.getY());
+		// TODO Auto-generated method stub
+		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE_RIGHT_LEFT
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY &&yDistance< CHECK_DISTANCE) {
+
+ 		}else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE_RIGHT_LEFT
+				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY &&yDistance< CHECK_DISTANCE) {
+			this.sayPageName();
+			
+		}else if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY &&xDistance< CHECK_DISTANCE) {
+		//	this.sayPageName("up");
+			 if(flag)
+			 {
+				 upMotion();
+			 }
+			
+	    //  viewA.setText("-" + "Fling up?" + "-");
+
+		}else if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
+				&& Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY &&xDistance< CHECK_DISTANCE) {
+			 if(flag)
+			 {
+				 
+				 
+				 downMotion();
+			 }
+			 
+ 
+ 
+			
+			}
+
+		
+		return false;
+	}
+	private void upMotion()
+	{
+		flag2=true;
+		
+		 if(options.size()!=0){
+				if(flag3)
+				{
+					if(count1==1)
+						count1=options.size()-1;
+	//				else if(count==5)
+	//					count=3;
+					else 
+					{
+						if(count1!=0)
+						  count1-=2;
+					}
+					flag3=false;
+				}
+				
+				if(count1!=0)
+				{
+					if(count1==options.size()){
+				
+					
+						count1=options.size()-2;
+					}	
+				}
+	
+				
+				if(count1==0){
+				//	this.sayPageName("0");
+					
+					message = options.get(count1);
+					
+	
+					selected = count1;
+					text.setText(message);
+	
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+						null);
+				    
+					
+					releaseSoundEffect();
+					playSound(ITEM_BY_ITEM);
+				
+			    //	 viewA.setText("UP"+count1);
+					count1=options.size()-1;
+					
+				}
+				else if(count1<options.size())
+					{
+					
+					
+					message = options.get(count1);
+				
+	
+					selected = count1;
+					text.setText(message);
+	
+					this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+						null);
+				
+					releaseSoundEffect();
+					playSound(ITEM_BY_ITEM);
+				
+	
+					if(count1==(options.size()-1)) 
+					{
+						
+						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+						{
+							try {
+								
+								Thread.sleep(1400);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e11){
+								e11.printStackTrace();
+							}
+				 
+						}
+						else if(options.get(count1).length()>16)
+						{
+							try {
+								
+								Thread.sleep(2100);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e12){
+								e12.printStackTrace();
+							}
+				 
+						}else 
+						{
+							try {
+								
+								Thread.sleep(700);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e13){
+								e13.printStackTrace();
+							}
+						}
+
+					} 
+				//	 viewA.setText("Up"+count1);
+			   
+					count1--;
+	
+				}
+			} 
+			
+		 
+
+		 flag = false;
+	}
+	private void downMotion()
+	{
+		flag3=true; 
+		 if(options.size()!=0){
+			 
+				if(flag2)
+				{
+					if(count1==options.size()-1)
+						count1=1;
+					else 
+						count1+=2;
+					
+					flag2=false; 
+				}
+				
+				if(count1==options.size()){
+					
+					count1=0;
+					
+				}
+				
+				if(count1<options.size()) //count<.size() 
+				{
+					
+					// viewA.setText("Down"+count1);
+	     			message = options.get(count1);
+	 			
+	 
+	 				selected = count1;
+	  				text.setText(message);
+	 
+	 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+	 					null);
+	 			
+	 				releaseSoundEffect();
+	 				playSound(ITEM_BY_ITEM);
+	 			
+	 
+					if(count1==(options.size()-1)) 
+					{
+						
+						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+						{
+							try {
+								
+								Thread.sleep(1400);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e21){
+								e21.printStackTrace();
+							}
+				 
+						}
+						else if(options.get(count1).length()>16)
+						{
+							try {
+								
+								Thread.sleep(2100);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e22){
+								e22.printStackTrace();
+							}
+				 
+						}else 
+						{
+							try {
+								
+								Thread.sleep(700);
+								releaseSoundEffect();
+								playSound(EDGE);
+								
+							}catch(InterruptedException e23){
+								e23.printStackTrace();
+							}
+						}
+
+					} 
+			    
+					count1++;
+
+				}
+		 }  
+
+		 flag = false;
+	}
+ 
+ 
+	
 	// @Override
 	// protected void onRestart() {
 	// super.onRestart();

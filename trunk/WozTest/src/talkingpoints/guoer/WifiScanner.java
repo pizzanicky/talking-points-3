@@ -70,6 +70,12 @@ public class WifiScanner extends Service {
 		public List<String> getWifiList() throws RemoteException {
 			return mNewDevicesArrayAdapter;
 		}
+		public double getWifiLac() throws RemoteException {
+			return myLocation[0];
+		}
+		public double getWifiLng() throws RemoteException {
+			return myLocation[1];
+		}
 	};
 
 	@Override
@@ -207,8 +213,10 @@ public class WifiScanner extends Service {
 
 		// Send the notification.
 		// We use a layout id because it is a unique number. We use it later to
-		// cancel.
+	    // cancel.
+		
 		mNM.notify(R.string.sensor_service_started, notification);
+		
 	}
 
     class WifiReceiver extends BroadcastReceiver { 
