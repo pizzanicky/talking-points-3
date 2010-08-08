@@ -36,9 +36,7 @@ public class DetectedLocations extends GestureUI {
 	public static String GET_NEARBY_BYLATLONG2 = "/get_nearby.xml";
 	// private int tempRSSI;
 	// private int currentIndex;
-	ListComparer NewItemfilter;
-	private List<String> NofiticationList;
-
+  
 
 //	public static ArrayList<String> MacAddr;
  
@@ -61,16 +59,12 @@ public class DetectedLocations extends GestureUI {
 //	public static ArrayList<String> nearbyPOIs;
 //	public static ArrayList<String> tpids;
 	
-	private String LAC1="haha";
-	private String LNG1="haha";
+ 
 	byCoordinateParser p2;
-	private int countPOIs=0;
-	
-	private static final int NOTIFICATION=0;
- 	private static boolean flag=false;
  	
-	private boolean onceflag=false;
-//	private static ArrayList<String> POIName;
+  	private static boolean flag=false;
+ 	
+ //	private static ArrayList<String> POIName;
 //	private ArrayList<String> POINameWithDistance;
  
 	private static boolean flag2=false; 
@@ -82,20 +76,17 @@ public class DetectedLocations extends GestureUI {
     private float LastX;
     private float LastY;
     
-	private static int count0=0; 
- 	private static int count1=0;
-	private static int count2=0; 
+  	private static int count1=0;
+  
 	private static int countGesture=0; 
-	private WozList btList; 
-	/** Called when the activity is first created. */
+ 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
  
-		pageName = new String("List of Detected Locations. Scroll to hear locations.");
-		
-		
-		super.onCreate(savedInstanceState);
-		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+ 		pageName = new String();
+		pageName = "List of Detected Locations. Scroll to hear locations.";
+		super.onCreate(savedInstanceState);		
+ 		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		// setContentView(R.layout.main);
 		setResult(Activity.RESULT_CANCELED);
 	
@@ -119,17 +110,17 @@ public class DetectedLocations extends GestureUI {
 //		tpids = getIntent().getStringArrayListExtra("tpids");
 //		MacAddr = getIntent().getStringArrayListExtra("MacAddr");
 		
-		if(WozList.getPOInamesWithDistance().size()!=0)
+		if(BTlist.getPOInamesWithDistance().size()!=0)
 		{
-			for(int i=0;i<WozList.getPOInamesWithDistance().size();i++)
-				this.options.add(WozList.getPOInamesWithDistance().get(i));
+			for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+				this.options.add(BTlist.getPOInamesWithDistance().get(i));
 			
 		}
 //		else if(BTlist.getPOInamesWithDistance().size()==0)
 //		{
 //			
 //		}
-		onceflag=true;
+	///	onceflag=true;
   
 		
 		
@@ -263,11 +254,11 @@ public class DetectedLocations extends GestureUI {
  								
 							   Intent intent = new Intent(DetectedLocations.this, POImenu.class);
 						   //Insert the parser function 
- 							   MacReader r = new MacReader(WozList.getMacAddr()
+ 							   MacReader r = new MacReader(BTlist.getMacAddr()
  								.get(GestureUI.selected));  
 							   intent.putExtra("MAC", r.getMacString());
-							   intent.putExtra("tpid",WozList.getTpids().get(GestureUI.selected));
-							   intent.putExtra("POIname", WozList.getPOInames()
+							   intent.putExtra("tpid",BTlist.getTpids().get(GestureUI.selected));
+							   intent.putExtra("POIname", BTlist.getPOInames()
 								.get(GestureUI.selected)); 
 							   
 							   startActivity(intent);
@@ -307,11 +298,11 @@ public class DetectedLocations extends GestureUI {
  							
 							   Intent intent = new Intent(DetectedLocations.this, POImenu.class);
 						   //Insert the parser function 
-							   MacReader r = new MacReader(WozList.getMacAddr()
+							   MacReader r = new MacReader(BTlist.getMacAddr()
 								.get(GestureUI.selected));  
 							   intent.putExtra("MAC", r.getMacString());
-							   intent.putExtra("tpid",WozList.getTpids().get(GestureUI.selected));
-							   intent.putExtra("POIname", WozList.getPOInames()
+							   intent.putExtra("tpid",BTlist.getTpids().get(GestureUI.selected));
+							   intent.putExtra("POIname", BTlist.getPOInames()
 								.get(GestureUI.selected)); 
 							   
 							   startActivity(intent);
@@ -456,8 +447,8 @@ public class DetectedLocations extends GestureUI {
 //						this.options.add(POINameWithDistance.get(i));
 				
 				 this.options.clear();
-				 for(int i=0;i<WozList.getPOInamesWithDistance().size();i++)
- 						this.options.add(WozList.getPOInamesWithDistance().get(i));
+				 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+ 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
 				 
 				 downMotion();
 			 }
@@ -714,8 +705,8 @@ public class DetectedLocations extends GestureUI {
 			
 			
 			AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-					.getlongitude(),WozList.LAC1,
-					WozList.LNG1);
+					.getlongitude(),BTlist.LAC1,
+					BTlist.LNG1);
 
 		   		oc.getAngle();
  		 
@@ -735,8 +726,8 @@ public class DetectedLocations extends GestureUI {
 			
 				
 				 this.options.clear();
-				 for(int i=0;i<WozList.getPOInamesWithDistance().size();i++)
-						this.options.add(WozList.getPOInamesWithDistance().get(i));
+				 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+						this.options.add(BTlist.getPOInamesWithDistance().get(i));
 				 
 				 
 			if(options.size()!=0){

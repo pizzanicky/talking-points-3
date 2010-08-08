@@ -710,8 +710,8 @@ public class GestureUI extends Activity implements OnInitListener,
 			if(byCoordinateParser.getLatitude().size()>0)
 			{
 				AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-						.getlongitude(),WozList.LAC1,
-						WozList.LNG1);
+						.getlongitude(),BTlist.LAC1,
+						BTlist.LNG1);
 
 			   		oc.getAngle();
 	 
