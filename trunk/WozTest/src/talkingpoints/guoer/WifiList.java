@@ -124,7 +124,7 @@ public class WifiList extends GestureUI {
 //		MenuPOINameWithDistance.add("Flashlight");
 		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
 		
-		WozList.foundMasterTag = false;	 
+		BTlist.foundMasterTag = false;	 
 		
 		super.onCreate(savedInstanceState, MenuOptions);
 		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -437,7 +437,7 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 //			}
 //		}
 		
-		if (WozScanner.conn == null) {
+		if (BTScanner.conn == null) {
 			Toast.makeText(WifiList.this, "Cannot refresh - service not bound",
 					Toast.LENGTH_SHORT).show();
 

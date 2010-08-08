@@ -78,7 +78,7 @@ public class GateWayForWifiWoz extends GestureUI {
 						releaseSoundEffect();
 						playSound(NEXT_PAGE);
 						
- 						Intent intent0 = new Intent(GateWayForWifiWoz.this, WozList.class);
+ 						Intent intent0 = new Intent(GateWayForWifiWoz.this, BTlist.class);
  						startActivity(intent0);
 						break;
 					case 1:	
@@ -111,7 +111,7 @@ public class GateWayForWifiWoz extends GestureUI {
 					releaseSoundEffect();
 					playSound(NEXT_PAGE);
 					
-						Intent intent0 = new Intent(GateWayForWifiWoz.this, WozList.class);
+						Intent intent0 = new Intent(GateWayForWifiWoz.this, BTlist.class);
 						startActivity(intent0);
 					break;
 				case 1:	

@@ -116,8 +116,8 @@ public class Content extends GestureUI implements OnInitListener {
  	 
 			if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
 				AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-						.getlongitude(),WozList.LAC1,
-						WozList.LNG1);
+						.getlongitude(),BTlist.LAC1,
+						BTlist.LNG1);
 
 			   		oc.getAngle();
 				   

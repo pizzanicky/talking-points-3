@@ -28,10 +28,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 
-public class WozList extends GestureUI {
+public class BTlist extends GestureUI {
 	// fake POI
 	// String[] exsitingPOI = { "sdf", "002608D712B9", "1234567890" };
-	public static WozList scanning_home = null;
+	public static BTlist scanning_home = null;
 	private Timer m_timerForSensorUpdate = null;
 	// debug rssi
 	private static final String TAG = "MAC = ";
@@ -57,7 +57,7 @@ public class WozList extends GestureUI {
 	public static ArrayList<String> MacAddr;
 	public int m_periodUpdate = 3000;
 	// Background service scanner
-	private WozScanner btScanner;
+	private BTScanner btScanner;
 	public static boolean isRunning;
 	public Thread t;
 //	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -124,7 +124,7 @@ public class WozList extends GestureUI {
 //	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		WozScanner bt = new WozScanner();
+		BTScanner bt = new BTScanner();
 		
 		
 		MenuOptions = new ArrayList<String>();
@@ -135,7 +135,7 @@ public class WozList extends GestureUI {
 //		MenuPOINameWithDistance.add("Flashlight");
 		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
 		
-		WozList.foundMasterTag = false;
+		BTlist.foundMasterTag = false;
  		 
 		
 		super.onCreate(savedInstanceState, MenuOptions);		
@@ -160,8 +160,8 @@ public class WozList extends GestureUI {
 
 		cachList = new ArrayList<String>();
 
-		if(WozScanner.conn!=null)
-			WozScanner.conn = null;
+		if(BTScanner.conn!=null)
+			BTScanner.conn = null;
 		
 		startService();
 		bindService();
@@ -198,7 +198,7 @@ public class WozList extends GestureUI {
 							releaseSoundEffect();
 							playSound(NEXT_PAGE);
 							
-							Intent intent = new Intent(WozList.this, DetectedLocations.class);
+							Intent intent = new Intent(BTlist.this, DetectedLocations.class);
 							 
 		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
 		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
@@ -227,7 +227,7 @@ public class WozList extends GestureUI {
 					   		releaseSoundEffect();
 							playSound(NEXT_PAGE);
 							
-					   		Intent intent2 = new Intent(WozList.this, POIsAhead.class);
+					   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
 					   		startActivity(intent2); 
 	 
 						}
@@ -265,7 +265,7 @@ public class WozList extends GestureUI {
 							releaseSoundEffect();
 							playSound(NEXT_PAGE);
 							
-							Intent intent = new Intent(WozList.this, DetectedLocations.class);
+							Intent intent = new Intent(BTlist.this, DetectedLocations.class);
 							 
 		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
 		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
@@ -286,7 +286,7 @@ public class WozList extends GestureUI {
 					   		releaseSoundEffect();
 							playSound(NEXT_PAGE);
 							
-					   		Intent intent2 = new Intent(WozList.this, POIsAhead.class);
+					   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
 					   		startActivity(intent2); 
 	 
 						}
@@ -352,15 +352,15 @@ public class WozList extends GestureUI {
 
 
 	private void startService() {
-		if (WozScanner.started) {
-			Toast.makeText(WozList.this, "Service already started",
+		if (BTScanner.started) {
+			Toast.makeText(BTlist.this, "Service already started",
 					Toast.LENGTH_SHORT).show();
 		} else {
 			Intent i = new Intent();
 			i.setClassName("talkingpoints.guoer",
 					"talkingpoints.guoer.BTScanner");
 			startService(i);
-			WozScanner.started = true;
+			BTScanner.started = true;
 			// updateServiceStatus();
 			Log.d(getClass().getSimpleName(), "startService()");
 		}
@@ -371,8 +371,8 @@ public class WozList extends GestureUI {
 	private void stopService() {
 		t.stop();
 		try {
-			if (!WozScanner.started) {
-				Toast.makeText(WozList.this, "Service not yet started",
+			if (!BTScanner.started) {
+				Toast.makeText(BTlist.this, "Service not yet started",
 						Toast.LENGTH_SHORT).show();
 
 			} else {
@@ -380,7 +380,7 @@ public class WozList extends GestureUI {
 				i.setClassName("talkingpoints.guoer",
 						"talkingpoints.guoer.BTScanner");
 				stopService(i);
-				WozScanner.started = false;
+				BTScanner.started = false;
 				// updateServiceStatus();
 				Log.d(getClass().getSimpleName(), "stopService()");
 			}
@@ -390,18 +390,18 @@ public class WozList extends GestureUI {
 	}
 
 	private void bindService() {
-		if (WozScanner.conn == null) {
-			WozScanner.conn = new RemoteServiceConnection();
-			Log.d(getClass().getSimpleName(), "conn = " + WozScanner.conn);
-			Intent i = new Intent(WozList.this, WozScanner.class);
+		if (BTScanner.conn == null) {
+			BTScanner.conn = new RemoteServiceConnection();
+			Log.d(getClass().getSimpleName(), "conn = " + BTScanner.conn);
+			Intent i = new Intent(BTlist.this, BTScanner.class);
 			// for some reason bindService doesn't work with child of
 			// TabActivity, so we use getApplicationContext().bindService here
-			getApplicationContext().bindService(i, WozScanner.conn,
+			getApplicationContext().bindService(i, BTScanner.conn,
 					Context.BIND_AUTO_CREATE);
 			// updateServiceStatus();
 			Log.d(getClass().getSimpleName(), "bindService()");
 		} else {
-			Toast.makeText(WozList.this, "Cannot bind - service already bound",
+			Toast.makeText(BTlist.this, "Cannot bind - service already bound",
 					Toast.LENGTH_SHORT).show();
 			
 		}	
@@ -409,17 +409,17 @@ public class WozList extends GestureUI {
 
 	private void releaseService() {
 		try {
-			if (WozScanner.conn != null) {
-				getApplicationContext().unbindService(WozScanner.conn);
-				WozScanner.conn = null;
+			if (BTScanner.conn != null) {
+				getApplicationContext().unbindService(BTScanner.conn);
+				BTScanner.conn = null;
 				// updateServiceStatus();
 				Log.d(getClass().getSimpleName(), "releaseService()");
 			} else {
 				// bindService();
-				getApplicationContext().unbindService(WozScanner.conn);
-				WozScanner.conn = null;
+				getApplicationContext().unbindService(BTScanner.conn);
+				BTScanner.conn = null;
 				Toast
-						.makeText(WozList.this,
+						.makeText(BTlist.this,
 								"Cannot unbind - service not bound",
 								Toast.LENGTH_SHORT).show();
 			}
@@ -429,8 +429,8 @@ public class WozList extends GestureUI {
 	}
 
 	public void invokeService() {
-		if (WozScanner.conn == null) {
-			Toast.makeText(WozList.this, "Cannot refresh - service not bound",
+		if (BTScanner.conn == null) {
+			Toast.makeText(BTlist.this, "Cannot refresh - service not bound",
 					Toast.LENGTH_SHORT).show();
 
 		} else {
@@ -446,7 +446,7 @@ public class WozList extends GestureUI {
 		            {    
 		            	
 		            	
-		            	Toast.makeText(WozList.this,"User's current location is detected",Toast.LENGTH_SHORT).show();
+		            	Toast.makeText(BTlist.this,"User's current location is detected",Toast.LENGTH_SHORT).show();
 		            	callAngleCalculator();
 		            }
 		            
@@ -679,10 +679,10 @@ public class WozList extends GestureUI {
 	Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case WozList.UPDATEIDENTIFIER:
+			case BTlist.UPDATEIDENTIFIER:
 				invokeService();
 				break;
-			case WozList.CREATPANEL:
+			case BTlist.CREATPANEL:
 				if (POINameWithDistance.size() == 0)
 					// updateList();
 					break; 
@@ -706,19 +706,19 @@ public class WozList extends GestureUI {
 	class myThread implements Runnable {
 
 		public void run() {
-			while (!Thread.currentThread().isInterrupted() && WozList.isRunning) {
+			while (!Thread.currentThread().isInterrupted() && BTlist.isRunning) {
 				Message message = new Message();
 				Message msg = new Message();
-				message.what = WozList.UPDATEIDENTIFIER;
-				msg.what = WozList.CREATPANEL;
-				WozList.this.myHandler.sendMessage(message);
+				message.what = BTlist.UPDATEIDENTIFIER;
+				msg.what = BTlist.CREATPANEL;
+				BTlist.this.myHandler.sendMessage(message);
 			 	try {
 					//Thread.sleep(5000); IT WAS,,,
 			 		
 			 		Thread.sleep(5000);
 					if (// !panel_created&&
-					WozList.mNewDevicesArrayAdapter.getCount() > 0) {
-						WozList.this.myHandler.sendMessage(msg);
+					BTlist.mNewDevicesArrayAdapter.getCount() > 0) {
+						BTlist.this.myHandler.sendMessage(msg);
 						// panel_created = true;
  					}
 				} catch (InterruptedException e12) {
