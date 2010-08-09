@@ -40,7 +40,8 @@ public class GateWayForWifiWoz extends GestureUI {
     private static boolean flag2 = false;  //keydown and keyup 
     private static boolean flag3 = false;  //keydown and keyup 
     private static boolean flagForScrolling=false; 
-
+    private static boolean flagTrackball = false; 
+    
     private float FirstX;
     private float FirstY;
     private float LastX;
@@ -110,18 +111,19 @@ public class GateWayForWifiWoz extends GestureUI {
 				case 0:
 					releaseSoundEffect();
 					playSound(NEXT_PAGE);
+						
+					Intent intent0 = new Intent(GateWayForWifiWoz.this, BTlist.class);
+					startActivity(intent0);
 					
-						Intent intent0 = new Intent(GateWayForWifiWoz.this, BTlist.class);
-						startActivity(intent0);
 					break;
 				case 1:	
 					releaseSoundEffect();
 					playSound(NEXT_PAGE);
 					
-						Intent intent1 = new Intent(GateWayForWifiWoz.this, WifiList.class);
-						startActivity(intent1);
+					Intent intent1 = new Intent(GateWayForWifiWoz.this, WifiList.class);
+					startActivity(intent1);
 
-
+					break; 
 					}
 				}
 				return false;
@@ -219,7 +221,50 @@ public class GateWayForWifiWoz extends GestureUI {
 		return true;
 
 	}
-	
+	 @Override
+    public boolean onTrackballEvent(MotionEvent _event)
+		{
+			float vertical = _event.getY();
+			float horizontal = _event.getX();
+ 			   //viewA.setText("x"+horizontal+"Y"+vertical);
+				
+			   if(vertical!=0.0||horizontal!=0.0)
+			   {
+				  flagTrackball=true; 
+			   }
+			
+			
+			   if(horizontal==-0.16666667 &&vertical==0.0 ) //left
+			   {
+				  // finish();
+			   }
+			   else if(horizontal==0.16666667 &&vertical==0.0 ) //Right
+			   {
+					this.sayPageName();
+
+			   }
+			   else if(horizontal==0.0 &&vertical==-0.16666667 ) //up
+			   {
+				   if(flagTrackball)
+					 {	
+					    vibrate();
+						upMotion();
+						flagTrackball=false;
+					 }
+			   }
+			   else if(horizontal==0.0 &&vertical==0.16666667  ) //down
+			   { 
+				   if(flagTrackball)
+					 {	
+					    vibrate();
+						downMotion();
+						flagTrackball=false;
+					 }
+
+			   }
+			   
+			return false; 
+		}
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
@@ -317,48 +362,48 @@ public class GateWayForWifiWoz extends GestureUI {
 	 				playSound(ITEM_BY_ITEM);
 	 			
 	  
-	 				if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e41){
-								e41.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e42){
-								e42.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e43){
-								e43.printStackTrace();
-							}
-						}
-
-					} 
+//	 				if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e41){
+//								e41.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e42){
+//								e42.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e43){
+//								e43.printStackTrace();
+//							}
+//						}
+//
+//					} 
 			    
 					count1++;
 	
@@ -432,48 +477,48 @@ public class GateWayForWifiWoz extends GestureUI {
 					playSound(ITEM_BY_ITEM);
 				
 	
-					if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e51){
-								e51.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e52){
-								e52.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e53){
-								e53.printStackTrace();
-							}
-						}
-
-					} 
+//					if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e51){
+//								e51.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e52){
+//								e52.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e53){
+//								e53.printStackTrace();
+//							}
+//						}
+//
+//					} 
 				//	 viewA.setText("Up"+count1);
 			   
 					count1--;
@@ -551,48 +596,48 @@ public class GateWayForWifiWoz extends GestureUI {
 					playSound(ITEM_BY_ITEM);
 				
 	
-					if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e11){
-								e11.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e12){
-								e12.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e13){
-								e13.printStackTrace();
-							}
-						}
-
-					} 
+//					if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e11){
+//								e11.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e12){
+//								e12.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e13){
+//								e13.printStackTrace();
+//							}
+//						}
+//
+//					} 
 				//	 viewA.setText("Up"+count1);
 			   
 					count1--;
@@ -642,48 +687,48 @@ public class GateWayForWifiWoz extends GestureUI {
 	 				playSound(ITEM_BY_ITEM);
 	 			
 	 
-					if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e21){
-								e21.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e22){
-								e22.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e23){
-								e23.printStackTrace();
-							}
-						}
-
-					} 
+//					if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e21){
+//								e21.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e22){
+//								e22.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e23){
+//								e23.printStackTrace();
+//							}
+//						}
+//
+//					} 
 			    
 					count1++;
 
