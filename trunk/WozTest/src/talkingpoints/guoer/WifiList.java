@@ -380,62 +380,62 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 	}
 
 	public void invokeService() {
-//		if (WifiScanner.conn == null) {
-//			Toast.makeText(WifiList.this, "Cannot refresh - service not bound",
-//					Toast.LENGTH_SHORT).show();
-//		} else {
-//			try {
-//				ArrayList<String> tempList = (ArrayList<String>) remoteService.getWifiList();
-//				// this.mTts.speak("Scanning", TextToSpeech.QUEUE_FLUSH, null);
-//				if (tempList.size() == 0) {
-//					Toast.makeText(WifiList.this,
-//							mNewDevicesArrayAdapter.getCount() + " POI found!",
-//							Toast.LENGTH_SHORT).show();
-//				} else {
-//					Toast.makeText(WifiList.this, tempList.size() + " POI found",
-//							Toast.LENGTH_SHORT).show();
-//					// if (tempList.size() == 1)
-//					// sayPageName("One location detected");
-//					// else
-//					// sayPageName(tempList.size() + " locations detected");
-//					if (cachList != null) {
-//						NewItemfilter = new ListComparer(tempList, cachList);
-//						// the new found devices list
-//						NofiticationList = NewItemfilter.getNewItems();
-//
-//						// notify new devices found
-//						if (NofiticationList != null
-//								&& NofiticationList.size() > 0) {
-//							for (int i = 0; i < NofiticationList.size(); i++) {
-//
-//								Toast.makeText(WifiList.this, NofiticationList.get(i),
-//										Toast.LENGTH_SHORT).show();
-//							}
-//						}
-//						cachList.clear();
-//					}
-//
-//					mNewDevicesArrayAdapter.clear();
-//					// Here we get data from RemoteService.
-//
-//					for (int i = 0; i < tempList.size(); i++) {
-//						mNewDevicesArrayAdapter.add(tempList.get(i));
-//						// cachList.add(tempList.get(i));
-//
-//					}
-//
-//					cachList = tempList;
-//					updateList();
-//					Log.d(getClass().getSimpleName(), "invokeService()");
-//
-//				}
-//			} catch (RemoteException re) {
-//				Log.e(getClass().getSimpleName(), "RemoteException");
-//			} catch (Exception e) {
-//				Log.e(getClass().getSimpleName(), "??Exception:"
-//								+ e.toString());
-//			}
-//		}
+		if (WifiScanner.conn == null) {
+			Toast.makeText(WifiList.this, "Cannot refresh - service not bound",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			try {
+				ArrayList<String> tempList = (ArrayList<String>) remoteService.getWifiList();
+				// this.mTts.speak("Scanning", TextToSpeech.QUEUE_FLUSH, null);
+				if (tempList.size() == 0) {
+					Toast.makeText(WifiList.this,
+							mNewDevicesArrayAdapter.getCount() + " POI found!",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(WifiList.this, tempList.size() + " POI found",
+							Toast.LENGTH_SHORT).show();
+					// if (tempList.size() == 1)
+					// sayPageName("One location detected");
+					// else
+					// sayPageName(tempList.size() + " locations detected");
+					if (cachList != null) {
+						NewItemfilter = new ListComparer(tempList, cachList);
+						// the new found devices list
+						NofiticationList = NewItemfilter.getNewItems();
+
+						// notify new devices found
+						if (NofiticationList != null
+								&& NofiticationList.size() > 0) {
+							for (int i = 0; i < NofiticationList.size(); i++) {
+
+								Toast.makeText(WifiList.this, NofiticationList.get(i),
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+						cachList.clear();
+					}
+
+					mNewDevicesArrayAdapter.clear();
+					// Here we get data from RemoteService.
+
+					for (int i = 0; i < tempList.size(); i++) {
+						mNewDevicesArrayAdapter.add(tempList.get(i));
+						// cachList.add(tempList.get(i));
+
+					}
+
+					cachList = tempList;
+					updateList();
+					Log.d(getClass().getSimpleName(), "invokeService()");
+
+				}
+			} catch (RemoteException re) {
+				Log.e(getClass().getSimpleName(), "RemoteException");
+			} catch (Exception e) {
+				Log.e(getClass().getSimpleName(), "??Exception:"
+								+ e.toString());
+			}
+		}
 		
 		if (BTScanner.conn == null) {
 			Toast.makeText(WifiList.this, "Cannot refresh - service not bound",
@@ -444,10 +444,12 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 		} else {
 			try {
 
+				Toast.makeText(WifiList.this, "LAT!::"+remoteService.getWifiLac()+"LNG!::"+remoteService.getWifiLng(),
+						Toast.LENGTH_SHORT).show();
  	          
-				   LAC1 = Double.toString(remoteService.getWifiLac());
-				
-		           LNG1 = Double.toString(remoteService.getWifiLng());
+//				   LAC1 = Double.toString(remoteService.getWifiLac());
+//				
+//		           LNG1 = Double.toString(remoteService.getWifiLng());
 		            
 		  
 		            if(LAC1.length()>4)
@@ -629,13 +631,13 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 	};
 
 	public void updateList() {
-		this.options.clear();
+	//	this.options.clear();
 		// fetch name into options, fetch MAC address into MacAddress
 		for (int i = 0; i < mNewDevicesArrayAdapter.getCount(); i++) {
 
 			String temp[] = mNewDevicesArrayAdapter.getItem(i).toString()
 					.split("\n");
-			this.options.add(temp[1]);
+	//		this.options.add(temp[1]);
 			// if temp[2] is a master tag MAC address and the temp[0] value
 			// (rssi value) is big enough
 			MacAddr.add(temp[2]);
@@ -648,7 +650,7 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 					// TextToSpeech.QUEUE_FLUSH, null);
 					mNewDevicesArrayAdapter.insert(mNewDevicesArrayAdapter
 							.getItem(i), 0);
-					this.options.add(0, "Intersection Point");
+			//		this.options.add(0, "Intersection Point");
 					mNewDevicesArrayAdapter.remove(mNewDevicesArrayAdapter
 							.getItem(i + 1));
 					this.options.remove(i + 1);
@@ -662,9 +664,9 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 						&& Integer.valueOf(temp[0]) <= -60) {
 					mNewDevicesArrayAdapter.remove(mNewDevicesArrayAdapter
 							.getItem(i));
-					this.options.remove(i);
-					this.MacAddr.remove(i);
-					nearbyPOIs = this.options;
+			//		this.options.remove(i);
+		//			this.MacAddr.remove(i);
+		//			nearbyPOIs = this.options;
 					foundMasterTag = false;
 				}
 

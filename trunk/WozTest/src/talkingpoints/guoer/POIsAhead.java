@@ -433,7 +433,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
 
 
-		vibrator.vibrate(100);
+		vibrator.vibrate(50);
 	}
 	@Override
 	public boolean onFling(MotionEvent e3, MotionEvent e4, float velocityX,

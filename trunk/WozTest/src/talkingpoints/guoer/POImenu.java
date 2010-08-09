@@ -608,7 +608,7 @@ public class POImenu extends GestureUI {
 		Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
 
 
-		vibrator.vibrate(100);
+		vibrator.vibrate(50);
 	}
 	private void upMotion()
 	{
