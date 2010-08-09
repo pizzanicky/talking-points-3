@@ -276,7 +276,7 @@ public class GateWayForWifiWoz extends GestureUI {
 			Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
 
 
-			vibrator.vibrate(100);
+			vibrator.vibrate(50);
 		}
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,

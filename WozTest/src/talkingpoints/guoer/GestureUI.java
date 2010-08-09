@@ -1420,7 +1420,7 @@ public class GestureUI extends Activity implements OnInitListener,
 //		long[] pattern = {1000,2000,4000,8000,16000};
 // 		vibrator.vibrate(pattern,1);
 //		vibrator.vibrate(500,1); //vibrate 0.5 seconds 
-		vibrator.vibrate(100);
+		vibrator.vibrate(50);
 	}
 
 	

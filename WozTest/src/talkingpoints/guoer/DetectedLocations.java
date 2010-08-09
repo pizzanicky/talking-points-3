@@ -707,7 +707,7 @@ public class DetectedLocations extends GestureUI {
 		Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
 
 
-		vibrator.vibrate(100);
+		vibrator.vibrate(50);
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

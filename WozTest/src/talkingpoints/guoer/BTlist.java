@@ -1149,7 +1149,7 @@ public class BTlist extends GestureUI {
 //		long[] pattern = {1000,2000,4000,8000,16000};
 // 		vibrator.vibrate(pattern,1);
 //		vibrator.vibrate(500,1); //vibrate 0.5 seconds 
-		vibrator.vibrate(100);
+		vibrator.vibrate(50);
 	}
 //	 protected void vibrate() {
 //	        // look up the notification manager service
