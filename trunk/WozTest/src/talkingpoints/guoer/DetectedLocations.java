@@ -549,48 +549,48 @@ public class DetectedLocations extends GestureUI {
 					playSound(ITEM_BY_ITEM);
 				
 	
-					if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e11){
-								e11.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e12){
-								e12.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e13){
-								e13.printStackTrace();
-							}
-						}
-
-					} 
+//					if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e11){
+//								e11.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e12){
+//								e12.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e13){
+//								e13.printStackTrace();
+//							}
+//						}
+//
+//					} 
 				//	 viewA.setText("Up"+count1);
 			   
 					count1--;
@@ -640,49 +640,49 @@ public class DetectedLocations extends GestureUI {
 	 				playSound(ITEM_BY_ITEM);
 	 			
 	 
-					if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e21){
-								e21.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e22){
-								e22.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e23){
-								e23.printStackTrace();
-							}
-						}
-
-					} 
-			    
+//					if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e21){
+//								e21.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e22){
+//								e22.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e23){
+//								e23.printStackTrace();
+//							}
+//						}
+//
+//					} 
+//			    
 					count1++;
 
 				}
@@ -765,48 +765,48 @@ public class DetectedLocations extends GestureUI {
 	 				playSound(ITEM_BY_ITEM);
 	 			
  	 
-	 				if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e51){
-								e51.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e52){
-								e52.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e53){
-								e53.printStackTrace();
-							}
-						}
-	
-					} 
+//	 				if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e51){
+//								e51.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e52){
+//								e52.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e53){
+//								e53.printStackTrace();
+//							}
+//						}
+//	
+//					} 
 			    
 					count1++;
 	
@@ -885,48 +885,48 @@ public class DetectedLocations extends GestureUI {
 					playSound(ITEM_BY_ITEM);
 				
 	
-					if(count1==(options.size()-1)) 
-					{
-						
-						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
-						{
-							try {
-								
-								Thread.sleep(1400);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e61){
-								e61.printStackTrace();
-							}
-				 
-						}
-						else if(options.get(count1).length()>16)
-						{
-							try {
-								
-								Thread.sleep(2100);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e62){
-								e62.printStackTrace();
-							}
-				 
-						}else 
-						{
-							try {
-								
-								Thread.sleep(700);
-								releaseSoundEffect();
-								playSound(EDGE);
-								
-							}catch(InterruptedException e63){
-								e63.printStackTrace();
-							}
-						}
-	
-					} 
+//					if(count1==(options.size()-1)) 
+//					{
+//						
+//						if((options.get(count1).length()>8)&&(options.get(count1).length()<16))
+//						{
+//							try {
+//								
+//								Thread.sleep(1400);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e61){
+//								e61.printStackTrace();
+//							}
+//				 
+//						}
+//						else if(options.get(count1).length()>16)
+//						{
+//							try {
+//								
+//								Thread.sleep(2100);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e62){
+//								e62.printStackTrace();
+//							}
+//				 
+//						}else 
+//						{
+//							try {
+//								
+//								Thread.sleep(700);
+//								releaseSoundEffect();
+//								playSound(EDGE);
+//								
+//							}catch(InterruptedException e63){
+//								e63.printStackTrace();
+//							}
+//						}
+//	
+//					} 
 				//	 viewA.setText("Up"+count1);
 			   
 					count1--;
