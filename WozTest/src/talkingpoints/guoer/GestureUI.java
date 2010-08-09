@@ -220,8 +220,10 @@ public class GestureUI extends Activity implements OnInitListener,
 
 	    				}
 	    				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
+	    				{	vibrate();
 	    					this.sayPageName();
 
+	    				}
 	     				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
 	     				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
 	     				{
@@ -683,7 +685,7 @@ public class GestureUI extends Activity implements OnInitListener,
 			   {
 				   if(flagTrackball)
 					 {	
-					    vibrate();
+ 
 						upMotion();
 						flagTrackball=false;
 					 }
@@ -692,8 +694,7 @@ public class GestureUI extends Activity implements OnInitListener,
 			   { 
 				   if(flagTrackball)
 					 {	
-					    vibrate();
-						downMotion();
+ 						downMotion();
 						flagTrackball=false;
 					 }
 

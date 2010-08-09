@@ -2,11 +2,13 @@ package talkingpoints.guoer;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -276,16 +278,19 @@ public class POImenu extends GestureUI {
 
     				}
     				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
+    				{
+    					vibrate();
     					this.sayPageName();
-
+    				}
      				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
      				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
      				{
      					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
      					 if(flag||flagForScrolling)
      					 {
+     						 vibrate();
      						 upMotion();
-     						flagForScrolling=false;
+     					   	 flagForScrolling=false;
      					 }
      					
      				}
@@ -295,10 +300,9 @@ public class POImenu extends GestureUI {
      					
      					 if(flag||flagForScrolling)
      					 {
-     						 
-     						 
-     						downMotion();
-     						flagForScrolling = false; 
+     						 vibrate(); 
+     						 downMotion();
+     						 flagForScrolling = false; 
      					 }
      				}//missed
      				else if(xD>CHECK_DISTANCE_2&&yD>CHECK_DISTANCE_2)
@@ -598,7 +602,14 @@ public class POImenu extends GestureUI {
 
 		return true;// return super.onKeyDown(keyCode, event);
 	}
-	
+	public void vibrate()
+	{
+		String vibratorService = Context.VIBRATOR_SERVICE;
+		Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
+
+
+		vibrator.vibrate(100);
+	}
 	private void upMotion()
 	{
 		flag2=true;

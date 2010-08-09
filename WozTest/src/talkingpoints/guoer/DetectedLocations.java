@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -356,14 +357,18 @@ public class DetectedLocations extends GestureUI {
 
     				}
     				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
+    				{	
+    					vibrate();
     					this.sayPageName();
 
+    				}
      				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
      				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
      				{
      					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
      					 if(flag||flagForScrolling)
      					 {
+     						 vibrate();
      						 upMotion();
      						flagForScrolling=false;
      					 }
@@ -376,7 +381,7 @@ public class DetectedLocations extends GestureUI {
      					 if(flag||flagForScrolling)
      					 {
      						 
-     						 
+     						vibrate();
      						downMotion();
      						flagForScrolling = false; 
      					 }
@@ -694,6 +699,15 @@ public class DetectedLocations extends GestureUI {
 			float distanceY) {
 		flag = true; 
 		return true; 
+	}
+	@Override
+	public void vibrate()
+	{
+		String vibratorService = Context.VIBRATOR_SERVICE;
+		Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
+
+
+		vibrator.vibrate(100);
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

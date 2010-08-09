@@ -3,12 +3,14 @@ package talkingpoints.guoer;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -376,14 +378,16 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 
     				}
     				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
+    				{	vibrate();
     					this.sayPageName();
-
+    				}
      				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
      				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
      				{
      					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
      					 if(flag||flagForScrolling)
      					 {
+     						vibrate();
      						 upMotion();
      						flagForScrolling=false;
      					 }
@@ -396,7 +400,8 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
      					 if(flag||flagForScrolling)
      					 {
      						 
-     						 
+     						vibrate();
+    
      						downMotion();
      						flagForScrolling = false; 
      					 }
@@ -421,6 +426,14 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		gestureScanner.onTouchEvent(e);
 		return true;
 
+	}
+	public void vibrate()
+	{
+		String vibratorService = Context.VIBRATOR_SERVICE;
+		Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
+
+
+		vibrator.vibrate(100);
 	}
 	@Override
 	public boolean onFling(MotionEvent e3, MotionEvent e4, float velocityX,
