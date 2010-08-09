@@ -1125,8 +1125,7 @@ public class BTlist extends GestureUI {
 			   {
 				   if(flagTrackball)
 					 {	
-					    vibrate();
-						upMotion();
+ 						upMotion();
 						flagTrackball=false;
 					 }
 			   }
@@ -1134,8 +1133,7 @@ public class BTlist extends GestureUI {
 			   { 
 				   if(flagTrackball)
 					 {	
-					    vibrate();
-						downMotion();
+ 						downMotion();
 						flagTrackball=false;
 					 }
  

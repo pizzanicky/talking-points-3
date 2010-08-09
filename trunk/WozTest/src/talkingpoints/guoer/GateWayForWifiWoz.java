@@ -4,11 +4,13 @@ package talkingpoints.guoer;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -176,7 +178,10 @@ public class GateWayForWifiWoz extends GestureUI {
 
     				}
     				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
+    				{
     					this.sayPageName();
+    					vibrate();
+    				}
 
      				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
      				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
@@ -184,6 +189,7 @@ public class GateWayForWifiWoz extends GestureUI {
      					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
      					 if(flag||flagForScrolling)
      					 {
+     						 vibrate();
      						 upMotion();
      						flagForScrolling=false;
      					 }
@@ -196,7 +202,7 @@ public class GateWayForWifiWoz extends GestureUI {
      					 if(flag||flagForScrolling)
      					 {
      						 
-     						 
+     						vibrate();
      						downMotion();
      						flagForScrolling = false; 
      					 }
@@ -247,8 +253,7 @@ public class GateWayForWifiWoz extends GestureUI {
 			   {
 				   if(flagTrackball)
 					 {	
-					    vibrate();
-						upMotion();
+ 						upMotion();
 						flagTrackball=false;
 					 }
 			   }
@@ -256,14 +261,22 @@ public class GateWayForWifiWoz extends GestureUI {
 			   { 
 				   if(flagTrackball)
 					 {	
-					    vibrate();
-						downMotion();
+ 						downMotion();
 						flagTrackball=false;
 					 }
 
 			   }
 			   
 			return false; 
+		}
+	 @Override
+		public void vibrate()
+		{
+			String vibratorService = Context.VIBRATOR_SERVICE;
+			Vibrator vibrator = (Vibrator)getSystemService(vibratorService);
+
+
+			vibrator.vibrate(100);
 		}
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
