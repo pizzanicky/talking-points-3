@@ -348,8 +348,8 @@ public class WifiPosition extends Activity {
              //loc = "00:40:5a:21:61:59, 123, 456";
 //             if ((loc=poiHash.get(scan.BSSID)) != null)
 //             {             
-//          	   int dist = (int) Utilities.calcDistance(scan.level);
-//          	   Log.d("Distance", "" + dist);
+          	   int dist = (int) Utilities.calcDistance(scan.level);
+          	   Log.d("Distance", "" + dist);
 //
 //          	   lat_lng = loc.split(",");
 //          	   wifiLocation[i][0] = Double.parseDouble(lat_lng[0]);
@@ -357,7 +357,7 @@ public class WifiPosition extends Activity {
 //          	   wifiLocation[i][2] = scan.level;
 //          	   wifiLocation[i][3] = dist;
 //          	   
-//          	   sb.append(scan.SSID+"\t"+scan.BSSID+"\t"+scan.level+"\t"+dist+"\n");
+          	   sb.append(scan.SSID+"\t"+scan.BSSID+"\t"+scan.level+"\t"+dist+"\n");
 //          	   //sb.append(poiHash.get(scan.BSSID) +"\n\n");
 //              }   
            } 
