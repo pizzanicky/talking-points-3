@@ -793,7 +793,7 @@ public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 //							e11.printStackTrace();
 //						}
 //							finish();
-
+    					vibrate();
     				}	
     				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
     					this.sayPageName();

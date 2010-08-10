@@ -351,13 +351,16 @@ public class DetectedLocations extends GestureUI {
     			try{
     				if(FirstX-LastX>SWIPE_MIN_DISTANCE_RIGHT_LEFT&&yD< CHECK_DISTANCE)
     				{    // this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
-		    				releaseSoundEffect();
+    					
+    						vibrate();
+    						releaseSoundEffect();
 							playSound(NEXT_PAGE);
-								finish();
+							finish();
 
     				}
     				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
     				{	
+    					
     					vibrate();
     					this.sayPageName();
 
@@ -368,6 +371,10 @@ public class DetectedLocations extends GestureUI {
      					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
      					 if(flag||flagForScrolling)
      					 {
+     						 this.options.clear();
+     						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+     		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+     						 
      						 vibrate();
      						 upMotion();
      						flagForScrolling=false;
@@ -381,6 +388,11 @@ public class DetectedLocations extends GestureUI {
      					 if(flag||flagForScrolling)
      					 {
      						 
+     						 this.options.clear();
+     						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+     		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+     						  
+     						 
      						vibrate();
      						downMotion();
      						flagForScrolling = false; 
@@ -390,7 +402,7 @@ public class DetectedLocations extends GestureUI {
      				{
      					releaseSoundEffect();
 						playSound(MISSED_IT);
-     					this.mTts.speak("Please move your thumb in right direction", TextToSpeech.QUEUE_FLUSH,null);
+//     					this.mTts.speak("Please move your thumb in right direction", TextToSpeech.QUEUE_FLUSH,null);
      				}
      				 
 
@@ -741,7 +753,7 @@ public class DetectedLocations extends GestureUI {
 				
 				 this.options.clear();
 				 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
-						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+				 this.options.add(BTlist.getPOInamesWithDistance().get(i));
 				 
 				 
 			if(options.size()!=0){
@@ -835,6 +847,11 @@ public class DetectedLocations extends GestureUI {
 		}else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
 		
 			flag2=true;
+			
+			this.options.clear();
+			 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+					this.options.add(BTlist.getPOInamesWithDistance().get(i));
+			 
 			
 			if(options.size()!=0)
 			{

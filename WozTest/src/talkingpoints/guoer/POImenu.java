@@ -272,7 +272,8 @@ public class POImenu extends GestureUI {
     			try{
     				if(FirstX-LastX>SWIPE_MIN_DISTANCE_RIGHT_LEFT&&yD< CHECK_DISTANCE)
     				{    // this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
-		    				releaseSoundEffect();
+    					vibrate();
+    						releaseSoundEffect();
 							playSound(NEXT_PAGE);
 								finish();
 
@@ -674,6 +675,7 @@ public class POImenu extends GestureUI {
 				
 					releaseSoundEffect();
 					playSound(ITEM_BY_ITEM);
+					
 				
 	
 //					if(count1==(options.size()-1)) 
@@ -721,7 +723,12 @@ public class POImenu extends GestureUI {
 				//	 viewA.setText("Up"+count1);
 			   
 					count1--;
-	
+					
+//					if(options.size()==0)
+//					{
+//						releaseSoundEffect();
+// 						playSound(EDGE);
+//					}
 				}
 			} 
 			
@@ -766,6 +773,11 @@ public class POImenu extends GestureUI {
 	 				releaseSoundEffect();
 	 				playSound(ITEM_BY_ITEM);
 	 			
+//	 				if(count1==options.size()-1)
+//					{
+//						releaseSoundEffect();
+// 						playSound(EDGE);
+//					}
 	 
 //					if(count1==(options.size()-1)) 
 //					{

@@ -371,7 +371,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
     				if(FirstX-LastX>SWIPE_MIN_DISTANCE_RIGHT_LEFT&&yD< CHECK_DISTANCE)
     				{
     	    			//	      this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
-
+    					vibrate();
     					releaseSoundEffect();
     					playSound(NEXT_PAGE);
     						finish();
