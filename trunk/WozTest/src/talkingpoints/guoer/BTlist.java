@@ -118,6 +118,7 @@ public class BTlist extends GestureUI {
 	    
 	    private static boolean flagTrackball=false; 
 
+	    private static String end="e";
 	/** Called when the activity is first created. */
 //	public void onResume()
 //	{
@@ -138,6 +139,7 @@ public class BTlist extends GestureUI {
 		MenuOptions.add("Flashlight");
 //		MenuPOINameWithDistance.add("Keyword Search");
 //		MenuPOINameWithDistance.add("Flashlight");
+//		MenuOptions.add("");
 		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
 		
 		BTlist.foundMasterTag = false;
@@ -486,6 +488,8 @@ public class BTlist extends GestureUI {
 	}
 	public void callAngleCalculator2() throws InterruptedException{
 		
+//////////////////////// start of no use
+
 //		if(onceflag)
 //		{ 
 //		
@@ -503,7 +507,9 @@ public class BTlist extends GestureUI {
 //						TextToSpeech.QUEUE_FLUSH, null);       
 // 			onceflag=false;
 //		}
-//		
+//
+// end of no use //////////////////////// 
+
  		NumberFormat formatter = new DecimalFormat("#0");
 	 
  		this.POINameWithDistance.clear();
@@ -586,6 +592,8 @@ public class BTlist extends GestureUI {
  			this.recentlyDetectedPOIs.add(this.onlyPOInames.get(i));
  		}
  	  
+ 		
+//////////////////////// start of no use
  		//	this.recentlyDetectedPOIs = this.onlyPOInames;
 	 
 		//Enalbe them when the user click the double .. 
@@ -672,6 +680,8 @@ public class BTlist extends GestureUI {
 			this.mTts.speak("There are" + this.POINameWithDistance.size()
 					+ "locations ahead of you, scroll to check them out",
 					TextToSpeech.QUEUE_FLUSH, null); */
+//end of //////////////////////// no use
+
 	}
 	
 	public boolean onCreatePOINameWithDistanceMenu(Menu menu) {
@@ -955,7 +965,6 @@ public class BTlist extends GestureUI {
 					releaseSoundEffect();
 					playSound(ITEM_BY_ITEM);
 				
-	
 //					if(count1==(options.size()-1)) 
 //					{
 //						
