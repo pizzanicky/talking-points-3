@@ -646,7 +646,7 @@ public class GestureUI extends Activity implements OnInitListener,
 						releaseSoundEffect();
 						playSound(NEXT_PAGE);
 						
-						Intent intent = new Intent(GestureUI.this, DetectedLocations.class);
+						Intent intent = new Intent(GestureUI.this, BTlist.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 					}

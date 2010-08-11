@@ -272,7 +272,7 @@ public class POImenu extends GestureUI {
     			try{
     				if(FirstX-LastX>SWIPE_MIN_DISTANCE_RIGHT_LEFT&&yD< CHECK_DISTANCE)
     				{    // this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
-    					vibrate();
+    						vibrate();
     						releaseSoundEffect();
 							playSound(NEXT_PAGE);
 								finish();
@@ -338,10 +338,10 @@ public class POImenu extends GestureUI {
 		// TODO Auto-generated method stub
 		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE_RIGHT_LEFT
 				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY &&yDistance< CHECK_DISTANCE) {
-			
+			vibrate();
 			releaseSoundEffect();
 			playSound(NEXT_PAGE);
-			finish();
+			 finish();
 		}else if(e2.getX() - e1.getX() >SWIPE_MIN_DISTANCE_RIGHT_LEFT
 				&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY &&yDistance< CHECK_DISTANCE) {
 			this.sayPageName();

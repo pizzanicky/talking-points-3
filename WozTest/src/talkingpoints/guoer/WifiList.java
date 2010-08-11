@@ -200,7 +200,9 @@ public class WifiList extends GestureUI {
 			return false;
 		}
 
-		public boolean onSingleTapConfirmed(MotionEvent e) {		 
+		public boolean onSingleTapConfirmed(MotionEvent e) {	
+			
+		
 			countGesture++;			
 			if(countGesture==2)	{	
 //				Toast.makeText(getApplicationContext(),"countG: "+countGesture,Toast.LENGTH_SHORT).show();

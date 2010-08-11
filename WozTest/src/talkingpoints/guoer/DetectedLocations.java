@@ -85,9 +85,9 @@ public class DetectedLocations extends GestureUI {
 	public void onCreate(Bundle savedInstanceState) {
  
  		pageName = new String();
-		pageName = "List of Detected Locations. Scroll to hear locations.";
+		pageName = "List of Detected Locations. Swipe down to hear locations.";
 		super.onCreate(savedInstanceState);		
- 		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+ 		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);§
 		// setContentView(R.layout.main);
 		setResult(Activity.RESULT_CANCELED);
 	
