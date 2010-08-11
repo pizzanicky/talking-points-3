@@ -530,7 +530,7 @@ public class BTlist extends GestureUI {
 // 			if(byCoordinateParser.floor.get(a)==1)
 // 				Toast.makeText(this,"First floor!"+a,Toast.LENGTH_SHORT);
  	 
- 			if((byCoordinateParser.floor.get(a)==-1)&&((byCoordinateParser.distance.get(a)*5280)<10.00))
+ 			if((byCoordinateParser.floor.get(a)==-1)&&((byCoordinateParser.distance.get(a)*5280)<7.00))
  			{
 		 
 					POINameWithDistance.add(byCoordinateParser.name.get(a)+" within "+formatter.format(byCoordinateParser.distance.get(a)*5280)+"feet");
@@ -620,23 +620,27 @@ public class BTlist extends GestureUI {
 	 			 			if(LAC1.length()!=4)
 	 			 			{ 
 									
-	 			 				releaseSoundEffect();
-	 							playSound(NEXT_PAGE);
-								
-							   Intent intent = new Intent(BTlist.this, POImenu.class);
-						   //Insert the parser function 
-							   MacReader r = new MacReader(BTlist.MacAddr
-								.get(GestureUI.selected)); 
-							   intent.putExtra("MAC", r.getMacString());
-							   intent.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
-							   intent.putExtra("POIname", onlyPOInames
-								.get(GestureUI.selected)); 
-				 
-							   startActivity(intent);
-		 						 Toast.makeText(getApplicationContext(),"MAC"+r.getMacString()+"tpid"+BTlist.tpids.get(GestureUI.selected)+
-		 								 "POIname"+onlyPOInames
-		 								.get(GestureUI.selected),Toast.LENGTH_SHORT).show();
-
+	 			 				if(options.size()!=0)
+	 			 				{
+		 			 				releaseSoundEffect();
+		 							playSound(NEXT_PAGE);
+									
+								   Intent intent = new Intent(BTlist.this, POImenu.class);
+							   //Insert the parser function 
+								   MacReader r = new MacReader(BTlist.MacAddr
+									.get(GestureUI.selected)); 
+								   intent.putExtra("MAC", r.getMacString());
+								   intent.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
+								   intent.putExtra("POIname", onlyPOInames
+									.get(GestureUI.selected)); 
+					 
+								   startActivity(intent);
+			 						 Toast.makeText(getApplicationContext(),"MAC"+r.getMacString()+"tpid"+BTlist.tpids.get(GestureUI.selected)+
+			 								 "POIname"+onlyPOInames
+			 								.get(GestureUI.selected),Toast.LENGTH_SHORT).show();
+	 			 				}
+	 			 				 else
+	 								mTts.speak("There is no point of interest around you", TextToSpeech.QUEUE_FLUSH, null);
 							   
 						   	}else 
 						   	{
@@ -689,21 +693,25 @@ public class BTlist extends GestureUI {
 						countGesture=0;	
 						
 						if(LAC1.length()!=4)
-				 			{ 
-							
-							releaseSoundEffect();
- 							playSound(NEXT_PAGE);
-							
-						   Intent intent2 = new Intent(BTlist.this, POImenu.class);
-					   //Insert the parser function 
-						   MacReader r = new MacReader(BTlist.MacAddr
-							.get(GestureUI.selected)); 
-						   intent2.putExtra("MAC", r.getMacString());
-						   intent2.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
-						   intent2.putExtra("POIname", onlyPOInames
-							.get(GestureUI.selected)); 
-			 
-						   startActivity(intent2);
+				 		{ 
+							if(options.size()!=0)
+							{
+	 							releaseSoundEffect();
+	 							playSound(NEXT_PAGE);
+								
+							   Intent intent2 = new Intent(BTlist.this, POImenu.class);
+						   //Insert the parser function 
+							   MacReader r = new MacReader(BTlist.MacAddr
+								.get(GestureUI.selected)); 
+							   intent2.putExtra("MAC", r.getMacString());
+							   intent2.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
+							   intent2.putExtra("POIname", onlyPOInames
+								.get(GestureUI.selected)); 
+				 
+							   startActivity(intent2);
+							   
+							} else
+								mTts.speak("There is no point of interest around you", TextToSpeech.QUEUE_FLUSH, null);
 						   
 					   	}else 
 					   	{
@@ -870,13 +878,17 @@ public class BTlist extends GestureUI {
      						 vibrate();
 	     					if(LAC1.length()!=4)
 	 			 			{ 
-//	     						if(options.size()==0)
+//	     						if(options.size()==0&&BTlist.getPOInamesWithDistance().size()!=0)
 //	     						{
 //		     						 this.options.clear();
 //		     						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
 //		     		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
 //	     						}
+//	     						
+	     						if(options.size()==0)
 	     						 upMotion();
+	     						else
+    	 							mTts.speak("There is no point of interest around you", TextToSpeech.QUEUE_FLUSH, null);
 	 			 			}else 
 	 			 			{
 	 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
@@ -897,13 +909,18 @@ public class BTlist extends GestureUI {
      						vibrate();
      						if(LAC1.length()!=4)
 	 			 			{
-//     							if(options.size()==0)
+//     							if(options.size()==0&&BTlist.getPOInamesWithDistance().size()!=0)
 //	     						{
 //	     							 this.options.clear();
 //	         						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
 //	         		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
 //	     						}
+//     							
+     							if(options.size()!=0)
      							downMotion();
+     							else
+    	 							mTts.speak("There is no point of interest around you", TextToSpeech.QUEUE_FLUSH, null);
+
 	 			 			}else 
 	 			 			{
 	 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
@@ -953,7 +970,10 @@ public class BTlist extends GestureUI {
 		//	this.sayPageName("up");
 			 if(flag)
 			 {
+				 if(options.size()!=0)
 				 upMotion();
+				 else
+						mTts.speak("There is no point of interest around you", TextToSpeech.QUEUE_FLUSH, null);
 			 }
 			
 	    //  viewA.setText("-" + "Fling up?" + "-");
@@ -963,8 +983,10 @@ public class BTlist extends GestureUI {
 			 if(flag)
 			 {
 				 
-				 
+				 if(options.size()!=0)
 				 downMotion();
+				 else
+						mTts.speak("There is no point of interest around you", TextToSpeech.QUEUE_FLUSH, null);
 			 }
 			 
  
@@ -1304,15 +1326,17 @@ public class BTlist extends GestureUI {
 		
 			if(LAC1.length()!=4)
 	 			{
-//					if(options.size()==0)
+//					if(options.size()==0&&BTlist.getPOInamesWithDistance().size()!=0)
 //					{
 //						 this.options.clear();
 //						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
 //		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
 //					}
-//			 
-	 			
-				flag3=true; 
+			 
+					if(options.size()!=0)
+					{
+				
+						flag3=true; 
 			
 			 
 				 
@@ -1354,6 +1378,9 @@ public class BTlist extends GestureUI {
 								count1++;
 				
 							}
+					}
+					else
+						mTts.speak("There is no point of interest around you", TextToSpeech.QUEUE_FLUSH, null);
 						 
 	 			}else 
 	 			{
@@ -1367,14 +1394,17 @@ public class BTlist extends GestureUI {
 			
 			if(LAC1.length()!=4)
  			{
-//				if(options.size()==0)
+//				if(options.size()==0&)
 //				{
 //					 this.options.clear();
 //					 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
 //	 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
 //				}
-		 
-							flag2=true;
+//		 
+					
+				if(options.size()!=0)
+				{
+						flag2=true;
 			
 		  
 			  
@@ -1442,6 +1472,10 @@ public class BTlist extends GestureUI {
 								count1--;
 				
 							}
+				} 
+				else
+					mTts.speak("There is no point of interest around yout", TextToSpeech.QUEUE_FLUSH, null);
+				
  			}else 
  			{
 				mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
