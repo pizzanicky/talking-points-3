@@ -1,5 +1,7 @@
 package talkingpoints.guoer;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -55,6 +57,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
     
     private static int count1=0;
     private static int countGesture=0;
+	private ArrayList<String> onlyPOIname;
 
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,8 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		MacAddrAhead = new ArrayList<String>();
 		NamesAhead = new ArrayList<String>();
 		TPIDAhead = new ArrayList<String>();
- 
+		onlyPOIname = new ArrayList<String>();
+		
 		sm = (SensorManager) getSystemService(Activity.SENSOR_SERVICE);
 		compass = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 		sm.registerListener(this, compass, SensorManager.SENSOR_DELAY_FASTEST);
@@ -88,6 +92,8 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 //						.get(GestureUI.selected));
 					intent.putExtra("POIname", options
 							.get(GestureUI.selected));
+	//				intent.putExtra("POIname",onlyPOIname
+	//						.get(GestureUI.selected));
 					startActivity(intent);  
 				}else if(options.size()==0)
 				{
@@ -123,7 +129,9 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
  							.get(GestureUI.selected));
 // 						intent.putExtra("POIname", POIsAhead.NamesAhead
 // 							.get(GestureUI.selected));
- 						intent.putExtra("POIname", options
+// 						intent.putExtra("POIname", options
+// 								.get(GestureUI.selected));
+ 						intent.putExtra("POIname",onlyPOIname
  								.get(GestureUI.selected));
  						startActivity(intent);  
  					}else if(options.size()==0)
@@ -147,7 +155,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 			MacAddrAhead.clear();
 			TPIDAhead.clear();
 			NamesAhead.clear();
-			
+			this.onlyPOIname.clear();
 			
 			Double cur_angle = new Double(angle);
 			for (int i = 0; i < AngleCalculator.NearbyAngle.size(); i++) {
@@ -158,13 +166,16 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 								+ (360 - AngleCalculator.NearbyAngle.get(i)) < range)) {
 					
 					//ground floor 
-			 			
+			 		NumberFormat formatter = new DecimalFormat("#0");
+
 						if((byCoordinateParser.floor.get(i)==-1)&&((byCoordinateParser.distance.get(i)*5280)<60.00))
 						{
 							this.options.add(byCoordinateParser.name.get(i));
+					//		this.options.add(byCoordinateParser.name.get(i)+" within "+formatter.format(byCoordinateParser.distance.get(i)*5280)+"feet");
 		 		//	Toast.makeText(this,"name::"+byCoordinateParser.name.get(i),Toast.LENGTH_SHORT).show();
 							MacAddrAhead.add(byCoordinateParser.mac.get(i)); 
 							TPIDAhead.add(byCoordinateParser.tpid.get(i));
+						//	this.onlyPOIname.add(byCoordinateParser.name.get(i));
 						}
 						
 				}
@@ -339,6 +350,16 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		angle = values[0];
 		
 	}
+	
+	 @Override
+		public boolean onTrackballEvent(MotionEvent _event)
+		{
+			float vertical = _event.getY();
+			float horizontal = _event.getX();
+			
+			
+			return false; 
+		}
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
 

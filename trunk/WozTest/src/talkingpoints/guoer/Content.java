@@ -34,11 +34,18 @@ public class Content extends GestureUI implements OnInitListener {
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private static final int CHECK_DISTANCE =100; 
 	private static final int SWIPE_MIN_DISTANCE_RIGHT_LEFT=100; //more distance require for left and right gesture 
-
+  	private static final int CHECK_DISTANCE_2=10;
 	private static boolean flag=false; 
 	private static boolean flag2=false; 
 	private static boolean flag3=false; 
 
+    private static boolean flagForScrolling=false; 
+
+    private float FirstX;
+    private float FirstY;
+    private float LastX;
+    private float LastY;
+    
     private static int count1=0;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,15 +71,105 @@ public class Content extends GestureUI implements OnInitListener {
 		setResult(Activity.RESULT_OK);
 	}
 
-	public boolean onTouchEvent(MotionEvent event) {
-		if (gestureScanner.onTouchEvent(event)) {
-			Log.w(TAG, "HAHA = " + "touch");
-			return true;
-		} else
-			return false;
-		
-	}
+	@Override
+	public boolean onTouchEvent(MotionEvent e) {
 
+		int action = e.getAction();
+    	//down 
+		if(action == MotionEvent.ACTION_DOWN||action==MotionEvent.ACTION_MOVE)
+		{	
+			flagForScrolling=true;
+			 
+
+		}
+        if(action == MotionEvent.ACTION_DOWN)
+        {
+         	FirstX=e.getX();
+        	FirstY=e.getY();
+        }
+    	else if(action == MotionEvent.ACTION_UP)
+    	{
+    		LastX=e.getX();
+    		LastY=e.getY();
+    		
+     		
+    		if(FirstX>0||FirstY>0)
+    		{
+    			final float xD=Math.abs(FirstX-LastX);
+    			final float yD=Math.abs(FirstY-LastY);
+    			
+    			try{
+    				if(FirstX-LastX>SWIPE_MIN_DISTANCE_RIGHT_LEFT&&yD< CHECK_DISTANCE)
+    				{    // this.mTts.speak("LEFT MOTION", TextToSpeech.QUEUE_FLUSH,null);
+    					
+    						vibrate();
+    						releaseSoundEffect();
+							playSound(NEXT_PAGE);
+							finish();
+
+    				}
+    				else if(LastX - FirstX >SWIPE_MIN_DISTANCE_RIGHT_LEFT&& yD< CHECK_DISTANCE) 
+    				{	
+    					
+    					vibrate();
+    					this.sayPageName();
+
+    				}
+     				   //   this.mTts.speak("Right motion", TextToSpeech.QUEUE_FLUSH,null);
+     				else if(FirstY - LastY > SWIPE_MIN_DISTANCE&& xD< CHECK_DISTANCE)  
+     				{
+//     					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
+//     					 if(flag||flagForScrolling)
+//     					 {
+//     						 this.options.clear();
+//     						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+//     		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+//     						 
+//     						 vibrate();
+//     						 upMotion();
+//     						flagForScrolling=false;
+//     					 }
+//     					
+     				}
+     				else if(LastY - FirstY > SWIPE_MIN_DISTANCE && xD< CHECK_DISTANCE)  
+     				{	
+//     					//this.mTts.speak("down motion", TextToSpeech.QUEUE_FLUSH,null);
+//     					
+//     					 if(flag||flagForScrolling)
+//     					 {
+//     						 
+//     						 this.options.clear();
+//     						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+//     		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+//     						  
+//     						 
+//     						vibrate();
+//     						downMotion();
+//     						flagForScrolling = false; 
+//     					 }
+     				}//missed
+     				else if(xD>CHECK_DISTANCE_2&&yD>CHECK_DISTANCE_2&&this.options.size()>0)
+     				{
+     					releaseSoundEffect();
+						playSound(MISSED_IT);
+//     					this.mTts.speak("Please move your thumb in right direction", TextToSpeech.QUEUE_FLUSH,null);
+     				}
+     				 
+
+    		 
+
+    			}
+    			catch (Exception e0) {
+    				// nothing
+    			}
+    			
+    		}
+    	}
+		
+		gestureScanner.onTouchEvent(e);
+		return true;
+
+	}
 	 
 
 	@Override

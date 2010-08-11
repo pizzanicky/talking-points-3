@@ -22,6 +22,7 @@ import android.os.RemoteException;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -133,21 +134,23 @@ public class BTlist extends GestureUI {
 		BTScanner bt = new BTScanner();
 		
 		
-		MenuOptions = new ArrayList<String>();
-		MenuOptions.add("Detect locations within 20 feet"); //Bert's calf ay
-	//	MenuOptions.add("Quick Tutorial");
-		MenuOptions.add("Flashlight");
-//		MenuPOINameWithDistance.add("Keyword Search");
-//		MenuPOINameWithDistance.add("Flashlight");
-//		MenuOptions.add("");
-		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
+//		MenuOptions = new ArrayList<String>();
+//		MenuOptions.add("Detect locations within 20 feet"); //Bert's calf ay
+//	//	MenuOptions.add("Quick Tutorial");
+//		MenuOptions.add("Flashlight");
+////		MenuPOINameWithDistance.add("Keyword Search");
+////		MenuPOINameWithDistance.add("Flashlight");
+////		MenuOptions.add("");
 		
+//		pageName = new String("Talking Points Home. Swipe down to hear menu options. Double tap to select.");
+	
+		pageName = new String("Detected Locations. Swipe down to hear locations.");
 		BTlist.foundMasterTag = false;
  		 
 		
-		super.onCreate(savedInstanceState, MenuOptions);		
+//		super.onCreate(savedInstanceState, MenuOptions);		
 
-		//super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
  		
 		setResult(Activity.RESULT_CANCELED);
 		// POIPOINameWithDistance = new ArrayList<String>();
@@ -194,123 +197,123 @@ public class BTlist extends GestureUI {
 		onlyPOInames = new ArrayList<String>();
 		
 
-		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
-			public boolean onDoubleTap(MotionEvent e) {
-				if(flag0)
-				{
-					switch (GestureUI.selected) {
-					case 0:
-						if(LAC1.length()!=4)
-						{
-							releaseSoundEffect();
-							playSound(NEXT_PAGE);
-							
-							Intent intent = new Intent(BTlist.this, DetectedLocations.class);
-							 
-		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
-		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
-		//					intent.putStringArrayListExtra("tpids", tpids);
-		//					intent.putStringArrayListExtra("MacAddr", MacAddr);
-							
-							startActivity(intent);
-						}
-						else 
-						{
-//							Toast.makeText(WozList.this, "There is no internet connection. Please check",
-//									Toast.LENGTH_SHORT).show();
-
- 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
-						}
-						break; 
-					case 1: //flashlight 
-						if(LAC1.length()!=4)
-						{ //LAC1.length()>4
-					   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-								.getlongitude(),LAC1,
-								LNG1);
-
-					   		oc.getAngle();
-
-					   		releaseSoundEffect();
-							playSound(NEXT_PAGE);
-							
-					   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
-					   		startActivity(intent2); 
-	 
-						}
-						else 
-						{
-//							Toast.makeText(WozList.this, "There is no internet connection. Please check",
-//									Toast.LENGTH_SHORT).show();
-
- 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
-						}
-
-						break;
-					}
-				}
-				return true;
-			}
-
-			public boolean onDoubleTapEvent(MotionEvent e) {
-				return false;
-			}
-
-			public boolean onSingleTapConfirmed(MotionEvent e) {
-		
-				 
-				countGesture++;
-				
-				if(countGesture==2)
-				{	
-//					Toast.makeText(getApplicationContext(),"countG: "+countGesture,Toast.LENGTH_SHORT).show();
-					countGesture=0;
-					switch (GestureUI.selected) {
-					case 0:
-						if(LAC1.length()!=4)
-						{
-							releaseSoundEffect();
-							playSound(NEXT_PAGE);
-							
-							Intent intent = new Intent(BTlist.this, DetectedLocations.class);
-							 
-		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
-		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
-		//					intent.putStringArrayListExtra("tpids", tpids);
-		//					intent.putStringArrayListExtra("MacAddr", MacAddr);
-							
-							startActivity(intent);
-						}
-					case 1: //flashlight 
-						if(LAC1.length()!=4)
-						{
-					   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
-								.getlongitude(),LAC1,
-								LNG1);
-
-					   		oc.getAngle();
-
-					   		releaseSoundEffect();
-							playSound(NEXT_PAGE);
-							
-					   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
-					   		startActivity(intent2); 
-	 
-						}
-						else 
-						{
-//							Toast.makeText(WozList.this, "There is no internet connection. Please check",
-//									Toast.LENGTH_SHORT).show();
- 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
-						}
-
-						break;
-					}
-				}
-				return false;
-			}
-
-		});
+//		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
+//			public boolean onDoubleTap(MotionEvent e) {
+//				if(flag0)
+//				{
+//					switch (GestureUI.selected) {
+//					case 0:
+//						if(LAC1.length()!=4)
+//						{
+//							releaseSoundEffect();
+//							playSound(NEXT_PAGE);
+//							
+//							Intent intent = new Intent(BTlist.this, DetectedLocations.class);
+//							 
+//		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
+//		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
+//		//					intent.putStringArrayListExtra("tpids", tpids);
+//		//					intent.putStringArrayListExtra("MacAddr", MacAddr);
+//							
+//							startActivity(intent);
+//						}
+//						else 
+//						{
+////							Toast.makeText(WozList.this, "There is no internet connection. Please check",
+////									Toast.LENGTH_SHORT).show();
+//
+// 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+//						}
+//						break; 
+//					case 1: //flashlight 
+//						if(LAC1.length()!=4)
+//						{ //LAC1.length()>4
+//					   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+//								.getlongitude(),LAC1,
+//								LNG1);
+//
+//					   		oc.getAngle();
+//
+//					   		releaseSoundEffect();
+//							playSound(NEXT_PAGE);
+//							
+//					   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
+//					   		startActivity(intent2); 
+//	 
+//						}
+//						else 
+//						{
+////							Toast.makeText(WozList.this, "There is no internet connection. Please check",
+////									Toast.LENGTH_SHORT).show();
+//
+// 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+//						}
+//
+//						break;
+//					}
+//				}
+//				return true;
+//			}
+//
+//			public boolean onDoubleTapEvent(MotionEvent e) {
+//				return false;
+//			}
+//
+//			public boolean onSingleTapConfirmed(MotionEvent e) {
+//		
+//				 
+//				countGesture++;
+//				
+//				if(countGesture==2)
+//				{	
+////					Toast.makeText(getApplicationContext(),"countG: "+countGesture,Toast.LENGTH_SHORT).show();
+//					countGesture=0;
+//					switch (GestureUI.selected) {
+//					case 0:
+//						if(LAC1.length()!=4)
+//						{
+//							releaseSoundEffect();
+//							playSound(NEXT_PAGE);
+//							
+//							Intent intent = new Intent(BTlist.this, DetectedLocations.class);
+//							 
+//		//					intent.putStringArrayListExtra("POINameWithDistance",POINameWithDistance);
+//		//					intent.putStringArrayListExtra("POIName",onlyPOInames);
+//		//					intent.putStringArrayListExtra("tpids", tpids);
+//		//					intent.putStringArrayListExtra("MacAddr", MacAddr);
+//							
+//							startActivity(intent);
+//						}
+//					case 1: //flashlight 
+//						if(LAC1.length()!=4)
+//						{
+//					   		AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+//								.getlongitude(),LAC1,
+//								LNG1);
+//
+//					   		oc.getAngle();
+//
+//					   		releaseSoundEffect();
+//							playSound(NEXT_PAGE);
+//							
+//					   		Intent intent2 = new Intent(BTlist.this, POIsAhead.class);
+//					   		startActivity(intent2); 
+//	 
+//						}
+//						else 
+//						{
+////							Toast.makeText(WozList.this, "There is no internet connection. Please check",
+////									Toast.LENGTH_SHORT).show();
+// 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+//						}
+//
+//						break;
+//					}
+//				}
+//				return false;
+//			}
+//
+//		});
 
 	}
 
@@ -512,11 +515,11 @@ public class BTlist extends GestureUI {
 
  		NumberFormat formatter = new DecimalFormat("#0");
 	 
- 		this.POINameWithDistance.clear();
- 		this.tpids.clear();
- 		this.MacAddr.clear();
- 		this.onlyPOInames.clear(); //only returns POInames not including distance 
- 		
+ 		POINameWithDistance.clear();
+ 		tpids.clear();
+ 		MacAddr.clear();
+ 		onlyPOInames.clear(); //only returns POInames not including distance 
+ 		options.clear();
 // 		this.POINameWithDistance.add(0,"Finding locations in a chosen direction");
 // 		this.tpids.add(0,"Finding locations in a chosen direction");
 // 		this.MacAddr.add(0,"Finding locations in a chosen direction");
@@ -527,15 +530,15 @@ public class BTlist extends GestureUI {
 // 			if(byCoordinateParser.floor.get(a)==1)
 // 				Toast.makeText(this,"First floor!"+a,Toast.LENGTH_SHORT);
  	 
- 			if((byCoordinateParser.floor.get(a)==-1)&&((byCoordinateParser.distance.get(a)*5280)<20.00))
+ 			if((byCoordinateParser.floor.get(a)==-1)&&((byCoordinateParser.distance.get(a)*5280)<10.00))
  			{
 		 
-					this.POINameWithDistance.add(byCoordinateParser.name.get(a)+" within "+formatter.format(byCoordinateParser.distance.get(a)*5280)+"feet");
-					this.MacAddr.add(byCoordinateParser.mac.get(a));
-					this.tpids.add(byCoordinateParser.tpid.get(a));
-					nearbyPOIs = this.POINameWithDistance;
-					this.onlyPOInames.add(byCoordinateParser.name.get(a));
-					
+					POINameWithDistance.add(byCoordinateParser.name.get(a)+" within "+formatter.format(byCoordinateParser.distance.get(a)*5280)+"feet");
+					MacAddr.add(byCoordinateParser.mac.get(a));
+					tpids.add(byCoordinateParser.tpid.get(a));
+					nearbyPOIs = POINameWithDistance;
+					onlyPOInames.add(byCoordinateParser.name.get(a));
+					options.add(byCoordinateParser.name.get(a)+" within "+formatter.format(byCoordinateParser.distance.get(a)*5280)+"feet");
 
  			}
  		
@@ -550,8 +553,8 @@ public class BTlist extends GestureUI {
  		
  		if(this.recentlyDetectedPOIs.size()!=0)
  		{
- 			NewItemfilter = new ListComparer(this.onlyPOInames,this.recentlyDetectedPOIs);
- 			
+ 	//		NewItemfilter = new ListComparer(onlyPOInames,this.recentlyDetectedPOIs);
+ 			NewItemfilter = new ListComparer(onlyPOInames,this.recentlyDetectedPOIs);
  			NofiticationList = NewItemfilter.getNewItems();
  			
  			if(NofiticationList!=null 
@@ -561,20 +564,23 @@ public class BTlist extends GestureUI {
  			  	//	mTts.stop();
  			  		mTts.shutdown();
  			  	}
- 				super.releaseSoundEffect();
-	 			super.playSound(NOTIFICATION);
+
 	 		 
  		 		for(int i=0;i<NofiticationList.size();i++){
  						
  			 
- 						
+
+		 				super.releaseSoundEffect();
+				 			super.playSound(NOTIFICATION);
+				 			
+						 	this.mTts.speak(NofiticationList.get(i),
+	 								TextToSpeech.QUEUE_FLUSH, null);
  						//need to slow down a little bit to call all the POI names 
  						try {
- 							Thread.sleep(1000);
- 						 	this.mTts.speak(NofiticationList.get(i),
- 	 								TextToSpeech.QUEUE_FLUSH, null);
+
    
- 						 	
+ 							Thread.sleep(2000);
+
  						} catch (InterruptedException e11) {
  							e11.printStackTrace();
  						}
@@ -587,9 +593,9 @@ public class BTlist extends GestureUI {
  			//flag = true;		
  		}
  		
- 		for(int i=0;i<this.onlyPOInames.size();i++)
+ 		for(int i=0;i<onlyPOInames.size();i++)
  		{
- 			this.recentlyDetectedPOIs.add(this.onlyPOInames.get(i));
+ 			this.recentlyDetectedPOIs.add(onlyPOInames.get(i));
  		}
  	  
  		
@@ -598,74 +604,115 @@ public class BTlist extends GestureUI {
 	 
 		//Enalbe them when the user click the double .. 
 //		
-// 		 super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
-// 			 	@Override
-//				public boolean onDoubleTap(MotionEvent e) {
-//				
-//				 
-// 			 	 	if(POINameWithDistance.size()!=0){
-//					//compass function 
-//					   if (GestureUI.selected == 0) {
-//
-//					   		AngleCalculator oc = new AngleCalculator(p2.getLatitude(), p2
-//								.getlongitude(),LAC1,
-//								LNG1);
-//
-//					   		oc.getAngle();
-//
-//					   		Intent intent = new Intent(BTlist.this, POIsAhead.class);
-//					   		startActivity(intent); 
-//	 
-//
-//			 
-//					   } 
-//					   else { 
-////						   if(POINameWithDistance.size()==1)
-////						   {
-////							   mTts
-////								.speak(
-////										"Nothing interesting detected yet",
-////										TextToSpeech.QUEUE_FLUSH, null);
-////						   }
-////						   else if(POINameWithDistance.size()>1){
-// 						   	if(POINameWithDistance.size()>1){
-//								
-//							   Intent intent = new Intent(BTlist.this, POImenu.class);
-//						   //Insert the parser function 
-//							   MacReader r = new MacReader(BTlist.MacAddr
-//								.get(GestureUI.selected)); 
-//							   intent.putExtra("MAC", r.getMacString());
-//							   intent.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
-//							   intent.putExtra("POIname", onlyPOInames
-//								.get(GestureUI.selected)); 
-//				 
-//							   startActivity(intent);
-//							   
-//						   	}else 
-//						   	{
-//						   		sayPageName("There are no POIs around you");
-//						   	}
-////						   }
-//					    }
-// 			 	 	}
-//				 
-//					return true;
+ 		 super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
+ 			 	@Override
+				public boolean onDoubleTap(MotionEvent e) {
+				
+				 
+//						   if(POINameWithDistance.size()==1)
+//						   {
+//							   mTts
+//								.speak(
+//										"Nothing interesting detected yet",
+//										TextToSpeech.QUEUE_FLUSH, null);
+//						   }
+//						   else if(POINameWithDistance.size()>1){
+	 			 			if(LAC1.length()!=4)
+	 			 			{ 
+									
+	 			 				releaseSoundEffect();
+	 							playSound(NEXT_PAGE);
+								
+							   Intent intent = new Intent(BTlist.this, POImenu.class);
+						   //Insert the parser function 
+							   MacReader r = new MacReader(BTlist.MacAddr
+								.get(GestureUI.selected)); 
+							   intent.putExtra("MAC", r.getMacString());
+							   intent.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
+							   intent.putExtra("POIname", onlyPOInames
+								.get(GestureUI.selected)); 
+				 
+							   startActivity(intent);
+		 						 Toast.makeText(getApplicationContext(),"MAC"+r.getMacString()+"tpid"+BTlist.tpids.get(GestureUI.selected)+
+		 								 "POIname"+onlyPOInames
+		 								.get(GestureUI.selected),Toast.LENGTH_SHORT).show();
+
+							   
+						   	}else 
+						   	{
+								mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+						   	}
+//						   }
+					   
+ 			 	  
+				 
+					return true;
+				}
+				
+				
+
+				@Override
+				public boolean onDoubleTapEvent(MotionEvent e) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+
+				@Override
+				public boolean onSingleTapConfirmed(MotionEvent e) {
+					// TODO Auto-generated method stub
+//				int action2 = e.getAction();
+//				float FirstSingleTapTime = 0;
+//			    float SecondSingleTapTime = 0;
+				
+//				if(action2==MotionEvent.ACTION_DOWN)
+//				{
+// 				}
+//				else if(action2 == MotionEvent.ACTION_UP)
+//				{
+//					
 //				}
+					countGesture++;
+//					
+//					if(countGesture==1)
+//					{
+//						FirstSingleTapTime=e.getDownTime();
 //				
-//				
-//
-//				@Override
-//				public boolean onDoubleTapEvent(MotionEvent e) {
-//					// TODO Auto-generated method stub
-//					return false;
-//				}
-//
-//				@Override
-//				public boolean onSingleTapConfirmed(MotionEvent e) {
-//					// TODO Auto-generated method stub
-//					return false;
-//				}
-//			});
+//					}
+					
+					if(countGesture==2)
+					{	
+//						SecondSingleTapTime=e.getDownTime();
+//		    			final float BetweenSingleTaps=Math.abs(SecondSingleTapTime-FirstSingleTapTime);
+
+						
+ 						//Toast.makeText(getApplicationContext(),"countG: "+countGesture,Toast.LENGTH_SHORT).show();
+						countGesture=0;	
+						
+						if(LAC1.length()!=4)
+				 			{ 
+							
+							releaseSoundEffect();
+ 							playSound(NEXT_PAGE);
+							
+						   Intent intent2 = new Intent(BTlist.this, POImenu.class);
+					   //Insert the parser function 
+						   MacReader r = new MacReader(BTlist.MacAddr
+							.get(GestureUI.selected)); 
+						   intent2.putExtra("MAC", r.getMacString());
+						   intent2.putExtra("tpid", BTlist.tpids.get(GestureUI.selected));
+						   intent2.putExtra("POIname", onlyPOInames
+							.get(GestureUI.selected)); 
+			 
+						   startActivity(intent2);
+						   
+					   	}else 
+					   	{
+							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+					   	}
+					}
+					return false;
+				}
+			});
  /*	 	if (this.POINameWithDistance.size() == 0)
 			this.mTts
 					.speak(
@@ -819,9 +866,24 @@ public class BTlist extends GestureUI {
      				{
      					 // this.mTts.speak("UP Motion", TextToSpeech.QUEUE_FLUSH,null);
      					 if(flag||flagForScrolling)
-     					 {vibrate();
-     						 upMotion();
-     						flagForScrolling=false;
+     					 {	
+     						 vibrate();
+	     					if(LAC1.length()!=4)
+	 			 			{ 
+//	     						if(options.size()==0)
+//	     						{
+//		     						 this.options.clear();
+//		     						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+//		     		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+//	     						}
+	     						 upMotion();
+	 			 			}else 
+	 			 			{
+	 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+
+	 			 			}
+	     					
+ 	     						flagForScrolling=false;
      					 }
      					
      				}
@@ -833,7 +895,20 @@ public class BTlist extends GestureUI {
      					 {
      						 
      						vibrate();
-     						downMotion();
+     						if(LAC1.length()!=4)
+	 			 			{
+//     							if(options.size()==0)
+//	     						{
+//	     							 this.options.clear();
+//	         						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+//	         		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+//	     						}
+     							downMotion();
+	 			 			}else 
+	 			 			{
+	 							mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+
+	 			 			}	
      						flagForScrolling = false; 
      					 }
      				}//missed
@@ -1192,6 +1267,192 @@ public class BTlist extends GestureUI {
 		return true;
 
 	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+ 
+		if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+		
+			if(LAC1.length()!=4)
+			{
+				releaseSoundEffect();
+				playSound(NEXT_PAGE);
+				
+				
+				AngleCalculator oc = new AngleCalculator(byCoordinateParser.getLatitude(), byCoordinateParser
+						.getlongitude(),BTlist.LAC1,
+						BTlist.LNG1);
 	
+			   		oc.getAngle();
+	 		 
+				
+				Intent intent0 = new Intent(BTlist.this,POIsAhead.class);
+	// 			intent0.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	
+	  			BTlist.this.startActivity(intent0);
+// 			DetectedLocations.this.finish();
+			}
+			else 
+			{
+					mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+
+			}
+			
+		}
+		
+		else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+		
+			if(LAC1.length()!=4)
+	 			{
+//					if(options.size()==0)
+//					{
+//						 this.options.clear();
+//						 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+//		 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+//					}
+//			 
+	 			
+				flag3=true; 
+			
+			 
+				 
+						 
+							
+							if(flag2)
+							{
+								if(count1==options.size()-1)
+									count1=1;
+								else 
+									count1+=2;
+								
+								flag2=false; 
+							}
+							
+							if(count1==options.size()){
+								
+								count1=0;
+								
+							}
+							
+							if(count1<options.size()) //count<.size() 
+							{
+								
+			 	     			message = options.get(count1);
+				 			
+				 
+				 				selected = count1;
+				  				text.setText(message);
+				 
+				 				this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+				 					null);
+				 			
+				 				releaseSoundEffect();
+				 				playSound(ITEM_BY_ITEM);
+				 			
+			 
+						    
+								count1++;
+				
+							}
+						 
+	 			}else 
+	 			{
+					mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+
+	 			}	
+			 
+			
+		}else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+		
+			
+			if(LAC1.length()!=4)
+ 			{
+//				if(options.size()==0)
+//				{
+//					 this.options.clear();
+//					 for(int i=0;i<BTlist.getPOInamesWithDistance().size();i++)
+//	 						this.options.add(BTlist.getPOInamesWithDistance().get(i));
+//				}
+		 
+							flag2=true;
+			
+		  
+			  
+							if(flag3)
+							{
+								if(count1==1)
+									count1=options.size()-1;
+				//				else if(count==5)
+				//					count=3;
+								else 
+								{	
+									if(count1!=0)
+										count1-=2;
+								}
+								flag3=false;
+							}
+							
+							if(count1!=0)
+							{
+								if(count1==options.size()){
+							
+								
+									count1=options.size()-2;
+								}	
+							}
+				
+							
+							if(count1==0){
+							//	this.sayPageName("0");
+								
+								message = options.get(count1);
+								
+				
+								selected = count1;
+								text.setText(message);
+				
+								this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+									null);
+							    
+								
+								releaseSoundEffect();
+								playSound(ITEM_BY_ITEM);
+							
+						    //	 viewA.setText("UP"+count1);
+								count1=options.size()-1;
+								
+							}
+							else if(count1<options.size())
+								{
+								
+								 
+								message = options.get(count1);
+							
+				
+								selected = count1;
+								text.setText(message);
+				
+								this.mTts.speak(message, TextToSpeech.QUEUE_FLUSH,
+									null);
+							
+								releaseSoundEffect();
+								playSound(ITEM_BY_ITEM);
+			 ;
+						   
+								count1--;
+				
+							}
+ 			}else 
+ 			{
+				mTts.speak("There is no internet connection. Please check or wait for a moment", TextToSpeech.QUEUE_FLUSH, null);
+
+ 			}	
+		 	 
+			
+ 
+		}
+
+		return true;// return super.onKeyDown(keyCode, event);
+	}
    
 }
