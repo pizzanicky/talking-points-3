@@ -115,6 +115,10 @@ public class BTlist extends GestureUI {
 
 	private static String end = "e";
 
+	private int closeLocationRange;
+	private int nearbyLocationRange;
+	private int flashLocationRange;
+
 	/** Called when the activity is first created. */
 	// public void onResume()
 	// {
@@ -319,6 +323,10 @@ public class BTlist extends GestureUI {
 		//
 		// });
 
+		closeLocationRange = getIntent().getIntExtra("closeLocation_range", 0);
+		nearbyLocationRange = getIntent()
+				.getIntExtra("nearbyLocation_range", 0);
+		flashLocationRange = getIntent().getIntExtra("flashLocation_range", 0);
 	}
 
 	// protected void onResume(){
@@ -477,7 +485,7 @@ public class BTlist extends GestureUI {
 		p2 = new byCoordinateParser(
 				"http://app.talking-points.org/locations/by_coordinates/"
 						+ lac2[0] + "," + lac2[1] + ";" + lng2[0] + ","
-						+ lng2[1] + ".xml", getApplicationContext());
+						+ lng2[1] + ".xml?within=0.01", getApplicationContext());
 
 		try {
 			callAngleCalculator2();
@@ -529,7 +537,7 @@ public class BTlist extends GestureUI {
 			// Toast.makeText(this,"First floor!"+a,Toast.LENGTH_SHORT);
 
 			if ((byCoordinateParser.floor.get(a) == -1)
-					&& ((byCoordinateParser.distance.get(a) * 5280) < 7.00)) {
+					&& ((byCoordinateParser.distance.get(a) * 5280) < nearbyLocationRange)) {
 
 				POINameWithDistance
 						.add(byCoordinateParser.name.get(a)
@@ -840,7 +848,7 @@ public class BTlist extends GestureUI {
 
 					if (FirstX - LastX > SWIPE_MIN_DISTANCE_RIGHT_LEFT
 							&& yD < CHECK_DISTANCE) { // this.mTts.speak("LEFT MOTION",
-														// TextToSpeech.QUEUE_FLUSH,null);
+						// TextToSpeech.QUEUE_FLUSH,null);
 
 						// try {
 						//							
@@ -1284,7 +1292,7 @@ public class BTlist extends GestureUI {
 				Intent intent0 = new Intent(BTlist.this, POIsAhead.class);
 				// intent0.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent0.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+				intent0.putExtra("range", flashLocationRange);
 				BTlist.this.startActivity(intent0);
 				// DetectedLocations.this.finish();
 			} else {

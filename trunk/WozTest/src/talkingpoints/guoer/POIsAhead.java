@@ -57,6 +57,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 	private ArrayList<String> onlyPOIname;
 	protected ArrayList<String> optionsBuffer;
 	private boolean activated = false;
+	private int flash_range;
 
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -70,6 +71,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 		sm = (SensorManager) getSystemService(Activity.SENSOR_SERVICE);
 		compass = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 		sm.registerListener(this, compass, SensorManager.SENSOR_DELAY_FASTEST);
+		flash_range = getIntent().getIntExtra("range", 60);
 
 		super.gestureScanner.setOnDoubleTapListener(new OnDoubleTapListener() {
 			public boolean onDoubleTap(MotionEvent e) {
@@ -170,7 +172,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 					NumberFormat formatter = new DecimalFormat("#0");
 
 					if ((byCoordinateParser.floor.get(i) == -1)
-							&& ((byCoordinateParser.distance.get(i) * 5280) < 60.00)) {
+							&& ((byCoordinateParser.distance.get(i) * 5280) < flash_range)) {
 						this.options.add(byCoordinateParser.name.get(i));
 						// this.options.add(byCoordinateParser.name.get(i)+" within "+formatter.format(byCoordinateParser.distance.get(i)*5280)+"feet");
 						// Toast.makeText(this,"name::"+byCoordinateParser.name.get(i),Toast.LENGTH_SHORT).show();
@@ -348,7 +350,7 @@ public class POIsAhead extends GestureUI implements SensorEventListener {
 				NumberFormat formatter = new DecimalFormat("#0");
 
 				if ((byCoordinateParser.floor.get(i) == -1)
-						&& ((byCoordinateParser.distance.get(i) * 5280) < 60.00)) {
+						&& ((byCoordinateParser.distance.get(i) * 5280) < flash_range)) {
 					this.options.add(byCoordinateParser.name.get(i));
 					// this.options.add(byCoordinateParser.name.get(i)+" within "+formatter.format(byCoordinateParser.distance.get(i)*5280)+"feet");
 					// Toast.makeText(this,"name::"+byCoordinateParser.name.get(i),Toast.LENGTH_SHORT).show();
