@@ -36,6 +36,7 @@
 <activity android:name="ItWasBTlist" android:screenOrientation = "portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
 <activity android:name="ItWasDetectedLocations" android:screenOrientation = "portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
 
+<activity android:name="Setting"></activity>
 </application>
     <uses-sdk android:minSdkVersion="7" />
 

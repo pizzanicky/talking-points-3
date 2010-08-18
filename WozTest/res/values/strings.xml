@@ -19,4 +19,10 @@
 <string name="x">32.3321321</string>
 <string name="y">12.3432422</string>
 
+<string name="spinner_close_location">Close location: </string>
+<string name="spinner_prompt">chose range (feet)</string>
+<string name="spinner_nearby_location">Nearby location: </string>
+<string name="spinner_flash_location">Flashlight location: </string>
+
+<string name="buttons_go">Go</string>
 </resources>
